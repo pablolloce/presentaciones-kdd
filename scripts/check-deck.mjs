@@ -32,6 +32,18 @@ function collect(paths) {
 }
 
 /**
+ * Construye el patron de un atributo class que contiene EXACTAMENTE la clase dada.
+ *
+ * No vale /\bslide\b/: en expresiones regulares el guion es frontera de palabra,
+ * asi que ese patron casa tambien con "slide-label" o "slide-num" e infla el
+ * recuento de slides. La clase tiene que ir delimitada por espacio o por el
+ * principio/final del atributo.
+ */
+function classAttr(name) {
+  return `class="(?:[^"]*\\s)?${name}(?:\\s[^"]*)?"`;
+}
+
+/**
  * Extrae cada elemento con clase "slide" junto con su contenido, equilibrando
  * la etiqueta de apertura con su cierre.
  *
@@ -42,7 +54,7 @@ function collect(paths) {
  */
 function extractSlides(html) {
   const slides = [];
-  const re = /<([a-z][a-z0-9]*)\b[^>]*class="[^"]*\bslide\b[^"]*"[^>]*>/gi;
+  const re = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*${classAttr("slide")}[^>]*>`, "gi");
   let m;
   while ((m = re.exec(html))) {
     const tag = m[1].toLowerCase();
@@ -116,6 +128,37 @@ const RULES = [
     test: (h) => !/(?:file:\/\/)?\/(?:Users|Volumes)\/|[A-Z]:\\\\/.test(h),
   },
   {
+    // La promesa de este repositorio es que cada presentacion es un fichero
+    // autocontenido. Una fuente o una imagen referenciada por ruta relativa que
+    // no viaja con el fichero falla en silencio: el navegador cae al tipo de
+    // respaldo y nadie se entera hasta que el cliente lo abre.
+    id: "autocontenido",
+    level: "error",
+    msg: null, // se construye con la lista de recursos que faltan
+    find: (h, file) => {
+      const base = dirname(file);
+      const refs = new Set();
+      // Fuera los <script>: dentro hay cadenas que imitan referencias sin serlo
+      // (un href="$2" de un .replace(), un toDataURL('image/png')...). Lo que se
+      // audita son los recursos que el navegador va a pedir al pintar.
+      const markup = h.replace(/<script[\s\S]*?<\/script>/gi, "");
+      const patterns = [
+        /(?:src|href)="([^"#?]+)"/gi,
+        // (?<![\w-]) evita que toDataURL(...) o cualquier fnUrl(...) cuele.
+        /(?<![\w-])url\((["']?)([^)"']+)\1\)/gi,
+      ];
+      for (const re of patterns) {
+        for (const m of markup.matchAll(re)) {
+          const ref = (m[2] ?? m[1]).trim();
+          if (!ref || /^(?:https?:|data:|mailto:|tel:|javascript:|#|\/\/)/i.test(ref)) continue;
+          if (ref.startsWith("/")) continue; // lo cubre la regla de rutas absolutas
+          refs.add(ref);
+        }
+      }
+      return [...refs].filter((r) => !existsSync(join(base, decodeURIComponent(r))));
+    },
+  },
+  {
     id: "exportacion",
     level: "warn",
     msg: "faltan librerías de exportación (pptxgenjs / html2canvas / jspdf)",
@@ -182,18 +225,29 @@ if (!files.length) {
 
 for (const file of files) {
   const html = readFileSync(file, "utf-8");
-  const isDeck = /class="[^"]*\bslide\b/.test(html);
+  const isDeck = new RegExp(classAttr("slide")).test(html);
   // Las dos familias de deck no comparten anatomia: la de exportacion usa
   // .slide-themed + .ex-title + .takeaway; la live usa .chrome + .divider y
   // construye el discurso con reveals. Aplicar las reglas de una a la otra
   // produce decenas de falsos positivos.
   const isLiveDeck =
     /<meta[^>]+name="deck-mode"[^>]+content="live"/i.test(html) ||
-    (isDeck && !/class="[^"]*\bslide-themed\b/.test(html));
+    (isDeck && !new RegExp(classAttr("slide-themed")).test(html));
   const problems = [];
 
   for (const rule of RULES) {
     if (rule.onlyDeck && !isDeck) continue;
+    if (rule.find) {
+      const faltan = rule.find(html, file);
+      if (faltan.length) {
+        const muestra = faltan.slice(0, 4).join(", ") + (faltan.length > 4 ? `, +${faltan.length - 4}` : "");
+        problems.push({
+          level: rule.level,
+          text: `referencia ${faltan.length} recurso(s) que no viajan con el fichero: ${muestra}`,
+        });
+      }
+      continue;
+    }
     if (!rule.test(html)) problems.push({ level: rule.level, text: rule.msg });
   }
 
@@ -201,17 +255,18 @@ for (const file of files) {
     const slides = extractSlides(html);
     slides.forEach((s, i) => {
       const n = i + 1;
-      const isDark = /\bslide-dark\b|\bslide-div\b/.test(s.open);
+      const isDark = new RegExp(`${classAttr("slide-dark")}|${classAttr("slide-div")}`).test(s.open) ||
+        /\bslide-(dark|div)\b/.test(s.open.match(/class="([^"]*)"/)?.[1] || "");
       if (!/\bdata-section=/.test(s.open)) {
         problems.push({ level: "error", text: `slide ${n}: falta data-section` });
       }
       // La regla de oro del formato: toda slide de contenido cierra con su conclusión.
       // Portada y separadores están exentos porque no argumentan nada.
       if (isLiveDeck) return; // la plantilla live no usa .ex-title ni .takeaway
-      if (!isDark && !/class="[^"]*\btakeaway\b/.test(s.body)) {
+      if (!isDark && !new RegExp(classAttr("takeaway")).test(s.body)) {
         problems.push({ level: "error", text: `slide ${n}: falta .takeaway` });
       }
-      if (!isDark && !/class="[^"]*\bex-title\b/.test(s.body)) {
+      if (!isDark && !new RegExp(classAttr("ex-title")).test(s.body)) {
         problems.push({ level: "warn", text: `slide ${n}: falta .ex-title` });
       }
     });
