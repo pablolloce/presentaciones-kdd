@@ -72,8 +72,14 @@ lista: `apply-brand` no sabrá sustituirlos al cambiar de marca.
 </section>
 ```
 
-`.body` ocupa el espacio libre y centra su contenido; `.takeaway` se ancla abajo con
-`margin-top:auto`. Esa es toda la mecánica vertical: no pongas márgenes fijos para empujar.
+`.body` ocupa el espacio libre y centra su contenido con `justify-content: safe center`;
+`.takeaway` se ancla abajo con `margin-top:auto`. Esa es toda la mecánica vertical: no pongas
+márgenes fijos para empujar.
+
+> El `safe` no es decorativo. Con `center` a secas, un cuerpo más alto que su hueco se desborda
+> **también por arriba** y se come el `lead` y el `takeaway`. Como nada se sale del lienzo, el
+> navegador no lo recorta y el fallo solo se ve proyectado. Por eso existe `npm run maqueta`:
+> mide cada slide en un navegador real y avisa de lo que se sale de su contenedor.
 
 ### Tipos de slide
 
@@ -147,3 +153,6 @@ un SVG que pinte con `currentColor` y un JSON con su color.
 6. **`headline` como etiqueta.** «El 38 % del tiempo se va en reintroducir datos», no
    «Análisis de tiempos».
 7. **Tres slides seguidas con la misma maqueta.**
+8. **Meter contenido hasta que cabe «justo».** Si `npm run maqueta` avisa, la respuesta correcta
+   casi siempre es recortar texto, no reducir el cuerpo de letra: la escala tipográfica es fija
+   por una razón.

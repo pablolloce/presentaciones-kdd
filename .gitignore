@@ -12,3 +12,4 @@ node_modules/
 /presentations/**/*.pdf
 /presentations/**/*.pptx
 /tmp/
+*.tmp.mjs

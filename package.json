@@ -10,7 +10,8 @@
     "capturar": "node scripts/capture-slides.mjs",
     "miniatura": "node scripts/capture-thumb.mjs",
     "verificar": "node scripts/check-deck.mjs",
-    "servir": "npx --yes serve presentations -p 8765 --no-clipboard"
+    "servir": "npx --yes serve presentations -p 8765 --no-clipboard",
+    "maqueta": "node scripts/check-layout.mjs"
   },
   "devDependencies": {
     "playwright": "^1.59.1"

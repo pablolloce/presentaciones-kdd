@@ -227,7 +227,12 @@
     letter-spacing:.06em;color:rgba(255,255,255,.5)}
 
   /* ═══ Componentes ══════════════════════════════════════════════════════ */
-  .body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;margin:26px 0}
+  /* "safe center" centra mientras el contenido cabe y cae a alineacion superior
+     cuando no cabe. Con "center" a secas, un cuerpo mas alto que su hueco se
+     desborda por ARRIBA tambien, y se come el lead y el takeaway sin que el
+     lienzo lo recorte: el fallo se ve en la sala, no en el navegador. */
+  .body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;
+    justify-content:safe center;margin:26px 0}
 
   .toc{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 64px;max-width:1280px}
   .toc-item{display:flex;align-items:baseline;gap:20px;padding:16px 6px;
@@ -264,6 +269,7 @@
   .card.a2{border-top:3px solid var(--coral)} .card.a2 .c-n{color:var(--coral)}
   .card.a3{border-top:3px solid var(--purple)} .card.a3 .c-n{color:var(--purple)}
   .card.a1{border-top:3px solid var(--blue)}
+  .card.a4{border-top:3px solid var(--green)} .card.a4 .c-n{color:var(--green)}
 
   .chips{display:flex;flex-wrap:wrap;gap:12px}
   .chip{display:inline-flex;align-items:center;gap:9px;font-size:17px;font-weight:600;color:var(--ink);

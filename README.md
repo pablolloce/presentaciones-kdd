@@ -40,7 +40,8 @@ Formatos disponibles:
 Verificar antes de entregar:
 
 ```bash
-npm run verificar
+npm run verificar    # estándares: marca, anatomía, dependencias, tildes
+npm run maqueta      # mide cada slide en un navegador y detecta desbordamientos
 ```
 
 Exportar a PDF: ábrelo e imprime desde el navegador (Cmd+P, horizontal, sin márgenes). El

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="deck-mode" content="stage">
-<title>Transformación digital 2026</title>
+<title>KDD para soporte</title>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      PLANTILLA PRINCIPAL · deck sobre lienzo fijo de 1600x900
@@ -314,6 +314,90 @@
   .quote cite{display:block;font-family:var(--mono);font-size:14px;font-style:normal;
     letter-spacing:.1em;text-transform:uppercase;color:var(--mute2);margin-top:20px}
 
+
+  /* ═══ Grafo de conocimiento (slide 12) ═════════════════════════════════
+     Nodos y aristas se pintan desde el array KG_NODES/KG_EDGES para que la
+     maqueta no tenga que repetir coordenadas a mano. */
+  .graphwrap{display:grid;grid-template-columns:1fr 330px;gap:36px;align-items:stretch;flex:1 1 auto;min-height:0}
+  .kgraph{width:100%;height:100%;overflow:visible}
+  .kgraph .kg-edge{stroke:var(--line);stroke-width:1.5;transition:stroke .25s,stroke-width .25s,opacity .25s}
+  .kgraph .kg-edge.on{stroke:var(--blue);stroke-width:2.5}
+  .kgraph .kg-edge.off{opacity:.18}
+  .kgraph .kg-node{cursor:pointer;outline:none}
+  /* El recuadro de foco por defecto del navegador se lee como un fallo de
+     maqueta sobre el grafo. Se sustituye por el propio anillo del nodo, que
+     sigue marcando el foco para quien navegue con teclado. */
+  .kgraph .kg-node:focus-visible .kg-ring{opacity:.55;stroke-dasharray:3 3}
+  .kgraph .kg-node circle{stroke:var(--paper);stroke-width:2.5;transition:r .25s,opacity .25s}
+  .kgraph .kg-node text{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--ink2);
+    text-anchor:middle;transition:opacity .25s;pointer-events:none}
+  .kgraph .kg-node .kg-sub{font-family:var(--sans);font-size:10.5px;font-weight:500;fill:var(--mute2)}
+  .kgraph .kg-node.off{opacity:.2}
+  .kgraph .kg-node.sel circle{stroke:var(--ink);stroke-width:3}
+  .kgraph .kg-node:hover circle{r:15}
+  .kgraph .kg-ring{fill:none;stroke:var(--blue);stroke-width:1.5;opacity:0;transition:opacity .25s}
+  .kgraph .kg-node.sel .kg-ring{opacity:.45}
+
+  .kg-panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;
+    box-shadow:0 8px 22px rgba(20,20,40,.05);display:flex;flex-direction:column;overflow:hidden}
+  .kg-p-k{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--mute2);margin-bottom:10px}
+  .kg-p-empty p{font-size:14.5px;line-height:1.55;color:var(--mute)}
+  .kg-p-empty p b{color:var(--ink2);font-weight:600}
+  .kg-leg{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:auto;padding-top:18px}
+  .kg-l{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;
+    font-weight:600;color:var(--mute)}
+  .kg-l i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .kg-p-id{display:flex;align-items:center;gap:10px}
+  .kg-p-id b{font-family:var(--mono);font-size:14px;color:var(--ink)}
+  .kg-p-t{font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.2;color:var(--ink);margin-top:12px}
+  .kg-p-meta{font-family:var(--mono);font-size:11px;color:var(--mute2);margin-top:8px}
+  .kg-p-rel{margin-top:20px;padding-top:16px;border-top:1px solid var(--line2);min-height:0;overflow:hidden}
+  .kg-p-rel ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .kg-p-rel li{display:flex;align-items:baseline;gap:9px;font-size:13.5px;color:var(--mute);line-height:1.35}
+  .kg-p-rel li b{font-family:var(--mono);font-size:11px;font-weight:600;flex:0 0 auto}
+
+  /* ═══ Fichero de spec (slide 10) ═══════════════════════════════════════ */
+  .specfile{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper);
+    box-shadow:0 8px 22px rgba(20,20,40,.05)}
+  .sf-bar{display:flex;align-items:center;gap:7px;padding:11px 16px;background:var(--bg);
+    border-bottom:1px solid var(--line2)}
+  .sf-dot{width:9px;height:9px;border-radius:50%;background:var(--line);display:inline-block}
+  .sf-name{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin-left:10px}
+  .sf-code{font-family:var(--mono);font-size:12px;line-height:1.55;color:var(--ink2);
+    padding:18px 22px;white-space:pre;overflow:hidden}
+  .sf-k{color:var(--blue-d);font-weight:600}
+  .sf-v{color:var(--ink)}
+  .sf-c{color:var(--mute2);font-style:italic}
+  .sf-dim{color:var(--mute2)}
+  .sf-h{color:var(--coral);font-weight:600}
+  .sf-notes{display:flex;flex-direction:column;gap:14px}
+  .sf-note{border-left:2px solid var(--line);padding-left:16px}
+  .sf-note:nth-child(4){border-left-color:var(--blue)}
+  .sf-nk{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--blue-d);margin-bottom:4px}
+  .sf-note p{font-size:14px;line-height:1.5;color:var(--mute)}
+  .sf-note p b{color:var(--ink2);font-weight:600}
+
+  /* ═══ Bucle numerado y flujo de cinco pasos ════════════════════════════ */
+  .loopline{display:flex;align-items:baseline;gap:13px;margin-bottom:13px}
+  .loopline:last-of-type{margin-bottom:0}
+  .lp-n{flex:0 0 auto;width:22px;height:22px;border-radius:7px;background:rgba(33,123,238,.10);
+    color:var(--blue-d);font-family:var(--mono);font-size:11px;font-weight:600;
+    display:flex;align-items:center;justify-content:center}
+  .loopline p{font-size:14.5px;line-height:1.5;color:var(--mute)}
+  .loopline p b{color:var(--ink2);font-weight:600}
+
+  .flow5{display:flex;align-items:stretch;gap:0}
+  .f5{flex:1 1 0;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px}
+  .f5-hi{border-color:rgba(33,123,238,.45);box-shadow:0 8px 22px rgba(33,123,238,.10)}
+  .f5-n{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--blue-d)}
+  .f5-hi .f5-n{color:var(--blue)}
+  .f5-t{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.15;color:var(--ink)}
+  .f5-d{font-size:13.5px;line-height:1.5;color:var(--mute)}
+  .f5-d b{color:var(--ink2);font-weight:600}
+  .f5-a{flex:0 0 auto;align-self:center;padding:0 10px;color:var(--mute2);font-size:20px}
+
 /* brand:tokens:end */
 </style>
 </head>
@@ -350,256 +434,459 @@
 
     <div class="counter"><b id="cur">01</b> / <span id="tot">01</span></div>
     <nav class="secnav" id="secnav" aria-label="Secciones"></nav>
-
 <!-- ═══ 0 · PORTADA ═══════════════════════════════════════════════════════ -->
 <section class="slide cover active" data-nav="">
   <div class="cover-logos">
-    <!-- brand:client:start --><svg class="client-mark" viewBox="0 0 600 179.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M432.2,24.4l-51.6,98.2c-1.1,2.1-4.3,2.1-5.4,0l-51.6-98.2c-0.5-1-1.5-1.6-2.6-1.6h-25c-1.7,0-2.8,1.8-2,3.3l81.3,152.2c1.1,2.1,4.1,2.1,5.3,0l81.3-152.2c0.8-1.5-0.3-3.3-2-3.3h-25C433.7,22.8,432.7,23.4,432.2,24.4z"/><path d="M461.5,155.5l51.6-98.2c1.1-2.1,4.3-2.1,5.4,0l51.6,98.2c0.5,1,1.5,1.6,2.6,1.6h25c1.7,0,2.8-1.8,2-3.3L518.4,1.6c-1.1-2.1-4.1-2.1-5.3,0l-81.3,152.2c-0.8,1.5,0.3,3.3,2,3.3h25C459.9,157,461,156.4,461.5,155.5z"/><path d="M108.8,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1H3c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C133.5,102.3,108.8,95.2,108.8,95.2z M29,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6H29c-1.6,0-3-1.3-3-3V48.5C26,46.8,27.3,45.5,29,45.5z M75.5,157l-46.5,0c-1.7,0-3-1.3-3-3l0-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C107.5,150.8,97.9,157,75.5,157z"/><path d="M267.5,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1h-77.4c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C292.2,102.3,267.5,95.2,267.5,95.2z M187.7,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6h-45.9c-1.7,0-3-1.3-3-3V48.5C184.7,46.8,186,45.5,187.7,45.5z M234.1,157l-46.5,0c-1.6,0-3-1.3-3-3v-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C266.2,150.8,256.5,157,234.1,157z"/></g></svg><!-- brand:client:end -->
+    <!-- brand:client:start --><!-- brand:client:end -->
     <span class="lb-div"></span>
-    <!-- brand:nfq:start --><svg class="nfq-mark" viewBox="0 0 312.29 145.88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
-          <clipPath id="nfqw-2-nfq-clip"><rect x=".17" y="6.44" width="96.46" height="120"/></clipPath>
-          <linearGradient id="nfqw-2-nfq-lg1" x1="16.08" y1="4553.95" x2="16.08" y2="4644.91" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".25" stop-color="#ec683e"/><stop offset="1" stop-color="#d13b5f"/></linearGradient>
-          <linearGradient id="nfqw-2-nfq-lg2" x1="16.08" y1="4584.43" x2="16.08" y2="4660.83" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/></linearGradient>
-          <linearGradient id="nfqw-2-nfq-lg3" x1="14.82" y1="4649.54" x2="81.61" y2="4552.17" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".25" stop-color="#d13b5f"/><stop offset="1" stop-color="#217bee"/></linearGradient>
-          <linearGradient id="nfqw-2-nfq-lg4" x1="46.31" y1="4603.85" x2="80.07" y2="4550.73" xlink:href="#nfqw-2-nfq-lg2"/>
-        </defs>
-        <g clip-path="url(#nfqw-2-nfq-clip)">
-          <path fill="url(#nfqw-2-nfq-lg1)" d="M32.16,108.22L0,126.78V25.34L32.15,6.78v101.44Z"/>
-          <path fill="url(#nfqw-2-nfq-lg2)" fill-opacity=".3" d="M32.16,108.22L0,126.78V25.34L32.15,6.78v101.44Z"/>
-          <path fill="url(#nfqw-2-nfq-lg3)" d="M96.46,108.22l-32.16,18.56L0,25.34,32.15,6.78l64.31,101.44Z"/>
-          <path fill="url(#nfqw-2-nfq-lg4)" fill-opacity=".2" d="M96.46,108.22l-32.16,18.56L0,25.34,32.15,6.78l64.31,101.44Z"/>
-          <path fill="#217bee" d="M96.46,108.22l-32.16,18.56V25.34L96.46,6.78v101.44Z"/>
-        </g>
-        <g class="nfq-word">
-          <path d="M312.01,35.56l-17.64,12.6c-3.92-8.54-12.46-13.16-21.28-13.16-13.58,0-28,10.92-28,35.42s13.02,35.56,26.18,35.56c10.08,0,20.3-6.86,24.92-20.3v60.2h16.1V35.56h-.28ZM296.19,70.98c-.14,18.06-8.68,27.02-17.22,27.02s-17.22-9.1-17.22-27.58c0-20.02,9.1-29.68,17.92-29.68,8.26,0,16.38,8.54,16.52,24.64v5.6Z"/>
-          <path d="M251.33,19.46c-11.06-10.5-18.62-15.68-22.82-15.68-2.94,0-4.34,2.38-4.34,7.14v25.62h21.98v3.08h-21.98v64.82h-16.24V39.62h-9.8v-3.08h9.8v-1.54c0-27.86,13.72-35,28.56-35,5.04,0,10.22.84,14.98,1.96l-.14,17.5Z"/>
-          <path d="M146.41,51.24c5.88-11.2,15.12-16.24,23.94-16.24,12.46,0,24.08,9.94,24.08,26.04v43.4h-16.1v-40.32c0-14.84-6.72-22.12-14.42-22.12-6.16,0-13.16,4.9-17.5,14.42v48.02h-16.1V38.92l15.82-3.36h.28v15.68Z"/>
-        </g></svg><!-- brand:nfq:end -->
+    <!-- brand:nfq:start --><!-- brand:nfq:end -->
   </div>
-  <h1 class="ctitle">Transformación digital 2026</h1>
-  <p class="tagline">La frase que resume la propuesta en una línea larga y legible.</p>
-  <p class="sub">Subtítulo con el encuadre: <b>a quién</b> se presenta, <b>qué</b> se decide y <b>cuándo</b>.</p>
-  <div class="cover-foot"><b>Confidencial</b> · Comité de Dirección · 2026</div>
+  <h1 class="ctitle">KDD para<br><span class="blue">soporte</span></h1>
+  <p class="tagline">Qué es el Knowledge-Driven Development, qué tenemos ya funcionando y qué cambia en vuestro día a día.</p>
+  <p class="sub">Sesión de fundamentos para el equipo de <b>ANS</b>. No hace falta conocimiento previo del framework.</p>
+  <div class="cover-foot"><b>Uso interno</b> · Equipo de soporte · 2026</div>
 </section>
 
 <!-- ═══ 1 · SUMARIO ═══════════════════════════════════════════════════════ -->
 <section class="slide index" data-nav="">
   <div class="eyebrow">Contenido</div>
-  <h2 class="headline">Lo que vamos a ver</h2>
+  <h2 class="headline">De dónde sale el KDD y qué os toca a vosotros</h2>
   <div class="body">
     <ul class="toc">
-      <li class="toc-item" data-goto="Diagnóstico"><span class="toc-n">01</span><span class="toc-t">Dónde estamos hoy</span></li>
-      <li class="toc-item" data-goto="Propuesta"><span class="toc-n">02</span><span class="toc-t">Qué proponemos</span></li>
-      <li class="toc-item" data-goto="Ejecución"><span class="toc-n">03</span><span class="toc-t">Cómo lo ejecutamos</span></li>
-      <li class="toc-item" data-goto="12"><span class="toc-n">04</span><span class="toc-t">Qué pedimos hoy</span></li>
+      <li class="toc-item" data-goto="El origen"><span class="toc-n">01</span><span class="toc-t">De dónde viene: Spec-Driven Development</span></li>
+      <li class="toc-item" data-goto="El framework"><span class="toc-n">02</span><span class="toc-t">El framework KDD y sus tres capas</span></li>
+      <li class="toc-item" data-goto="Las specs"><span class="toc-n">03</span><span class="toc-t">Cómo es una spec por dentro</span></li>
+      <li class="toc-item" data-goto="El grafo"><span class="toc-n">04</span><span class="toc-t">El grafo de conocimiento</span></li>
+      <li class="toc-item" data-goto="Hoy"><span class="toc-n">05</span><span class="toc-t">Qué tenemos ya: RDR</span></li>
+      <li class="toc-item" data-goto="KDD Work"><span class="toc-n">06</span><span class="toc-t">A futuro: KDD Work</span></li>
+      <li class="toc-item" data-goto="Soporte"><span class="toc-n">07</span><span class="toc-t">Qué gana el ANS</span></li>
     </ul>
   </div>
 </section>
 
 <!-- ═══ 2 · SEPARADOR ═════════════════════════════════════════════════════ -->
-<section class="slide divider" data-nav="Diagnóstico">
+<section class="slide divider" data-nav="El origen">
   <div class="dv-eyebrow">Sección 01</div>
-  <h2 class="dv-mega">Dónde<br><span class="blue">estamos</span></h2>
-  <p class="dv-sub">El coste no está en la tecnología antigua, sino en el trabajo manual que hace falta para compensarla.</p>
-  <div class="dv-foot">01 · Diagnóstico</div>
+  <h2 class="dv-mega">De dónde<br><span class="blue">viene</span></h2>
+  <p class="dv-sub">Spec-Driven Development: la especificación deja de ser un documento y pasa a ser la fuente de verdad.</p>
+  <div class="dv-foot">01 · El origen</div>
 </section>
 
-<!-- ═══ 3 · EDITORIAL ═════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Diagnóstico">
-  <div class="eyebrow">Diagnóstico</div>
-  <h2 class="headline">Ningún sistema está roto; lo que falla es <em>todo lo que ocurre entre ellos</em></h2>
-  <p class="lead">Cada aplicación cumple su función. El problema aparece en las costuras: un pedido cambia de estado y nadie se entera hasta que alguien lo teclea por segunda vez. Ese segundo tecleo es el verdadero sistema de integración de la compañía, y no está documentado en ninguna parte.</p>
+<!-- ═══ 3 · EL PROBLEMA ═══════════════════════════════════════════════════ -->
+<section class="slide" data-nav="El origen">
+  <div class="eyebrow">El origen</div>
+  <h2 class="headline">La documentación que escribimos <em>no la puede usar nadie más</em></h2>
+  <p class="lead">Ni una persona nueva, porque está desactualizada. Ni un agente de IA, porque no tiene estructura. El conocimiento real acaba viviendo en las cabezas de tres personas, y eso lo sabemos bien en soporte.</p>
   <div class="body">
     <div class="cards">
       <div class="card a1">
-        <div class="c-n">Coste oculto</div>
-        <div class="c-t">La conciliación es un puesto de trabajo</div>
-        <p class="c-d">Dos personas dedican la mayor parte de su jornada a cuadrar datos que <b>deberían cuadrar solos</b>.</p>
+        <div class="c-n">Problema 01</div>
+        <div class="c-t">Nace desactualizada</div>
+        <p class="c-d">Se escribe una vez, al cerrar el proyecto, y <b>nadie la vuelve a tocar</b>. Seis meses después ya no describe el sistema que hay en producción.</p>
       </div>
       <div class="card a2">
-        <div class="c-n">Sin una cifra</div>
-        <div class="c-t">Nadie puede responder «cuánto stock hay»</div>
-        <p class="c-d">Hay tres respuestas posibles según el sistema que se consulte, y <b>las tres se defienden</b>.</p>
+        <div class="c-n">Problema 02</div>
+        <div class="c-t">No tiene estructura</div>
+        <p class="c-d">Un Word, un Confluence y un correo. <b>Nada es procesable</b>: no hay campos, ni identificadores, ni relaciones que una máquina pueda seguir.</p>
       </div>
       <div class="card a3">
-        <div class="c-n">Riesgo de personas</div>
-        <div class="c-t">El conocimiento vive en dos cabezas</div>
-        <p class="c-d">Las excepciones del proceso no están escritas. Una baja larga <b>detiene la facturación</b>.</p>
+        <div class="c-n">Problema 03</div>
+        <div class="c-t">Vive en las personas</div>
+        <p class="c-d">Lo que de verdad hace falta para resolver una incidencia <b>no está escrito</b>. Está en quien lleva años en el servicio.</p>
       </div>
     </div>
   </div>
-  <p class="takeaway">El caso de negocio no se sostiene sobre la deuda técnica, sino sobre el <b>coste recurrente de operar a mano las costuras</b> entre sistemas.</p>
+  <p class="takeaway">El SDD no propone documentar mejor: propone <b>cambiar el artefacto</b>, de documento a especificación estructurada.</p>
 </section>
 
-<!-- ═══ 4 · DATOS ═════════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Diagnóstico">
-  <div class="eyebrow">Diagnóstico</div>
-  <h2 class="headline">El <span class="blue">38 %</span> del tiempo de operaciones se va en reintroducir datos</h2>
-  <div class="body">
-    <div class="split s37">
-      <div class="kpiband" style="grid-template-columns:1fr;gap:18px">
-        <div class="kpicard"><div class="kp-k">Hoy</div><div class="kp-v">190<small> h/mes</small></div><p class="kp-d">En los cuatro puntos de corte entre sistemas.</p></div>
-        <div class="kpicard k2"><div class="kp-k">Destino</div><div class="kp-v">~55<small> h/mes</small></div><p class="kp-d">Estimado sobre los traspasos automatizables.</p></div>
-      </div>
-      <div>
-        <div class="tblwrap">
-          <table class="data">
-            <thead><tr><th>Punto de corte</th><th>Traspaso manual</th><th>Retrabajo/mes</th><th>Horas/mes</th></tr></thead>
-            <tbody>
-              <tr><td><b>Comercial → Pedidos</b></td><td>Exportación CSV diaria</td><td class="val">31</td><td class="val">46</td></tr>
-              <tr><td><b>Pedidos → Almacén</b></td><td>Tecleo en dos pantallas</td><td class="val">44</td><td class="val">68</td></tr>
-              <tr><td><b>Almacén → Finanzas</b></td><td>Hoja de cálculo compartida</td><td class="val">18</td><td class="val">52</td></tr>
-              <tr><td><b>Finanzas → Dirección</b></td><td>Informe montado a mano</td><td class="val">6</td><td class="val">24</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="footnote"><span class="fk">Fuente</span><span class="tx">Registro de actividad, 12 personas, semanas 18-21 de 2026. <b>Cifras ilustrativas de esta plantilla.</b></span></p>
-      </div>
-    </div>
-  </div>
-  <p class="takeaway">Los cuatro puntos de corte concentran <b>190 horas al mes</b>: ahí es donde la integración se paga sola.</p>
-</section>
-
-<!-- ═══ 5 · SEPARADOR ═════════════════════════════════════════════════════ -->
-<section class="slide divider" data-nav="Propuesta">
-  <div class="dv-eyebrow">Sección 02</div>
-  <h2 class="dv-mega">Qué<br><span class="blue">proponemos</span></h2>
-  <p class="dv-sub">Integrar antes que sustituir. Un dato maestro con un solo dueño. Una decisión de continuidad por ola.</p>
-  <div class="dv-foot">02 · Propuesta</div>
-</section>
-
-<!-- ═══ 6 · PROCESO ═══════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Propuesta">
-  <div class="eyebrow">Propuesta</div>
-  <h2 class="headline">Una capa de integración por eventos, <em>no un sistema único</em></h2>
-  <p class="lead">Cada aplicación conserva su ámbito y publica los hechos relevantes. La capa de integración los distribuye y garantiza que el dato maestro tenga un solo dueño.</p>
-  <div class="body">
-    <div class="steps">
-      <div class="step"><div class="s-n">Paso 01</div><div class="s-t">Alta comercial</div><p class="s-d">El pedido entra una sola vez, donde nace.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 02</div><div class="s-t">Evento publicado</div><p class="s-d">El cambio de estado se emite, no se teclea.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 03</div><div class="s-t">Reserva de stock</div><p class="s-d">Almacén reacciona sin intervención humana.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 04</div><div class="s-t">Asiento contable</div><p class="s-d">Finanzas cierra con el mismo dato de origen.</p></div>
-    </div>
-    <div class="chips" style="margin-top:34px">
-      <span class="chip"><i></i>Reversible</span>
-      <span class="chip c2"><i></i>Por fases</span>
-      <span class="chip c3"><i></i>Sin corte total</span>
-      <span class="chip c4"><i></i>Con el equipo actual</span>
-    </div>
-  </div>
-  <p class="takeaway">La decisión estructural es <b>asignar un dueño único a cada dato maestro</b>; sin eso, cualquier integración reproduce las discrepancias actuales más deprisa.</p>
-</section>
-
-<!-- ═══ 7 · CITA ══════════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Propuesta">
-  <div class="eyebrow">Propuesta</div>
-  <h2 class="headline">Por qué no un ERP único</h2>
-  <div class="body">
-    <blockquote class="quote">
-      Una sustitución completa concentra todo el riesgo en un único corte y retrasa el primer beneficio entre doce y dieciocho meses. La integración entrega valor desde la primera ola.
-      <cite>Conclusión del análisis de opciones · Marzo 2026</cite>
-    </blockquote>
-  </div>
-  <p class="takeaway">A tres años las tres opciones cuestan lo mismo dentro del margen de error: la diferencia está en <b>cuándo llega el primer beneficio</b>.</p>
-</section>
-
-<!-- ═══ 8 · SEPARADOR ═════════════════════════════════════════════════════ -->
-<section class="slide divider" data-nav="Ejecución">
-  <div class="dv-eyebrow">Sección 03</div>
-  <h2 class="dv-mega">Cómo lo<br><span class="blue">ejecutamos</span></h2>
-  <p class="dv-sub">Tres olas de seis meses. Cada una entrega algo utilizable. Cada una puede ser la última.</p>
-  <div class="dv-foot">03 · Ejecución</div>
-</section>
-
-<!-- ═══ 9 · PLAN ══════════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Ejecución">
-  <div class="eyebrow">Ejecución</div>
-  <h2 class="headline">Tres olas, cada una con su propia <em>decisión de continuidad</em></h2>
-  <p class="lead">El compromiso presupuestario se toma ola a ola. Si la primera no entrega lo prometido, el programa se detiene sin haber comprometido el resto.</p>
-  <div class="body">
-    <div class="cards">
-      <div class="card a1">
-        <div class="c-n">Ola 1 · Meses 1-6</div>
-        <div class="c-t">Cerrar la costura más cara</div>
-        <p class="c-d">Integración Pedidos ↔ Almacén, dato maestro de artículo con dueño único y trazabilidad de extremo a extremo.</p>
-        <p class="c-d"><b>Compromiso: eliminar el doble tecleo de pedidos.</b></p>
-      </div>
-      <div class="card a2">
-        <div class="c-n">Ola 2 · Meses 7-12</div>
-        <div class="c-t">Cerrar el ciclo financiero</div>
-        <p class="c-d">Integración Almacén ↔ Finanzas, conciliación automática con excepciones y dato maestro de cliente y proveedor.</p>
-        <p class="c-d"><b>Compromiso: cierre mensual en 3 días, no en 9.</b></p>
-      </div>
-      <div class="card a3">
-        <div class="c-n">Ola 3 · Meses 13-18</div>
-        <div class="c-t">Convertir el dato en decisión</div>
-        <p class="c-d">Cuadro de mando único, alertas sobre desviaciones de stock y retirada de las hojas de cálculo puente.</p>
-        <p class="c-d"><b>Compromiso: una sola cifra de stock en la compañía.</b></p>
-      </div>
-    </div>
-  </div>
-  <p class="takeaway">Cada ola entrega una capacidad utilizable por sí sola: <b>el valor no depende de que el programa llegue al final</b>.</p>
-</section>
-
-<!-- ═══ 10 · RIESGOS ══════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Ejecución">
-  <div class="eyebrow">Ejecución</div>
-  <h2 class="headline">Los tres riesgos que pueden hacer descarrilar el plan</h2>
-  <p class="lead">Se revisan en el comité mensual. Un riesgo sin dueño y sin fecha no es un riesgo gestionado.</p>
+<!-- ═══ 4 · DOCUMENTO VS SPEC ═════════════════════════════════════════════ -->
+<section class="slide" data-nav="El origen">
+  <div class="eyebrow">El origen</div>
+  <h2 class="headline">Una spec es un <span class="blue">contrato ejecutable</span>, no un documento mejor escrito</h2>
+  <p class="lead">Las dos cosas explican el sistema. La diferencia está en qué se puede hacer con ellas después de escribirlas.</p>
   <div class="body">
     <div class="tblwrap">
       <table class="data">
-        <thead><tr><th style="width:24%">Riesgo</th><th style="width:10%">Impacto</th><th style="width:34%">Mitigación</th><th style="width:16%">Dueño</th><th style="width:16%">Señal de alarma</th></tr></thead>
+        <thead><tr><th style="width:22%">Dimensión</th><th style="width:39%">Documento tradicional</th><th style="width:39%">Especificación</th></tr></thead>
         <tbody>
-          <tr><td><b>Disponibilidad del equipo de negocio</b></td><td><span class="tag t2">Alto</span></td><td>Dedicación del 30 % de dos personas clave, acordada por escrito antes de arrancar.</td><td>Dir. Operaciones</td><td class="val">&lt; 20 % dos semanas</td></tr>
-          <tr><td><b>Calidad del dato maestro heredado</b></td><td><span class="tag t2">Alto</span></td><td>Auditoría de duplicados en el mes 1, antes de construir nada encima.</td><td>Resp. de Datos</td><td class="val">&gt; 5 % duplicados</td></tr>
-          <tr><td><b>Proveedor del sistema de almacén</b></td><td><span class="tag">Medio</span></td><td>Confirmar por contrato el acceso a su API antes de cerrar el alcance.</td><td>Compras</td><td class="val">Sin respuesta en 30 d</td></tr>
+          <tr><td><b>Identidad</b></td><td>Un nombre de fichero y una carpeta</td><td>Identificador único y estable, citable desde cualquier sitio</td></tr>
+          <tr><td><b>Estructura</b></td><td>Prosa libre; cada autor la organiza a su manera</td><td>Campos obligatorios y un tipo declarado</td></tr>
+          <tr><td><b>Relaciones</b></td><td>Implícitas, cuando las hay: «ver también…»</td><td>Declaradas y navegables: forman el grafo</td></tr>
+          <tr><td><b>Responsable</b></td><td>Quien la escribió, si aún está</td><td>Un dueño explícito, con nivel de confianza</td></tr>
+          <tr><td><b>Versión</b></td><td>El histórico del gestor documental</td><td>Versionada como código, con su historial de cambios</td></tr>
+          <tr><td><b>Quién la puede leer</b></td><td>Personas</td><td>Personas <b>y agentes de IA</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote"><span class="fk">Origen</span><span class="tx">Spec-Driven Development, metodología con raíces académicas desde 2004, con tracción real desde 2025-2026 por la irrupción de los agentes de IA.</span></p>
+  </div>
+  <p class="takeaway">La última fila es la que lo cambia todo: si un agente puede leer la spec, <b>la calidad de la spec determina la calidad de lo que produce</b>.</p>
+</section>
+
+<!-- ═══ 5 · SEPARADOR ═════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="El framework">
+  <div class="dv-eyebrow">Sección 02</div>
+  <h2 class="dv-mega">El framework<br><span class="blue">KDD</span></h2>
+  <p class="dv-sub">El SDD resuelve el artefacto. El KDD añade lo que falta para que funcione en una organización: relaciones, responsables y gobierno.</p>
+  <div class="dv-foot">02 · El framework</div>
+</section>
+
+<!-- ═══ 6 · TRES CAPAS ════════════════════════════════════════════════════ -->
+<section class="slide" data-nav="El framework">
+  <div class="eyebrow">El framework</div>
+  <h2 class="headline">Tres capas: lo que <span class="blue">sabemos</span>, lo que <span class="blue">hacemos</span> y cómo <span class="blue">evoluciona</span></h2>
+  <p class="lead">El Knowledge Base no es una wiki ni un repositorio de documentos: es un grafo donde cada pieza tiene estructura, responsable, nivel de confianza y relaciones explícitas con el resto.</p>
+  <div class="body">
+    <div class="cards">
+      <div class="card a1">
+        <div class="c-n">Capa 1 · Knowledge</div>
+        <div class="c-t">El conocimiento de la organización</div>
+        <p class="c-d">Arquitectura, reglas de negocio, regulación, productos y funcionalidades. <b>Persistente</b>: no caduca al cerrar el proyecto.</p>
+        <div class="chips" style="margin-top:auto">
+          <span class="tag">ARCH</span><span class="tag">DOM</span><span class="tag">PROD</span><span class="tag">FEAT</span><span class="tag">DOC</span>
+        </div>
+      </div>
+      <div class="card a2">
+        <div class="c-n">Capa 2 · Work</div>
+        <div class="c-t">El trabajo diario</div>
+        <p class="c-d">Qué se está cambiando, por qué y cómo. <b>Activa</b> el conocimiento relevante del KB como contexto para cada tarea.</p>
+        <div class="chips" style="margin-top:auto">
+          <span class="tag t2">WRK-SPEC</span><span class="tag t2">WRK-PLAN</span><span class="tag t2">WRK-TASK</span>
+        </div>
+      </div>
+      <div class="card a3">
+        <div class="c-n">Capa 3 · Governance</div>
+        <div class="c-t">La evolución controlada</div>
+        <p class="c-d">Todo cambio se propone, se discute y se registra. <b>Historial auditable</b> que evita que el conocimiento se degrade.</p>
+        <div class="chips" style="margin-top:auto">
+          <span class="tag t3">RFC</span><span class="tag t3">ADR</span><span class="tag t3">RULE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">Sin la capa de gobierno, un KB se convierte en la wiki de siempre en seis meses: <b>lo que lo mantiene vivo es quién responde de cada pieza</b>.</p>
+</section>
+<!-- ═══ 7 · SEPARADOR ═════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="Las specs">
+  <div class="dv-eyebrow">Sección 03</div>
+  <h2 class="dv-mega">Cómo es una<br><span class="blue">spec</span></h2>
+  <p class="dv-sub">Cinco tipos en la capa de conocimiento, una estructura común y un puñado de campos obligatorios.</p>
+  <div class="dv-foot">03 · Las specs</div>
+</section>
+
+<!-- ═══ 8 · TAXONOMÍA ═════════════════════════════════════════════════════ -->
+<section class="slide" data-nav="Las specs">
+  <div class="eyebrow">Las specs</div>
+  <h2 class="headline">Cinco tipos, ordenados <em>de lo más estratégico a lo más técnico</em></h2>
+  <p class="lead">El orden importa: al construir el KB de un servicio se incorporan en esta secuencia, porque cada tipo se apoya en el anterior para tener sentido.</p>
+  <div class="body">
+    <div class="tblwrap">
+      <table class="data">
+        <thead><tr><th style="width:9%">Tipo</th><th style="width:17%">Nombre</th><th style="width:44%">Qué codifica</th><th style="width:30%">Ejemplo en un servicio nuestro</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag">ARCH</span></td><td><b>Architecture</b></td><td>Decisiones tecnológicas cross-sistema: patrones, restricciones y principios de arquitectura.</td><td>Cómo se comunican el batch y el dashboard, y por qué.</td></tr>
+          <tr><td><span class="tag">DOM</span></td><td><b>Domain</b></td><td>Conocimiento de negocio: reglas, conceptos, restricciones regulatorias y lógica de dominio.</td><td>Qué posiciones entran en un reporte y cuáles quedan fuera.</td></tr>
+          <tr><td><span class="tag">PROD</span></td><td><b>Product</b></td><td>Journeys y requisitos de producto: qué experimenta el usuario al usar el sistema.</td><td>El recorrido de un analista que revisa un rechazo.</td></tr>
+          <tr><td><span class="tag">FEAT</span></td><td><b>Feature</b></td><td>Detalle de una funcionalidad: entradas, comportamiento, salidas y criterios de aceptación.</td><td>La validación de un campo concreto antes del envío.</td></tr>
+          <tr><td><span class="tag">DOC</span></td><td><b>Documentation</b></td><td>Materiales de referencia: glosarios, guías operativas, runbooks y convenciones.</td><td>El runbook de reproceso que usáis en guardia.</td></tr>
         </tbody>
       </table>
     </div>
   </div>
-  <p class="takeaway">Los dos riesgos altos <b>se resuelven o se descartan en el primer mes</b>: ninguno admite convivir con el programa en marcha.</p>
+  <p class="takeaway">Para soporte, los tipos que más vais a tocar son <b>DOM</b> —por qué el sistema hace lo que hace— y <b>DOC</b>, donde viven los runbooks.</p>
 </section>
 
-<!-- ═══ 11 · CASO DE NEGOCIO ══════════════════════════════════════════════ -->
-<section class="slide" data-nav="Ejecución">
-  <div class="eyebrow">Ejecución</div>
-  <h2 class="headline">La inversión se recupera con el ahorro de <em>una sola costura</em></h2>
+<!-- ═══ 9 · ANATOMÍA DE UNA SPEC ══════════════════════════════════════════ -->
+<section class="slide" data-nav="Las specs">
+  <div class="eyebrow">Las specs</div>
+  <h2 class="headline">Por dentro: <span class="blue">cabecera estructurada</span> + cuerpo legible</h2>
+  <p class="lead">La cabecera la hace procesable por un agente; el cuerpo sigue siendo texto legible.</p>
   <div class="body">
-    <div class="kpiband">
-      <div class="kpicard"><div class="kp-k">Punto de equilibrio</div><div class="kp-v">Mes 14</div><p class="kp-d">Dentro del propio plan: la ola 3 se financia con lo que liberan las dos primeras.</p></div>
-      <div class="kpicard k2"><div class="kp-k">Horas liberadas</div><div class="kp-v">135<small> h/mes</small></div><p class="kp-d">Diferencia entre las 190 horas de hoy y las ~55 del destino.</p></div>
-      <div class="kpicard k3"><div class="kp-k">Resultado a 3 años</div><div class="kp-v">+270<small> k€</small></div><p class="kp-d">Solo horas y errores evitados; sin contar crecimiento comercial.</p></div>
+    <div class="split s73">
+      <div class="specfile">
+        <div class="sf-bar"><span class="sf-dot"></span><span class="sf-dot"></span><span class="sf-dot"></span><span class="sf-name">DOM-RDR-014.md</span></div>
+        <pre class="sf-code"><span class="sf-dim">---</span>
+<span class="sf-k">id</span>: <span class="sf-v">DOM-RDR-014</span>
+<span class="sf-k">type</span>: <span class="sf-v">DOM</span>
+<span class="sf-k">title</span>: <span class="sf-v">Criterio de elegibilidad de un registro</span>
+<span class="sf-k">owner</span>: <span class="sf-v">equipo-rdr</span>
+<span class="sf-k">confidence</span>: <span class="sf-v">alta</span>
+<span class="sf-k">version</span>: <span class="sf-v">3</span>
+<span class="sf-k">relates_to</span>:
+  <span class="sf-dim">-</span> <span class="sf-v">ARCH-RDR-002</span>   <span class="sf-c"># se implementa sobre</span>
+  <span class="sf-dim">-</span> <span class="sf-v">FEAT-RDR-031</span>   <span class="sf-c"># se valida en</span>
+  <span class="sf-dim">-</span> <span class="sf-v">DOC-RDR-007</span>    <span class="sf-c"># se opera según</span>
+<span class="sf-dim">---</span>
+
+<span class="sf-h"># Criterio de elegibilidad</span>
+
+Un registro entra en el reporte si cumple las tres
+condiciones. Si falla alguna se excluye, dejando
+traza del motivo.</pre>
+      </div>
+      <div class="sf-notes">
+        <div class="sf-note"><div class="sf-nk">id</div><p>Estable y citable. Una incidencia puede referirse a <b>DOM-RDR-014</b> y todo el mundo sabe de qué se habla.</p></div>
+        <div class="sf-note"><div class="sf-nk">owner</div><p>Quién responde de que siga siendo cierto. Sin esto el KB se degrada.</p></div>
+        <div class="sf-note"><div class="sf-nk">confidence</div><p>Cuánto se puede confiar en ella hoy. Permite usar el KB sabiendo qué está consolidado.</p></div>
+        <div class="sf-note"><div class="sf-nk">relates_to</div><p>Las aristas del grafo. <b>Aquí es donde el conocimiento deja de ser una lista.</b></p></div>
+      </div>
     </div>
-    <p class="footnote"><span class="fk">Supuestos</span><span class="tx">Coste horario interno cargado. No incluye licencias ya contratadas. <b>Cifras ilustrativas de esta plantilla.</b></span></p>
   </div>
-  <p class="takeaway">El caso base <b>no necesita el crecimiento comercial</b> para sostenerse: se paga solo con el trabajo manual que elimina.</p>
+  <p class="takeaway">Es un fichero de texto en un repositorio: se versiona, se revisa por <i>pull request</i> y <b>viaja con el código</b>.</p>
 </section>
 
-<!-- ═══ 12 · DECISIÓN ═════════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Decisión">
-  <div class="eyebrow">Decisión</div>
-  <h2 class="headline">Lo que pedimos hoy es aprobar <em>la ola 1</em>, no el programa entero</h2>
-  <p class="lead">Seis meses para cerrar la costura entre Pedidos y Almacén. Al final de la ola, este mismo comité decide si hay ola 2 con datos reales sobre la mesa en lugar de estimaciones.</p>
+<!-- ═══ 10 · SEPARADOR ════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="El grafo">
+  <div class="dv-eyebrow">Sección 04</div>
+  <h2 class="dv-mega">El grafo de<br><span class="blue">conocimiento</span></h2>
+  <p class="dv-sub">Lo que convierte una colección de documentos en algo que se puede recorrer y preguntar.</p>
+  <div class="dv-foot">04 · El grafo</div>
+</section>
+<!-- ═══ 11 · GRAFO NAVEGABLE ══════════════════════════════════════════════ -->
+<section class="slide" data-nav="El grafo">
+  <div class="eyebrow">El grafo</div>
+  <h2 class="headline">Cada spec declara con quién se relaciona: <em>eso es el grafo</em></h2>
+  <p class="lead">Once specs del servicio RDR. Pulsa cualquier nodo para ver de qué depende y qué depende de ella.</p>
+  <div class="body">
+    <div class="graphwrap">
+      <svg class="kgraph" id="kgraph" viewBox="0 0 1180 400" role="img" aria-label="Grafo de conocimiento del servicio RDR">
+        <g class="kg-edges" id="kg-edges"></g>
+        <g class="kg-nodes" id="kg-nodes"></g>
+      </svg>
+      <aside class="kg-panel" id="kg-panel">
+        <div class="kg-p-empty" id="kg-empty">
+          <div class="kg-p-k">Selecciona un nodo</div>
+          <p>Cada arista es un campo <b>relates_to</b> declarado dentro de la propia spec. No hay un índice aparte que mantener: el grafo <b>es</b> la suma de las specs.</p>
+          <div class="kg-leg">
+            <span class="kg-l"><i style="background:var(--blue)"></i>ARCH</span>
+            <span class="kg-l"><i style="background:var(--coral)"></i>DOM</span>
+            <span class="kg-l"><i style="background:var(--purple)"></i>PROD</span>
+            <span class="kg-l"><i style="background:var(--orange)"></i>FEAT</span>
+            <span class="kg-l"><i style="background:var(--green)"></i>DOC</span>
+          </div>
+        </div>
+        <div class="kg-p-det" id="kg-det" hidden>
+          <div class="kg-p-id"><span class="tag" id="kg-type">DOM</span><b id="kg-id">DOM-RDR-014</b></div>
+          <div class="kg-p-t" id="kg-title">Criterio de elegibilidad</div>
+          <div class="kg-p-meta"><span id="kg-owner">equipo-rdr</span> · confianza <span id="kg-conf">alta</span></div>
+          <div class="kg-p-rel">
+            <div class="kg-p-k">Se relaciona con <b id="kg-n">3</b></div>
+            <ul id="kg-list"></ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p class="takeaway">Preguntar «¿a qué afecta este cambio?» deja de ser una conversación de pasillo: <b>se recorre el grafo</b>.</p>
+</section>
+
+<!-- ═══ 12 · QUÉ RESUELVE EL GRAFO ════════════════════════════════════════ -->
+<section class="slide" data-nav="El grafo">
+  <div class="eyebrow">El grafo</div>
+  <h2 class="headline">Tres preguntas que hoy cuestan una mañana</h2>
   <div class="body">
     <div class="cards">
-      <div class="card a1"><div class="c-n">Decisión 01</div><div class="c-t">Aprobar el presupuesto de la ola 1</div></div>
-      <div class="card a2"><div class="c-n">Decisión 02</div><div class="c-t">Confirmar la dedicación del 30 % de dos personas de negocio</div></div>
-      <div class="card a3"><div class="c-n">Decisión 03</div><div class="c-t">Nombrar al dueño del dato maestro de artículo</div></div>
+      <div class="card a1">
+        <div class="c-n">Pregunta 01</div>
+        <div class="c-t">«¿A qué afecta si cambio esto?»</div>
+        <p class="c-d">Hoy: preguntar a quien lleve más tiempo y cruzar los dedos. Con el grafo: <b>recorrer las aristas entrantes</b> de la spec.</p>
+      </div>
+      <div class="card a2">
+        <div class="c-n">Pregunta 02</div>
+        <div class="c-t">«¿Por qué el sistema hace esto?»</div>
+        <p class="c-d">Hoy: leer código y deducir la intención. Con el grafo: <b>la FEAT apunta a la DOM</b> que la justifica, y la DOM a la regulación.</p>
+      </div>
+      <div class="card a3">
+        <div class="c-n">Pregunta 03</div>
+        <div class="c-t">«¿Dónde está documentado?»</div>
+        <p class="c-d">Hoy: buscar en tres sitios distintos. Con el grafo: <b>un identificador</b> que se cita en la incidencia y lleva al sitio exacto.</p>
+      </div>
     </div>
   </div>
-  <p class="takeaway">Sin la tercera decisión las otras dos no sirven: <b>el dato maestro sin dueño es la causa raíz</b> que este plan viene a resolver.</p>
+  <p class="takeaway">Ninguna de las tres es una pregunta de desarrollo: <b>las tres son preguntas de soporte</b>.</p>
+</section>
+<!-- ═══ 13 · SEPARADOR ════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="Hoy">
+  <div class="dv-eyebrow">Sección 05</div>
+  <h2 class="dv-mega">Qué tenemos<br><span class="blue">ya</span></h2>
+  <p class="dv-sub">RDR es el primer servicio con base de conocimiento viva. No es un piloto de laboratorio: responde preguntas reales.</p>
+  <div class="dv-foot">05 · Hoy</div>
 </section>
 
-<!-- ═══ 13 · CIERRE ═══════════════════════════════════════════════════════ -->
+<!-- ═══ 14 · ESTADO ACTUAL EN RDR ═════════════════════════════════════════ -->
+<section class="slide" data-nav="Hoy">
+  <div class="eyebrow">Hoy</div>
+  <h2 class="headline">En RDR ya hay una <span class="blue">gema GPT</span> que responde con las specs delante</h2>
+  <p class="lead">Es la primera pieza del KDD en uso real: un asistente con acceso a las especificaciones de RDR que responde dudas del servicio citando de dónde saca cada respuesta.</p>
+  <div class="body">
+    <div class="split">
+      <div>
+        <div class="steps" style="flex-direction:column;gap:14px">
+          <div class="step">
+            <div class="s-n">Qué hace</div>
+            <div class="s-t">Responde dudas de RDR</div>
+            <p class="s-d">Pregunta en lenguaje natural, respuesta apoyada en las specs del servicio. La respuesta <b>cita el identificador</b> del que sale, así que es verificable.</p>
+          </div>
+          <div class="step">
+            <div class="s-n">Qué más hace</div>
+            <div class="s-t">Valida y amplía la base</div>
+            <p class="s-d">Cada pregunta que no sabe responder <b>señala un hueco</b> en el KB. Ese hueco se convierte en la siguiente spec a escribir.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="kg-panel" style="height:100%;justify-content:center">
+          <div class="kg-p-k">El bucle que importa</div>
+          <div class="loopline"><span class="lp-n">1</span><p><b>Alguien pregunta</b> algo del servicio.</p></div>
+          <div class="loopline"><span class="lp-n">2</span><p>Si el KB lo cubre, <b>respuesta citada</b> en segundos.</p></div>
+          <div class="loopline"><span class="lp-n">3</span><p>Si no lo cubre, queda registrado como <b>hueco de conocimiento</b>.</p></div>
+          <div class="loopline"><span class="lp-n">4</span><p>El hueco se escribe como spec y <b>el KB crece</b> con uso real, no con buenas intenciones.</p></div>
+          <p class="footnote" style="margin-top:22px"><span class="fk">Clave</span><span class="tx">La base no se completa antes de empezar a usarla: <b>se completa usándola</b>.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">RDR es el servicio de referencia porque es <b>desarrollo puro de código</b>: lo que funcione aquí se traslada al resto.</p>
+</section>
+
+<!-- ═══ 15 · SEPARADOR ════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="KDD Work">
+  <div class="dv-eyebrow">Sección 06</div>
+  <h2 class="dv-mega">A futuro:<br><span class="blue">KDD Work</span></h2>
+  <p class="dv-sub">La capa que conecta el conocimiento con el trabajo del día a día. Y con Jira.</p>
+  <div class="dv-foot">06 · KDD Work</div>
+</section>
+
+<!-- ═══ 16 · ARTEFACTOS DE WORK ═══════════════════════════════════════════ -->
+<section class="slide" data-nav="KDD Work">
+  <div class="eyebrow">KDD Work</div>
+  <h2 class="headline">Tres artefactos que ya conocéis <em>con otro nombre</em></h2>
+  <p class="lead">La capa Work no inventa una forma nueva de gestionar proyectos: se apoya en la que ya usamos y le añade el enganche con el conocimiento.</p>
+  <div class="body">
+    <div class="steps">
+      <div class="step">
+        <div class="s-n">Artefacto 01</div>
+        <div class="s-t">WRK-SPEC</div>
+        <p class="s-d">El proyecto: qué se quiere conseguir, por qué y con qué criterios de aceptación. <b>Declara qué specs del KB activa</b> como contexto.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="s-n">Artefacto 02</div>
+        <div class="s-t">WRK-PLAN</div>
+        <p class="s-d">El plan: cómo se descompone el proyecto en bloques de trabajo.</p>
+        <p class="s-d"><span class="tag t4">En Jira</span> <b>una Feature</b></p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="s-n">Artefacto 03</div>
+        <div class="s-t">WRK-TASK</div>
+        <p class="s-d">Cada tarea concreta, con su alcance y su criterio de hecho.</p>
+        <p class="s-d"><span class="tag t4">En Jira</span> <b>una Historia de Usuario</b></p>
+      </div>
+    </div>
+    <p class="footnote"><span class="fk">Nota</span><span class="tx">El mapeo con Jira es la pieza que evita un segundo sistema de gestión: <b>Work vive en el repositorio, el seguimiento sigue en Jira</b>.</span></p>
+  </div>
+  <p class="takeaway">Lo único verdaderamente nuevo es el campo <b>activates</b>: qué conocimiento se inyecta como contexto en cada tarea.</p>
+</section>
+
+<!-- ═══ 17 · EL DÍA A DÍA ═════════════════════════════════════════════════ -->
+<section class="slide" data-nav="KDD Work">
+  <div class="eyebrow">KDD Work</div>
+  <h2 class="headline">Un proyecto de principio a fin, <span class="blue">con el KB delante</span></h2>
+  <div class="body">
+    <div class="flow5">
+      <div class="f5"><span class="f5-n">01</span><div class="f5-t">Monto el proyecto</div><p class="f5-d">Itero con el KDD hasta tener la <b>WRK-SPEC</b>: alcance, criterios y qué specs del KB quedan activadas como contexto.</p></div>
+      <div class="f5-a">→</div>
+      <div class="f5"><span class="f5-n">02</span><div class="f5-t">Genero el backlog</div><p class="f5-d">De la WRK-SPEC salen el <b>WRK-PLAN</b> y sus <b>WRK-TASK</b>. Eso es la Feature y sus Historias, sincronizadas a Jira.</p></div>
+      <div class="f5-a">→</div>
+      <div class="f5"><span class="f5-n">03</span><div class="f5-t">Ejecuto sobre el repo</div><p class="f5-d">Cada tarea se aborda <b>con su contexto ya inyectado</b>: el desarrollador o el agente no parte de cero ni de suposiciones.</p></div>
+      <div class="f5-a">→</div>
+      <div class="f5"><span class="f5-n">04</span><div class="f5-t">Actualizo las pruebas</div><p class="f5-d">Tests unitarios y funcionales <b>derivados de los criterios</b> de la spec, no escritos aparte y a posteriori.</p></div>
+      <div class="f5-a">→</div>
+      <div class="f5 f5-hi"><span class="f5-n">05</span><div class="f5-t">Actualizo las specs</div><p class="f5-d">Si el desarrollo cambió una regla, <b>la spec se actualiza en el mismo pull request</b>. Aquí es donde se rompe el ciclo de la documentación muerta.</p></div>
+    </div>
+  </div>
+  <p class="takeaway">El paso 5 es el que sostiene todo lo demás: <b>si la spec no se actualiza con el código, en seis meses volvemos al punto de partida</b>.</p>
+</section>
+
+<!-- ═══ 18 · SEPARADOR ════════════════════════════════════════════════════ -->
+<section class="slide divider" data-nav="Soporte">
+  <div class="dv-eyebrow">Sección 07</div>
+  <h2 class="dv-mega">Qué gana<br><span class="blue">el ANS</span></h2>
+  <p class="dv-sub">Lo que cambia en el traspaso, en la clasificación de incidencias y en el trabajo de cada día.</p>
+  <div class="dv-foot">07 · Soporte</div>
+</section>
+
+<!-- ═══ 19 · VENTAJAS PARA EL ANS ═════════════════════════════════════════ -->
+<section class="slide" data-nav="Soporte">
+  <div class="eyebrow">Soporte</div>
+  <h2 class="headline">El traspaso deja de ser <em>una sesión de transferencia</em> y pasa a ser un repositorio</h2>
+  <p class="lead">Hoy un servicio llega a soporte con documentación heterogénea y una reunión de dos horas. Con KDD llega con su base de conocimiento, versionada y con dueño.</p>
+  <div class="body">
+    <div class="cards c2">
+      <div class="card a1">
+        <div class="c-n">Ventaja 01</div>
+        <div class="c-t">Clasificar incidencias deja de ser interpretación</div>
+        <p class="c-d">Una incidencia se ancla a un identificador de spec. «Falla la elegibilidad» pasa a ser <b>DOM-RDR-014</b>, que tiene dueño, versión y relaciones. La ruta de escalado sale del propio grafo.</p>
+      </div>
+      <div class="card a2">
+        <div class="c-n">Ventaja 02</div>
+        <div class="c-t">Responder sin depender de quien lleva años</div>
+        <p class="c-d">El «¿por qué el sistema hace esto?» tiene respuesta citable en el KB. <b>Baja el tiempo de primera respuesta</b> y deja de ser crítico que una persona concreta esté disponible.</p>
+      </div>
+      <div class="card a3">
+        <div class="c-n">Ventaja 03</div>
+        <div class="c-t">Analizar el impacto antes de tocar nada</div>
+        <p class="c-d">Antes de un cambio correctivo, el grafo dice <b>qué specs quedan afectadas</b> y qué pruebas hay que repetir. Menos regresiones por efecto colateral.</p>
+      </div>
+      <div class="card a4">
+        <div class="c-n">Ventaja 04</div>
+        <div class="c-t">Soporte deja de ser solo consumidor</div>
+        <p class="c-d">Cada incidencia resuelta es conocimiento que no estaba escrito. Convertirla en spec o en RFC hace que <b>el ANS alimente el KB</b>, no solo lo consulte.</p>
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">La ventaja no es tener más documentación: es que <b>la documentación tenga dueño, versión y relaciones</b> el día que llega a soporte.</p>
+</section>
+
+<!-- ═══ 20 · EL DÍA A DÍA DEL ANS ═════════════════════════════════════════ -->
+<section class="slide" data-nav="Soporte">
+  <div class="eyebrow">Soporte</div>
+  <h2 class="headline">Cómo sería una guardia con el KB delante</h2>
+  <div class="body">
+    <div class="split s73">
+      <div class="tblwrap">
+        <table class="data">
+          <thead><tr><th style="width:26%">Momento</th><th style="width:37%">Hoy</th><th style="width:37%">Con KDD</th></tr></thead>
+          <tbody>
+            <tr><td><b>Llega la incidencia</b></td><td>Texto libre; la categoría se elige a ojo</td><td>Se ancla a un <b>identificador de spec</b> con dueño conocido</td></tr>
+            <tr><td><b>Diagnóstico</b></td><td>Buscar en Confluence, en el código y en el chat</td><td>Preguntar al KB y obtener <b>respuesta citada</b></td></tr>
+            <tr><td><b>Escalado</b></td><td>¿A quién le toca esto? Depende de quién esté</td><td>El campo <b>owner</b> de la spec lo dice</td></tr>
+            <tr><td><b>Resolución</b></td><td>Se arregla y se cierra</td><td>Se arregla y, si había un hueco, <b>se escribe la spec</b></td></tr>
+            <tr><td><b>Cambio correctivo</b></td><td>Se prueba lo que uno recuerda que afecta</td><td>El grafo dice <b>qué más hay que probar</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="kg-panel" style="height:100%">
+          <div class="kg-p-k">Lo que hace falta de vosotros</div>
+          <div class="loopline"><span class="lp-n">A</span><p>Que el <b>runbook</b> deje de ser un documento suelto y entre como spec <b>DOC</b>.</p></div>
+          <div class="loopline"><span class="lp-n">B</span><p>Que al cerrar una incidencia con conocimiento nuevo <b>quede escrito</b>, aunque sea en dos líneas.</p></div>
+          <div class="loopline"><span class="lp-n">C</span><p>Participar en la <b>gobernanza</b>: soporte es quien antes detecta que una spec ya no dice la verdad.</p></div>
+          <p class="footnote" style="margin-top:auto"><span class="fk">Gobernanza</span><span class="tx">Un <b>RFC</b> propone el cambio, un <b>ADR</b> registra la decisión. Soporte es de los mejores sitios desde los que abrir un RFC.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">El KB se degrada en cuanto deja de reflejar la realidad, y <b>quien primero ve esa desviación es soporte</b>.</p>
+</section>
+
+<!-- ═══ 21 · CIERRE ═══════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="Gracias">
-  <div class="dv-eyebrow">Gracias</div>
-  <h2 class="dv-mega">¿Hablamos?</h2>
-  <p class="dv-sub">Preguntas, objeciones y supuestos que haya que revisar antes de decidir.</p>
-  <div class="dv-foot">El detalle de la medición está disponible como anexo</div>
+  <div class="dv-eyebrow">Para quedarnos con esto</div>
+  <h2 class="dv-mega">Spec creada,<br><span class="blue">spec ganada</span></h2>
+  <p class="dv-sub">No hace falta esperar a que el framework esté cerrado para empezar: todo lo que se escriba como spec hoy sigue sirviendo mañana.</p>
+  <div class="dv-foot">Preguntas · Equipo de soporte</div>
 </section>
 
   </div>
@@ -711,6 +998,164 @@
   window.__deckTotal = total;
   var pedida = parseInt((location.search.match(/slide=(\d+)/) || [])[1], 10);
   if (!isNaN(pedida)) i = Math.max(0, Math.min(total - 1, pedida - 1));
+
+  // ═══ Grafo de conocimiento ═══════════════════════════════════════════════
+  // Los nodos llevan sus coordenadas a mano: son once y una colocacion
+  // cuidada se lee mucho mejor que cualquier algoritmo de fuerzas, que ademas
+  // daria un resultado distinto en cada carga.
+  var KG_NODES = [
+    { id: "ARCH-RDR-002", t: "ARCH", x: 150, y: 90,  n: "Ingesta y persistencia", o: "arquitectura", c: "alta" },
+    { id: "ARCH-RDR-005", t: "ARCH", x: 150, y: 300, n: "Contrato de salida",     o: "arquitectura", c: "alta" },
+    { id: "DOM-RDR-014",  t: "DOM",  x: 445, y: 62,  n: "Criterio de elegibilidad", o: "equipo-rdr", c: "alta" },
+    { id: "DOM-RDR-009",  t: "DOM",  x: 430, y: 196, n: "Ventana de envío",       o: "equipo-rdr",  c: "alta" },
+    { id: "DOM-RDR-021",  t: "DOM",  x: 445, y: 330, n: "Clasificación de instrumento", o: "equipo-rdr", c: "media" },
+    { id: "FEAT-RDR-031", t: "FEAT", x: 730, y: 62,  n: "Validación de contraparte", o: "squad-core", c: "alta" },
+    { id: "FEAT-RDR-018", t: "FEAT", x: 715, y: 196, n: "Traza de exclusión",     o: "squad-core",  c: "alta" },
+    { id: "FEAT-RDR-044", t: "FEAT", x: 730, y: 330, n: "Reproceso manual",       o: "squad-core",  c: "media" },
+    { id: "PROD-RDR-003", t: "PROD", x: 1000, y: 120, n: "Revisión de rechazos",  o: "negocio",     c: "alta" },
+    { id: "DOC-RDR-007",  t: "DOC",  x: 1010, y: 268, n: "Runbook de reproceso",  o: "ans",         c: "media" },
+    { id: "DOC-RDR-012",  t: "DOC",  x: 880,  y: 372, n: "Glosario de estados",   o: "ans",         c: "alta" },
+  ];
+
+  var KG_EDGES = [
+    ["DOM-RDR-014", "ARCH-RDR-002", "se implementa sobre"],
+    ["DOM-RDR-009", "ARCH-RDR-002", "se implementa sobre"],
+    ["DOM-RDR-021", "ARCH-RDR-005", "se implementa sobre"],
+    ["DOM-RDR-014", "FEAT-RDR-031", "se valida en"],
+    ["DOM-RDR-014", "FEAT-RDR-018", "se valida en"],
+    ["DOM-RDR-009", "FEAT-RDR-018", "se valida en"],
+    ["DOM-RDR-021", "FEAT-RDR-044", "se valida en"],
+    ["FEAT-RDR-031", "PROD-RDR-003", "aparece en"],
+    ["FEAT-RDR-018", "PROD-RDR-003", "aparece en"],
+    ["FEAT-RDR-044", "DOC-RDR-007", "se opera según"],
+    ["FEAT-RDR-018", "DOC-RDR-012", "usa estados de"],
+    ["DOC-RDR-007", "DOC-RDR-012", "usa estados de"],
+    ["ARCH-RDR-005", "FEAT-RDR-044", "expone"],
+  ];
+
+  (function () {
+    var svg = document.getElementById("kgraph");
+    if (!svg) return;
+    var SVGNS = "http://www.w3.org/2000/svg";
+    var COLOR = { ARCH: "--blue", DOM: "--coral", PROD: "--purple", FEAT: "--orange", DOC: "--green" };
+
+    var byId = {};
+    KG_NODES.forEach(function (n) { byId[n.id] = n; });
+
+    var gE = document.getElementById("kg-edges");
+    var gN = document.getElementById("kg-nodes");
+    var edgeEls = [];
+    var nodeEls = {};
+
+    KG_EDGES.forEach(function (e, i) {
+      var a = byId[e[0]], b = byId[e[1]];
+      if (!a || !b) return;
+      var l = document.createElementNS(SVGNS, "line");
+      l.setAttribute("class", "kg-edge");
+      l.setAttribute("x1", a.x); l.setAttribute("y1", a.y);
+      l.setAttribute("x2", b.x); l.setAttribute("y2", b.y);
+      gE.appendChild(l);
+      edgeEls.push({ el: l, a: e[0], b: e[1], rel: e[2] });
+    });
+
+    KG_NODES.forEach(function (n) {
+      var g = document.createElementNS(SVGNS, "g");
+      g.setAttribute("class", "kg-node");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      g.setAttribute("aria-label", n.id + " · " + n.n);
+
+      var ring = document.createElementNS(SVGNS, "circle");
+      ring.setAttribute("class", "kg-ring");
+      ring.setAttribute("cx", n.x); ring.setAttribute("cy", n.y); ring.setAttribute("r", 22);
+      g.appendChild(ring);
+
+      var c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", n.x); c.setAttribute("cy", n.y); c.setAttribute("r", 12);
+      c.setAttribute("fill", "var(" + COLOR[n.t] + ")");
+      g.appendChild(c);
+
+      var t1 = document.createElementNS(SVGNS, "text");
+      t1.setAttribute("x", n.x); t1.setAttribute("y", n.y + 32);
+      t1.textContent = n.id;
+      g.appendChild(t1);
+
+      var t2 = document.createElementNS(SVGNS, "text");
+      t2.setAttribute("class", "kg-sub");
+      t2.setAttribute("x", n.x); t2.setAttribute("y", n.y + 47);
+      t2.textContent = n.n;
+      g.appendChild(t2);
+
+      g.addEventListener("click", function () { select(n.id); });
+      g.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(n.id); }
+      });
+      gN.appendChild(g);
+      nodeEls[n.id] = g;
+    });
+
+    var panelEmpty = document.getElementById("kg-empty");
+    var panelDet = document.getElementById("kg-det");
+    var seleccionado = null;
+
+    function select(id) {
+      // Segunda pulsacion sobre el mismo nodo: volver a la vista completa.
+      if (seleccionado === id) return reset();
+      seleccionado = id;
+
+      var vecinos = {};
+      var rels = [];
+      edgeEls.forEach(function (e) {
+        var toca = e.a === id || e.b === id;
+        e.el.classList.toggle("on", toca);
+        e.el.classList.toggle("off", !toca);
+        if (toca) {
+          var otro = e.a === id ? e.b : e.a;
+          vecinos[otro] = 1;
+          rels.push({ id: otro, rel: e.a === id ? e.rel : "referenciada por" });
+        }
+      });
+
+      Object.keys(nodeEls).forEach(function (k) {
+        nodeEls[k].classList.toggle("sel", k === id);
+        nodeEls[k].classList.toggle("off", k !== id && !vecinos[k]);
+      });
+
+      var n = byId[id];
+      document.getElementById("kg-type").textContent = n.t;
+      document.getElementById("kg-type").className = "tag" + (n.t === "DOM" ? " t2" : n.t === "DOC" ? " t3" : n.t === "ARCH" ? "" : " t4");
+      document.getElementById("kg-id").textContent = n.id;
+      document.getElementById("kg-title").textContent = n.n;
+      document.getElementById("kg-owner").textContent = n.o;
+      document.getElementById("kg-conf").textContent = n.c;
+      document.getElementById("kg-n").textContent = String(rels.length);
+
+      var ul = document.getElementById("kg-list");
+      while (ul.firstChild) ul.removeChild(ul.firstChild);
+      rels.forEach(function (r) {
+        var li = document.createElement("li");
+        var b = document.createElement("b");
+        b.textContent = r.id;
+        b.style.color = "var(" + COLOR[byId[r.id].t] + ")";
+        li.appendChild(b);
+        li.appendChild(document.createTextNode(r.rel));
+        ul.appendChild(li);
+      });
+
+      panelEmpty.hidden = true;
+      panelDet.hidden = false;
+    }
+
+    function reset() {
+      seleccionado = null;
+      edgeEls.forEach(function (e) { e.el.classList.remove("on", "off"); });
+      Object.keys(nodeEls).forEach(function (k) { nodeEls[k].classList.remove("sel", "off"); });
+      panelEmpty.hidden = false;
+      panelDet.hidden = true;
+    }
+
+    svg.addEventListener("click", function (ev) { if (ev.target === svg) reset(); });
+  })();
 
   render();
 })();

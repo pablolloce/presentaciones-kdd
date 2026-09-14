@@ -24,7 +24,8 @@ Cuando el usuario pida una presentación, sigue este documento. No improvises un
    `node scripts/new-deck.mjs "<Título>" --cliente <id>`
 4. **Edita el contenido** siguiendo
    `.claude/skills/html-presentation/references/deck-stage-stylebook.md`.
-5. **Verifica antes de entregar**: `npm run verificar`. Cero errores es condición de entrega.
+5. **Verifica antes de entregar**: `npm run verificar` (estándares) y `npm run maqueta`
+   (desbordamientos en el lienzo). Cero errores en ambos es condición de entrega.
 6. **Exporta a PDF con la impresión del navegador** (Cmd+P, horizontal, sin márgenes). El formato
    principal no lleva librerías de exportación a propósito: cargarlas desde un CDN rompería la
    promesa de fichero autosuficiente. Solo los formatos secundarios usan `npm run capturar`.
@@ -59,6 +60,8 @@ Los verifica `npm run verificar` y fallan la entrega:
 - **`data-nav` en cada separador**: de ahí sale el navegador de secciones.
 - **`.takeaway` y `.headline` en cada slide de contenido.** Portada, sumario y separadores
   están exentos porque no argumentan nada.
+- **Nada desbordado.** `npm run maqueta` mide cada slide en un navegador real. En un lienzo fijo
+  el desbordamiento no se ve —el contenedor recorta— y llega a la sala sin avisar.
 - **Cero texto de relleno.** Nada de lorem ipsum ni de «texto de ejemplo» en una entrega.
 - **Cero rutas absolutas** de una máquina concreta (`/Users/...`, `/Volumes/...`, `C:\`).
 - **Sin `line-through`**: ninguna tabla comparativa anula visualmente a un competidor.
