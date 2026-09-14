@@ -1,5 +1,6 @@
-# KDD para soporte
+# RDR - KDD para el ANS
 
+- **Fichero**: `RDR_-_KDD_para_el_ANS.html`
 - **Formato**: Deck sobre lienzo 1600×900 (formato principal)
 - **Cliente**: BBVA — co-marca BBVA | nfq
 - **Creada**: 2026-09-14

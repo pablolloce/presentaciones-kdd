@@ -103,6 +103,23 @@ const RULES = [
     test: (h) => /href="#brand-iso"/.test(h) || /class="nfq-mark"/.test(h),
   },
   {
+    // Editar las slides despues de aplicar la marca deja los bloques de
+    // logotipo vacios: la portada pierde el lockup sin que nada mas falle.
+    id: "marcadores-de-marca",
+    level: "error",
+    msg: 'hay bloques brand:* vacíos: reejecuta `npm run marca -- <fichero> --cliente <id>`',
+    test: (h) => {
+      const vacios = [...h.matchAll(/<!-- brand:([a-z]+):start[^>]*-->([\s\S]*?)<!-- brand:\1:end -->/gi)]
+        .filter((m) => !/<svg/i.test(m[2]));
+      // El bloque de cliente vacio es legitimo en un deck sin co-marca; lo que
+      // no puede pasar es que unos esten llenos y otros vacios.
+      const llenos = [...h.matchAll(/<!-- brand:([a-z]+):start[^>]*-->([\s\S]*?)<!-- brand:\1:end -->/gi)]
+        .filter((m) => /<svg/i.test(m[2]));
+      const tipos = (arr) => new Set(arr.map((m) => m[1]));
+      return !vacios.length || ![...tipos(vacios)].some((k) => tipos(llenos).has(k));
+    },
+  },
+  {
     id: "titulo",
     level: "error",
     msg: "<title> vacío o genérico",
