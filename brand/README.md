@@ -17,12 +17,12 @@ Toda la identidad visual de las presentaciones sale de aquí. Un solo fichero ma
 
 ```jsonc
 {
-  "id":        "kdd",                  // identificador; queda sellado en <html data-brand="...">
-  "name":      "KDD",                  // nombre completo, como aparece en pies y créditos
-  "nameShort": "KDD",                  // forma corta para cabeceras
-  "url":       "kdd.example",          // dominio que aparece en los pies de documento
-  "tagline":   "Presentaciones corporativas",
-  "legalLine": "KDD · Documento confidencial",
+  "id":        "nfq",                  // identificador; queda sellado en <html data-brand="...">
+  "name":      "nfq advisory",         // nombre completo, como aparece en pies y créditos
+  "nameShort": "NFQ",                  // forma corta para cabeceras
+  "url":       "nfq.es",               // dominio que aparece en los pies de documento
+  "tagline":   "Advisory para banca, seguros y wealth & asset management",
+  "legalLine": "nfq advisory · Documento confidencial",
   "palette": {
     "ink":      "#0B1026",   // fondo de portadas y separadores
     "inkLight": "#1A2340",
@@ -51,6 +51,11 @@ El script sustituye paleta (incluidas las formas `rgba()` translúcidas), nombre
 tipografías, y deja sellado en `<html data-brand="...">` qué marca lleva el fichero. Eso lo hace
 **idempotente y reversible**: puedes ir y volver entre marcas sin que el HTML se degrade.
 
+Ese sellado es también lo que el script lee para saber de dónde parte. Si aplicas una marca desde
+un `.json` externo al repositorio y luego quieres revertirla, ese descriptor tiene que seguir
+disponible: indícalo con `--from ruta/al/descriptor.json`. Por eso conviene que toda marca que
+llegue a usarse viva en `presets/`.
+
 ## Crear una marca nueva
 
 1. `cp presets/base.json presets/mimarca.json` y edita los campos.
@@ -59,8 +64,15 @@ tipografías, y deja sellado en `<html data-brand="...">` qué marca lleva el fi
 3. Aplícala: `npm run marca -- <fichero> --brand mimarca`.
 4. Si va a ser la marca por defecto, cópiala sobre `brand.json`.
 
+La marca activa es **nfq advisory**: `brand/logo.svg` es su isotipo a todo color y
+`brand/logo-mono.svg` la variante que sigue al tema en los documentos.
+
+> El isotipo original venía con un bloque `<style>` y clases `.cls-1`, `.cls-2`… Al incrustarse
+> dentro de un `<symbol>` esas reglas se aplican a todo el documento, así que está reescrito con
+> atributos de presentación. Los trazados y los gradientes son los del original.
+
 ## Presets incluidos
 
-- **`base`** — la paleta con la que vienen las plantillas de referencia, sin nombre comercial.
-- **`nfq`** — identidad de nfq advisory, que es la que traía el repositorio originalmente.
-  Su isotipo está en `presets/nfq-logo.svg`.
+- **`nfq`** — la marca activa, duplicada como preset para poder volver a ella tras una prueba.
+- **`base`** — la misma paleta sin nombre comercial ni isotipo corporativo, con un monograma
+  genérico en `presets/generic-logo.svg`. Punto de partida para crear una marca nueva.

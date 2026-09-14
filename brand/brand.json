@@ -1,9 +1,9 @@
 {
-  "id": "kdd",
-  "name": "KDD",
-  "nameShort": "KDD",
-  "tagline": "Presentaciones corporativas",
-  "legalLine": "KDD · Documento confidencial",
+  "id": "nfq",
+  "name": "nfq advisory",
+  "nameShort": "NFQ",
+  "tagline": "Advisory para banca, seguros y wealth & asset management",
+  "legalLine": "nfq advisory · Documento confidencial",
   "palette": {
     "ink": "#0B1026",
     "inkLight": "#1A2340",
@@ -18,7 +18,7 @@
     "sans": "Inter",
     "mono": "JetBrains Mono"
   },
+  "url": "nfq.es",
   "logo": "brand/logo.svg",
-  "logoMono": "brand/logo-mono.svg",
-  "url": "kdd.example"
+  "logoMono": "brand/logo-mono.svg"
 }

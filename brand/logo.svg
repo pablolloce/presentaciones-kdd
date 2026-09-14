@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Isotipo corporativo por defecto. Sustitúyelo por el de tu marca:
-     viewBox 0 0 96 120 (ratio 4:5) y usa var(--brand-accent-N) o los hex del preset. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 120">
+<!-- Isotipo nfq a todo color. Reescrito con atributos de presentación en lugar de
+     un <style> con clases .cls-N: al incrustarse dentro de un <symbol> del deck,
+     esas reglas se aplicarían a todo el documento. Los trazados y los gradientes
+     son los del original; scripts/apply-brand.mjs prefija los ids al inyectarlo. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.64 120.34">
   <defs>
-    <linearGradient id="brand-g1" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F48B4A"/>
-      <stop offset="1" stop-color="#E04870"/>
+    <linearGradient id="g1" x1="16.08" y1="5222.41" x2="16.08" y2="5313.37" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#ec683e"/><stop offset="1" stop-color="#d13b5f"/>
     </linearGradient>
-    <linearGradient id="brand-g2" x1="8" y1="8" x2="88" y2="112" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E04870"/>
-      <stop offset="1" stop-color="#3B82F6"/>
+    <linearGradient id="g2" x1="16.08" y1="5252.89" x2="16.08" y2="5329.29" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="14.82" y1="5318" x2="81.61" y2="5220.63" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#d13b5f"/><stop offset="1" stop-color="#217bee"/>
+    </linearGradient>
+    <linearGradient id="g4" x1="46.31" y1="5272.31" x2="80.07" y2="5219.19" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
     </linearGradient>
   </defs>
-  <path d="M0 18.6 32 0v101.4L0 120V18.6Z" fill="url(#brand-g1)"/>
-  <path d="M96 101.4 64 120 0 18.6 32 0l64 101.4Z" fill="url(#brand-g2)" fill-opacity=".85"/>
-  <path d="M96 101.4 64 120V18.6L96 0v101.4Z" fill="#3B82F6"/>
+  <path fill="url(#g1)" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+  <path fill="url(#g2)" fill-opacity=".3" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+  <path fill="url(#g3)" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+  <path fill="url(#g4)" fill-opacity=".2" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+  <path fill="#217bee" d="M96.46,101.78l-32.16,18.56V18.9L96.46.34v101.44Z"/>
 </svg>

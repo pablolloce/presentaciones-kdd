@@ -7,8 +7,9 @@
 - **Mensaje único que debe quedar**: el coste no está en la tecnología antigua, está en las
   horas que el equipo dedica a compensarla a mano; se puede atacar por fases y sin un corte total
 
-> **Presentación de ejemplo.** Sirve como referencia de maquetas y de reglas de contenido.
-> Todas las cifras son ilustrativas y están marcadas como tales dentro del propio deck.
+> **Presentación de ejemplo.** Sirve como referencia de maquetas y de reglas de contenido, con
+> la marca nfq aplicada. El cliente y las cifras son inventados y están marcados como
+> ilustrativos dentro del propio deck.
 
 ## Argumento
 1. **Diagnóstico** — ningún sistema está roto; falla lo que ocurre entre ellos, y eso cuesta

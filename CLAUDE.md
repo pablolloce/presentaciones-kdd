@@ -2,7 +2,8 @@
 
 Este repositorio existe para una sola cosa: **producir presentaciones corporativas en HTML**
 que se abren en el navegador sin build ni servidor, se exportan a PDF/PPTX y llevan siempre
-la misma marca.
+la misma marca. La marca activa es **nfq advisory** (`brand/brand.json`); no la cambies salvo
+que el usuario lo pida.
 
 Cuando el usuario pida una presentación, sigue este documento. No improvises un formato propio.
 
@@ -78,6 +79,8 @@ npm run marca -- presentations/<carpeta>/index.html --dry       # muestra qué c
 
 Sustituye paleta, nombre, dominio y logo. Es idempotente y reversible: el fichero recuerda en
 `data-brand` qué marca lleva puesta, así que puedes ir y volver entre marcas sin degradarlo.
+Para que la vuelta funcione, la marca de origen tiene que seguir existiendo en `brand/presets/`
+o indicarse con `--from`.
 
 ## 6 · Limitaciones conocidas
 

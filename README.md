@@ -2,7 +2,7 @@
 
 Sistema para producir presentaciones corporativas en **HTML de un solo fichero**: se abren en
 cualquier navegador sin build ni servidor, se exportan a PDF y PPTX, y llevan siempre la misma
-marca.
+marca. La marca activa es **nfq advisory**.
 
 Está pensado para usarse conversando con Claude Code: pides la presentación, y el repositorio
 aporta las plantillas, la marca y la verificación de estándares.
@@ -77,7 +77,8 @@ CLAUDE.md               Los estándares que Claude debe cumplir en cada encargo
 
 ## Cambiar la marca
 
-Toda la identidad vive en `brand/brand.json`. Edítalo y reaplícalo:
+Toda la identidad vive en `brand/brand.json` — hoy, la de nfq advisory. Para otra marca, edítalo
+y reaplícalo:
 
 ```bash
 npm run marca -- presentations/<carpeta>/index.html

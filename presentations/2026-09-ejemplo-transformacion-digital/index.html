@@ -15,7 +15,7 @@
   │  be mirrored in presentation-template-live.html to prevent drift.       │
   └─────────────────────────────────────────────────────────────────────────┘
 -->
-<html data-brand="kdd" lang="es">
+<html data-brand="nfq" lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -420,20 +420,26 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
 <!-- brand:logo:start — bloque regenerado por scripts/apply-brand.mjs, no editar a mano -->
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
   <defs>
-    <symbol id="brand-iso" viewBox="0 0 96 120">
+    <symbol id="brand-iso" viewBox="0 0 96.64 120.34">
 <defs>
-    <linearGradient id="kdd-brand-g1" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F48B4A"/>
-      <stop offset="1" stop-color="#E04870"/>
+    <linearGradient id="nfq-g1" x1="16.08" y1="5222.41" x2="16.08" y2="5313.37" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#ec683e"/><stop offset="1" stop-color="#d13b5f"/>
     </linearGradient>
-    <linearGradient id="kdd-brand-g2" x1="8" y1="8" x2="88" y2="112" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E04870"/>
-      <stop offset="1" stop-color="#3B82F6"/>
+    <linearGradient id="nfq-g2" x1="16.08" y1="5252.89" x2="16.08" y2="5329.29" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="nfq-g3" x1="14.82" y1="5318" x2="81.61" y2="5220.63" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#d13b5f"/><stop offset="1" stop-color="#217bee"/>
+    </linearGradient>
+    <linearGradient id="nfq-g4" x1="46.31" y1="5272.31" x2="80.07" y2="5219.19" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
     </linearGradient>
   </defs>
-  <path d="M0 18.6 32 0v101.4L0 120V18.6Z" fill="url(#kdd-brand-g1)"/>
-  <path d="M96 101.4 64 120 0 18.6 32 0l64 101.4Z" fill="url(#kdd-brand-g2)" fill-opacity=".85"/>
-  <path d="M96 101.4 64 120V18.6L96 0v101.4Z" fill="#3B82F6"/>
+  <path fill="url(#nfq-g1)" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+  <path fill="url(#nfq-g2)" fill-opacity=".3" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+  <path fill="url(#nfq-g3)" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+  <path fill="url(#nfq-g4)" fill-opacity=".2" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+  <path fill="#217bee" d="M96.46,101.78l-32.16,18.56V18.9L96.46.34v101.44Z"/>
     </symbol>
   </defs>
 </svg>
@@ -470,7 +476,7 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
       </div>
     </div>
     <div class="mt-14">
-      <p class="mono text-[.55rem] tracking-[.15em] uppercase" style="color:var(--sl-dark-text-mut);opacity:0.5">KDD — Presentación de ejemplo · Datos ilustrativos</p>
+      <p class="mono text-[.55rem] tracking-[.15em] uppercase" style="color:var(--sl-dark-text-mut);opacity:0.5">NFQ — Presentación de ejemplo · Datos ilustrativos</p>
     </div>
   </div>
 </div>
@@ -806,7 +812,7 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
       <div class="w-12 h-[3px] mb-6" style="background:var(--sl-dark-accent)"></div>
       <p class="text-base max-w-lg mb-2" style="color:var(--sl-dark-text-sec)">Preguntas, objeciones y supuestos que haya que revisar antes de decidir</p>
       <p class="text-sm max-w-lg" style="color:var(--sl-dark-text-mut)">El detalle de la medición de las semanas 18–21 está disponible como anexo.</p>
-      <p class="mono text-[.55rem] tracking-[.15em] uppercase mt-12" style="color:var(--sl-dark-text-mut);opacity:0.5">KDD — Presentación de ejemplo · Datos ilustrativos</p>
+      <p class="mono text-[.55rem] tracking-[.15em] uppercase mt-12" style="color:var(--sl-dark-text-mut);opacity:0.5">NFQ — Presentación de ejemplo · Datos ilustrativos</p>
     </div>
   </div>
 </div>
@@ -1140,7 +1146,7 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
 
   // ── PDF Export (precaptured → instant jsPDF | fallback → html2canvas+jsPDF on the fly | último fallback → window.print) ──
   document.getElementById('btn-pdf').addEventListener('click', async function() {
-    var docTitle = (document.title.split(' — ')[0] || 'Presentacion KDD');
+    var docTitle = (document.title.split(' — ')[0] || 'Presentacion NFQ');
     var _pc = getPrecaptured();
     // Fast path: pre-captured slides exist → assemble PDF instantly
     if (_pc && _pc.length > 0) {
@@ -1226,13 +1232,13 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
   // ── IMG Export (precaptured → instant | fallback → html2canvas) ──
   document.getElementById('btn-pptx').addEventListener('click', async function() {
     if (typeof PptxGenJS === 'undefined') { alert('PptxGenJS no disponible.'); return; }
-    var docTitle = (document.title.split(' — ')[0] || 'Presentacion KDD');
+    var docTitle = (document.title.split(' — ')[0] || 'Presentacion NFQ');
     // Fast path: pre-captured slides
     var _pc2 = getPrecaptured();
     if (_pc2 && _pc2.length > 0) {
       var pptx = new PptxGenJS();
-      pptx.defineLayout({ name: 'KDD', width: 10, height: 5.625 });
-      pptx.layout = 'KDD'; pptx.author = 'KDD Advisory';
+      pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+      pptx.layout = 'NFQ'; pptx.author = 'NFQ Advisory';
       for (var i = 0; i < _pc2.length; i++) {
         var ps = pptx.addSlide();
         ps.addImage({ data: _pc2[i], x: 0, y: 0, w: '100%', h: '100%', sizing: { type: 'cover', w: 10, h: 5.625 } });
@@ -1252,8 +1258,8 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
     showExportProgress('Generando IMG', 0, T);
     try {
       var pptx = new PptxGenJS();
-      pptx.defineLayout({ name: 'KDD', width: 10, height: 5.625 });
-      pptx.layout = 'KDD'; pptx.author = 'KDD Advisory';
+      pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+      pptx.layout = 'NFQ'; pptx.author = 'NFQ Advisory';
       var saved = C;
       var taintedImgSlides = 0;
       for (var i = 0; i < T; i++) {
@@ -1340,10 +1346,10 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
     document.body.classList.add('exporting');
     injectH2cFix();
     var pptx = new PptxGenJS();
-    pptx.defineLayout({ name: 'KDD', width: 10, height: 5.625 });
-    pptx.layout = 'KDD';
-    pptx.author = 'KDD Advisory';
-    pptx.company = 'KDD Advisory';
+    pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+    pptx.layout = 'NFQ';
+    pptx.author = 'NFQ Advisory';
+    pptx.company = 'NFQ Advisory';
 
     var FILL_LIGHT = 'FFFFFF';
     var FILL_DARK = '0B1026';
@@ -1531,7 +1537,7 @@ if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:
         });
       }
 
-      var docTitle = document.title.split(' — ')[0] || 'Presentacion KDD';
+      var docTitle = document.title.split(' — ')[0] || 'Presentacion NFQ';
       await pptx.writeFile({ fileName: docTitle + ' (editable).pptx' });
     } finally {
       restoreEditable();
