@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="nfq-doc-type" content="playbook">
+<title>Playbook — Transformación Cash Management Banca Empresas · NFQ Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nfq-bg: #FAFAF8;
+    --nfq-bg-surface: #FFFFFF;
+    --nfq-text: #0E0E0E;
+    --nfq-text-sec: #2C2C2C;
+    --nfq-text-muted: #6B6B6B;
+    --nfq-rule: #E5E1D8;
+    --nfq-amber: #F48B4A;
+    --nfq-coral: #E04870;
+    --nfq-violet: #9B59B6;
+    --nfq-steel: #5B7FC7;
+    --nfq-success: #10B981;
+    --nfq-warning: #F59E0B;
+    --nfq-danger: #F43F5E;
+  }
+  [data-theme="dark"] {
+    --nfq-bg: #0E0E0E;
+    --nfq-bg-surface: #181816;
+    --nfq-text: #F5F5F0;
+    --nfq-text-sec: #C7C7C2;
+    --nfq-text-muted: #8A8A85;
+    --nfq-rule: #2A2A28;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--nfq-bg);
+    color: var(--nfq-text);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1080px; margin: 0 auto; padding: 0 32px 120px; }
+
+  /* masthead */
+  header.masthead {
+    padding: 88px 0 40px;
+    border-bottom: 1px solid var(--nfq-rule);
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: var(--nfq-amber); }
+  h1 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    max-width: 22ch;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--nfq-text-sec);
+    margin: 16px 0 24px;
+    max-width: 64ch;
+    line-height: 1.55;
+  }
+  .meta-line {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+  }
+  .meta-line span strong { color: var(--nfq-text-sec); font-weight: 600; }
+
+  /* KPI band */
+  .kpi-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0 0 48px;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--nfq-bg-surface);
+  }
+  @media (max-width: 720px) { .kpi-band { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { padding: 22px; border-right: 1px solid var(--nfq-rule); }
+  .kpi:last-child { border-right: 0; }
+  @media (max-width: 720px) {
+    .kpi:nth-child(2) { border-right: 0; }
+    .kpi:nth-child(-n+2) { border-bottom: 1px solid var(--nfq-rule); }
+  }
+  .kpi-num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--nfq-amber);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .kpi-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+  }
+
+  section { margin-bottom: 56px; scroll-margin-top: 24px; }
+  h2.section-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.012em;
+    margin: 0 0 4px;
+    color: var(--nfq-text);
+  }
+  h2.section-title::before {
+    content: attr(data-num);
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--nfq-amber);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  p.section-lede {
+    font-size: 14.5px;
+    color: var(--nfq-text-muted);
+    margin: 0 0 24px;
+    max-width: 70ch;
+  }
+  p { color: var(--nfq-text-sec); }
+
+  /* scope two-col */
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 16px 0;
+  }
+  @media (max-width: 720px) { .scope-grid { grid-template-columns: 1fr; } }
+  .scope-box {
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    padding: 20px 22px;
+    background: var(--nfq-bg-surface);
+  }
+  .scope-box.in { border-left: 3px solid var(--nfq-success); }
+  .scope-box.out { border-left: 3px solid var(--nfq-text-muted); }
+  .scope-box .label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .scope-box.in .label { color: var(--nfq-success); }
+  .scope-box ul { list-style: none; padding: 0; margin: 0; }
+  .scope-box li {
+    padding: 7px 0 7px 20px;
+    color: var(--nfq-text-sec);
+    position: relative;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .scope-box li::before {
+    position: absolute; left: 0; top: 7px;
+    font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 600;
+  }
+  .scope-box.in li::before { content: "+"; color: var(--nfq-success); }
+  .scope-box.out li::before { content: "−"; color: var(--nfq-text-muted); }
+
+  /* timeline */
+  .timeline-block {
+    margin: 0;
+    padding: 24px 28px 16px;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    background: var(--nfq-bg-surface);
+    overflow-x: auto;
+  }
+  .timeline-block svg { width: 100%; min-width: 800px; height: auto; display: block; }
+  .timeline-block .axis-line { stroke: var(--nfq-rule); stroke-width: 1; }
+  .timeline-block .axis-text {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    fill: var(--nfq-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .timeline-block .ms-label {
+    font-family: "Inter", sans-serif;
+    font-size: 10.5px;
+    fill: var(--nfq-text);
+    font-weight: 600;
+  }
+  .timeline-block .ms-date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    fill: var(--nfq-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* swimlane */
+  .swimlane {
+    margin: 0;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    background: var(--nfq-bg-surface);
+    overflow: hidden;
+  }
+  .swimlane-head, .swimlane-row {
+    display: grid;
+    grid-template-columns: 180px repeat(14, 1fr);
+    align-items: stretch;
+  }
+  .swimlane-head {
+    border-bottom: 1px solid var(--nfq-rule);
+    background: var(--nfq-bg);
+  }
+  .swimlane-head > div {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    padding: 12px 6px;
+    text-align: center;
+    border-right: 1px solid var(--nfq-rule);
+    font-weight: 600;
+  }
+  .swimlane-head > div:first-child { text-align: left; padding-left: 18px; }
+  .swimlane-head > div:last-child { border-right: 0; }
+  .swimlane-row {
+    border-bottom: 1px solid var(--nfq-rule);
+    min-height: 56px;
+  }
+  .swimlane-row:last-child { border-bottom: 0; }
+  .swimlane-row > .ws-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--nfq-text);
+    padding: 18px;
+    border-right: 1px solid var(--nfq-rule);
+    background: var(--nfq-bg);
+    line-height: 1.3;
+    font-weight: 600;
+  }
+  .swimlane-row > .ws-label small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--nfq-text-muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  .swimlane-row > .ws-cell {
+    border-right: 1px solid var(--nfq-rule);
+    position: relative;
+  }
+  .swimlane-row > .ws-cell:last-child { border-right: 0; }
+  .ws-bar {
+    position: absolute;
+    top: 14px;
+    bottom: 14px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ws-bar.amber { background: var(--nfq-amber); }
+  .ws-bar.coral { background: var(--nfq-coral); }
+  .ws-bar.violet { background: var(--nfq-violet); }
+  .ws-bar.steel { background: var(--nfq-steel); }
+
+  /* RACI */
+  .tbl-wrap {
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--nfq-bg-surface);
+  }
+  table.data-tbl, table.raci {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.data-tbl thead th, table.raci thead th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--nfq-rule);
+    background: var(--nfq-bg);
+    font-weight: 600;
+  }
+  table.data-tbl td, table.raci td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--nfq-rule);
+    color: var(--nfq-text-sec);
+    vertical-align: top;
+  }
+  table.data-tbl tbody tr:last-child td, table.raci tbody tr:last-child td { border-bottom: 0; }
+  table.raci th.role, table.raci td.role-cell {
+    text-align: center;
+    width: 90px;
+    font-family: "JetBrains Mono", monospace;
+  }
+  table.raci td.role-cell {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  table.raci td.activity {
+    font-weight: 600;
+    color: var(--nfq-text);
+  }
+  .raci-r { color: var(--nfq-coral); }
+  .raci-a { color: var(--nfq-amber); }
+  .raci-c { color: var(--nfq-steel); }
+  .raci-i { color: var(--nfq-text-muted); }
+  .raci-legend {
+    margin: 16px 0 0;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--nfq-text-muted);
+  }
+  .raci-legend span strong { font-weight: 700; margin-right: 6px; }
+
+  /* risks */
+  .severity-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .severity-dot.high { background: var(--nfq-danger); }
+  .severity-dot.medium { background: var(--nfq-warning); }
+  .severity-dot.low { background: var(--nfq-success); }
+  td .mono { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.04em; }
+
+  /* open questions */
+  ol.open-q {
+    list-style: none;
+    counter-reset: oq;
+    padding: 0;
+    margin: 0;
+  }
+  ol.open-q > li {
+    counter-increment: oq;
+    padding: 14px 0 14px 44px;
+    border-bottom: 1px solid var(--nfq-rule);
+    position: relative;
+    color: var(--nfq-text-sec);
+    font-style: italic;
+  }
+  ol.open-q > li:last-child { border-bottom: 0; }
+  ol.open-q > li::before {
+    content: "Q" counter(oq, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--nfq-amber);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+  ol.open-q .pending-of {
+    margin-top: 6px;
+    font-style: normal;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+  }
+  ol.open-q .pending-of strong { color: var(--nfq-text-sec); font-weight: 600; }
+
+  /* collapsible appendix (mirrored from doc-pov.html FAQ pattern) */
+  .appendix-list { margin: 16px 0 0; }
+  details.appendix-item {
+    border-bottom: 1px solid var(--nfq-rule);
+    padding: 0;
+  }
+  details.appendix-item:first-of-type { border-top: 1px solid var(--nfq-rule); }
+  details.appendix-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 36px 18px 28px;
+    position: relative;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--nfq-text);
+    line-height: 1.45;
+  }
+  details.appendix-item summary::-webkit-details-marker { display: none; }
+  details.appendix-item summary::before {
+    content: attr(data-tag);
+    position: absolute;
+    left: 0; top: 19px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--nfq-amber);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  details.appendix-item summary::after {
+    content: "+";
+    position: absolute;
+    right: 4px; top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.4rem;
+    color: var(--nfq-amber);
+    line-height: 1;
+  }
+  details.appendix-item[open] summary::after { content: "−"; }
+  details.appendix-item summary:hover { color: var(--nfq-amber); }
+  details.appendix-item .appendix-body {
+    padding: 0 36px 22px 28px;
+    color: var(--nfq-text-sec);
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  details.appendix-item .appendix-body p { margin: 0 0 0.7em; color: var(--nfq-text-sec); }
+  details.appendix-item .appendix-body ul {
+    margin: 6px 0 0.8em;
+    padding-left: 18px;
+    color: var(--nfq-text-sec);
+  }
+  details.appendix-item .appendix-body ul li { margin-bottom: 4px; }
+
+  /* fixed chrome */
+  .nfq-mark {
+    position: fixed;
+    top: 22px; left: 24px;
+    z-index: 100;
+    width: 28px; height: 35px;
+    color: var(--nfq-text);
+  }
+  .nfq-mark svg { width: 100%; height: 100%; }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px; right: 24px;
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--nfq-bg-surface);
+    border: 1px solid var(--nfq-rule);
+    border-radius: 999px;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .theme-toggle button {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--nfq-text-muted);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .theme-toggle button.active { background: var(--nfq-amber); color: #fff; }
+
+  footer.doc-foot {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--nfq-rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--nfq-text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media print {
+    :root { color-scheme: light; }
+    .theme-toggle, .nfq-mark { display: none; }
+    .masthead { padding: 0 0 1cm; border-bottom: 0.5pt solid #000; }
+    section, .swimlane, .timeline-block, table { break-inside: avoid; }
+    a { color: #000; text-decoration: underline; }
+    body { background: white; color: black; font-size: 10pt; }
+    @page { size: A4 landscape; margin: 1.4cm 1.5cm; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="nfq-iso" viewBox="0 0 100 125">
+    <path d="M20 20 L20 105 L35 105 L35 55 L65 105 L80 105 L80 20 L65 20 L65 70 L35 20 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<a class="nfq-mark" href="https://nfq.es" aria-label="NFQ">
+  <svg><use href="#nfq-iso"/></svg>
+</a>
+
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button data-theme-set="light" class="active">Light</button>
+  <button data-theme-set="dark">Dark</button>
+</div>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Playbook · Banca Empresas · NFQ Advisory</div>
+    <h1>Transformación de cash management</h1>
+    <p class="lede">Programa de redefinición de la propuesta de cash management para clientes empresa de un banco Tier-2 español. 14 semanas, 4 workstreams, modelo de gobierno con steering quincenal. Output: propuesta target, modelo operativo, arquitectura tecnológica, pricing y plan de implementación de 18 meses.</p>
+    <div class="meta-line">
+      <span><strong>Sector:</strong> Banca Empresas</span>
+      <span><strong>Duración:</strong> 14 semanas</span>
+      <span><strong>Equipo NFQ:</strong> 1 partner + 4 consultores</span>
+      <span><strong>Steering:</strong> quincenal</span>
+    </div>
+  </header>
+
+  <div class="kpi-band">
+    <div class="kpi">
+      <div class="kpi-num">14</div>
+      <div class="kpi-label">Semanas duración</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">4</div>
+      <div class="kpi-label">Workstreams</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">7</div>
+      <div class="kpi-label">Hitos clave</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">5,5</div>
+      <div class="kpi-label">FTE NFQ</div>
+    </div>
+  </div>
+
+  <section id="alcance">
+    <h2 class="section-title" data-num="§ 01 · ALCANCE">Objetivos y delimitación</h2>
+    <p class="section-lede">El programa redefine la propuesta de cash management para clientes empresa — desde diagnóstico hasta plan de implementación. La ejecución del plan posterior queda fuera del alcance contractual.</p>
+
+    <div class="scope-grid">
+      <div class="scope-box in">
+        <div class="label">Dentro del alcance</div>
+        <ul>
+          <li>Diagnóstico de la propuesta actual y benchmark vs Tier-1 españoles</li>
+          <li>Definición de la propuesta target por segmento (Pyme / Mid / Corporate)</li>
+          <li>Modelo operativo: red comercial, gestores, plataforma digital, back office</li>
+          <li>Arquitectura tecnológica funcional (sin desarrollo)</li>
+          <li>Pricing y arquitectura de comisiones por servicio</li>
+          <li>Plan de implementación 18 meses con métricas trimestrales</li>
+        </ul>
+      </div>
+      <div class="scope-box out">
+        <div class="label">Fuera del alcance</div>
+        <ul>
+          <li>Desarrollo o integración técnica de plataformas</li>
+          <li>Negociación con proveedores de pagos (SEPA, SCT Inst, swift)</li>
+          <li>Plan de comunicación y branding externo</li>
+          <li>Despliegue comercial y formación de la red</li>
+          <li>Migración de cartera de clientes existentes</li>
+          <li>Banca Privada y Wealth (proyecto separado)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="hitos">
+    <h2 class="section-title" data-num="§ 02 · HITOS">Plan de hitos — 14 semanas</h2>
+    <p class="section-lede">Siete hitos de gobierno que jalonan el programa. Los hitos M2, M3 y M5 son <em>gates</em> formales con steering — sin aprobación no se inicia la fase siguiente.</p>
+
+    <div class="timeline-block">
+      <svg viewBox="0 0 1000 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Timeline de hitos">
+        <!-- baseline -->
+        <line class="axis-line" x1="40" y1="120" x2="970" y2="120" stroke-width="2"/>
+
+        <!-- week ticks: 14 weeks across 930px -->
+        <g>
+          <line class="axis-line" x1="40" y1="115" x2="40" y2="125"/>
+          <text class="axis-text" x="40" y="146" text-anchor="middle">S1</text>
+          <line class="axis-line" x1="106" y1="115" x2="106" y2="125"/>
+          <line class="axis-line" x1="172" y1="115" x2="172" y2="125"/>
+          <text class="axis-text" x="172" y="146" text-anchor="middle">S3</text>
+          <line class="axis-line" x1="238" y1="115" x2="238" y2="125"/>
+          <line class="axis-line" x1="304" y1="115" x2="304" y2="125"/>
+          <text class="axis-text" x="304" y="146" text-anchor="middle">S5</text>
+          <line class="axis-line" x1="370" y1="115" x2="370" y2="125"/>
+          <line class="axis-line" x1="436" y1="115" x2="436" y2="125"/>
+          <text class="axis-text" x="436" y="146" text-anchor="middle">S7</text>
+          <line class="axis-line" x1="502" y1="115" x2="502" y2="125"/>
+          <line class="axis-line" x1="568" y1="115" x2="568" y2="125"/>
+          <text class="axis-text" x="568" y="146" text-anchor="middle">S9</text>
+          <line class="axis-line" x1="634" y1="115" x2="634" y2="125"/>
+          <line class="axis-line" x1="700" y1="115" x2="700" y2="125"/>
+          <text class="axis-text" x="700" y="146" text-anchor="middle">S11</text>
+          <line class="axis-line" x1="766" y1="115" x2="766" y2="125"/>
+          <line class="axis-line" x1="832" y1="115" x2="832" y2="125"/>
+          <text class="axis-text" x="832" y="146" text-anchor="middle">S13</text>
+          <line class="axis-line" x1="898" y1="115" x2="898" y2="125"/>
+          <line class="axis-line" x1="970" y1="115" x2="970" y2="125"/>
+          <text class="axis-text" x="970" y="146" text-anchor="middle">S14</text>
+        </g>
+
+        <!-- milestones: M1 (S1), M2 (S3), M3 (S7), M4 (S10), M5 (S12), M6 (S13), M7 (S14) -->
+        <!-- M1 above the line -->
+        <g transform="translate(40 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#F48B4A"/>
+          <text class="ms-label" x="0" y="-30" text-anchor="middle">M1 · Kickoff</text>
+          <text class="ms-date" x="0" y="-16" text-anchor="middle">SEM 1</text>
+        </g>
+        <g transform="translate(172 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#F48B4A"/>
+          <text class="ms-label" x="0" y="-30" text-anchor="middle">M2 · Diagnóstico</text>
+          <text class="ms-date" x="0" y="-16" text-anchor="middle">SEM 3 · GATE</text>
+        </g>
+        <g transform="translate(436 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#E04870"/>
+          <text class="ms-label" x="0" y="-30" text-anchor="middle">M3 · Propuesta target</text>
+          <text class="ms-date" x="0" y="-16" text-anchor="middle">SEM 7 · GATE</text>
+        </g>
+        <g transform="translate(635 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#9B59B6"/>
+          <text class="ms-label" x="0" y="190" text-anchor="middle" transform="translate(0 -160)">M4 · Modelo operativo</text>
+          <text class="ms-date" x="0" y="190" text-anchor="middle" transform="translate(0 -146)">SEM 10</text>
+        </g>
+        <g transform="translate(770 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#5B7FC7"/>
+          <text class="ms-label" x="0" y="190" text-anchor="middle" transform="translate(0 -160)">M5 · Pricing aprobado</text>
+          <text class="ms-date" x="0" y="190" text-anchor="middle" transform="translate(0 -146)">SEM 12 · GATE</text>
+        </g>
+        <g transform="translate(832 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#5B7FC7"/>
+          <text class="ms-label" x="0" y="-30" text-anchor="middle">M6 · Plan 18m</text>
+          <text class="ms-date" x="0" y="-16" text-anchor="middle">SEM 13</text>
+        </g>
+        <g transform="translate(970 120)">
+          <polygon points="0,-10 10,0 0,10 -10,0" fill="#F48B4A"/>
+          <text class="ms-label" x="-20" y="-30" text-anchor="end">M7 · Steering final</text>
+          <text class="ms-date" x="-20" y="-16" text-anchor="end">SEM 14</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section id="workstreams">
+    <h2 class="section-title" data-num="§ 03 · WORKSTREAMS">Cuatro corrientes paralelas</h2>
+    <p class="section-lede">Cada workstream tiene un lead diferenciado en NFQ y un counterpart en cliente. Las dependencias entre workstreams están concentradas en los hitos M3 y M5.</p>
+
+    <div class="swimlane">
+      <div class="swimlane-head">
+        <div>WORKSTREAM</div>
+        <div>S1</div><div>S2</div><div>S3</div><div>S4</div><div>S5</div><div>S6</div><div>S7</div>
+        <div>S8</div><div>S9</div><div>S10</div><div>S11</div><div>S12</div><div>S13</div><div>S14</div>
+      </div>
+      <!-- WS1: S1-S3 -->
+      <div class="swimlane-row">
+        <div class="ws-label">WS1 · Diagnóstico<small>NFQ + Estrategia Cliente</small></div>
+        <div class="ws-cell" style="grid-column: 2 / span 3; position: relative;">
+          <div class="ws-bar amber" style="left:4px; right:4px;">Diagnóstico · benchmark · M2</div>
+        </div>
+        <div class="ws-cell" style="grid-column: 5 / span 10;"></div>
+      </div>
+      <!-- WS2: S3-S7 -->
+      <div class="swimlane-row">
+        <div class="ws-label">WS2 · Diseño<small>NFQ + Producto Empresa</small></div>
+        <div class="ws-cell" style="grid-column: 2 / span 2;"></div>
+        <div class="ws-cell" style="grid-column: 4 / span 5; position: relative;">
+          <div class="ws-bar coral" style="left:4px; right:4px;">Propuesta target · segmentación · M3</div>
+        </div>
+        <div class="ws-cell" style="grid-column: 9 / span 6;"></div>
+      </div>
+      <!-- WS3: S5-S11 -->
+      <div class="swimlane-row">
+        <div class="ws-label">WS3 · Modelo operativo<small>NFQ + IT + Operaciones</small></div>
+        <div class="ws-cell" style="grid-column: 2 / span 4;"></div>
+        <div class="ws-cell" style="grid-column: 6 / span 7; position: relative;">
+          <div class="ws-bar violet" style="left:4px; right:4px;">Op model + arquitectura · M4</div>
+        </div>
+        <div class="ws-cell" style="grid-column: 13 / span 2;"></div>
+      </div>
+      <!-- WS4: S8-S14 -->
+      <div class="swimlane-row">
+        <div class="ws-label">WS4 · Pricing &amp; GTM<small>NFQ + Pricing + Comercial</small></div>
+        <div class="ws-cell" style="grid-column: 2 / span 7;"></div>
+        <div class="ws-cell" style="grid-column: 9 / span 7; position: relative;">
+          <div class="ws-bar steel" style="left:4px; right:4px;">Pricing · GTM · plan 18m · M5–M7</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="raci">
+    <h2 class="section-title" data-num="§ 04 · RACI">Matriz de responsabilidades</h2>
+    <p class="section-lede">Mapping por actividad: <strong>R</strong> Responsable · <strong>A</strong> Aprobador · <strong>C</strong> Consultado · <strong>I</strong> Informado. Cada actividad tiene un único A.</p>
+
+    <div class="tbl-wrap">
+      <table class="raci">
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th class="role">Sponsor</th>
+            <th class="role">NFQ</th>
+            <th class="role">Banca Empresas</th>
+            <th class="role">IT</th>
+            <th class="role">Compliance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="activity">WS1 · Diagnóstico &amp; benchmark</td>
+            <td class="role-cell raci-a">A</td>
+            <td class="role-cell raci-r">R</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-i">I</td>
+            <td class="role-cell raci-i">I</td>
+          </tr>
+          <tr>
+            <td class="activity">WS2 · Diseño propuesta target</td>
+            <td class="role-cell raci-a">A</td>
+            <td class="role-cell raci-r">R</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-c">C</td>
+          </tr>
+          <tr>
+            <td class="activity">WS3 · Modelo operativo &amp; arquitectura</td>
+            <td class="role-cell raci-i">I</td>
+            <td class="role-cell raci-r">R</td>
+            <td class="role-cell raci-a">A</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-i">I</td>
+          </tr>
+          <tr>
+            <td class="activity">WS4 · Pricing &amp; arquitectura comisiones</td>
+            <td class="role-cell raci-a">A</td>
+            <td class="role-cell raci-r">R</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-i">I</td>
+            <td class="role-cell raci-c">C</td>
+          </tr>
+          <tr>
+            <td class="activity">Plan de implementación 18 meses</td>
+            <td class="role-cell raci-a">A</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-r">R</td>
+            <td class="role-cell raci-c">C</td>
+            <td class="role-cell raci-i">I</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="raci-legend">
+      <span><strong class="raci-r">R</strong>Responsable</span>
+      <span><strong class="raci-a">A</strong>Aprobador</span>
+      <span><strong class="raci-c">C</strong>Consultado</span>
+      <span><strong class="raci-i">I</strong>Informado</span>
+    </div>
+  </section>
+
+  <section id="riesgos">
+    <h2 class="section-title" data-num="§ 05 · RIESGOS">Riesgos identificados</h2>
+    <p class="section-lede">Matriz de riesgos del programa al kickoff. Revisión semanal en steering NFQ-Cliente; escalado a Sponsor cuando severidad ≥ ALTA.</p>
+
+    <div class="tbl-wrap">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th>Severidad</th>
+            <th>Riesgo</th>
+            <th>Mitigación</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="severity-dot high"></span><span class="mono">ALTA</span></td>
+            <td>Coordinación con equipo digital — la implementación requiere integración con la plataforma actual de pagos en evolución</td>
+            <td>Sesión técnica conjunta NFQ-IT semana 4. Punto de gobierno mensual hasta cierre M4.</td>
+            <td>NFQ + IT</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot medium"></span><span class="mono">MEDIA</span></td>
+            <td>Disponibilidad de datos de cartera de clientes corporate para análisis de uso y rentabilidad</td>
+            <td>Solicitud de extracción a Datos antes de S2. Plan B: muestra representativa.</td>
+            <td>Banca Empresas</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot medium"></span><span class="mono">MEDIA</span></td>
+            <td>Validación legal/compliance del nuevo modelo de pricing (PSD2, transparencia)</td>
+            <td>Compliance involucrado desde S6. Hito de revisión legal antes de M5.</td>
+            <td>Compliance</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot low"></span><span class="mono">BAJA</span></td>
+            <td>Solapamiento con el plan estratégico anual de Banca Empresas</td>
+            <td>Coordinación con Estrategia Cliente; alineación de mensajes en steering.</td>
+            <td>Sponsor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="open">
+    <h2 class="section-title" data-num="§ 06 · OPEN QUESTIONS">Preguntas pendientes al kickoff</h2>
+    <p class="section-lede">Cuatro decisiones que deben cerrarse durante las primeras semanas. Cada una bloquea diseño en algún workstream.</p>
+
+    <ol class="open-q">
+      <li>
+        ¿El alcance cubre todos los clientes empresa o sólo segmento Corporate puro (facturación &gt; 50&nbsp;M&nbsp;€)?
+        <div class="pending-of"><strong>Pendiente de:</strong> Sponsor · <strong>Antes de:</strong> S2</div>
+      </li>
+      <li>
+        ¿Se integra con la nueva plataforma de pagos instantáneos en marcha o se mantiene independencia funcional?
+        <div class="pending-of"><strong>Pendiente de:</strong> IT + Sponsor · <strong>Antes de:</strong> S5</div>
+      </li>
+      <li>
+        ¿Modelo comercial — bonus de migración a clientes existentes para reducir fricción?
+        <div class="pending-of"><strong>Pendiente de:</strong> Pricing + Comercial · <strong>Antes de:</strong> S9</div>
+      </li>
+      <li>
+        ¿Quién coordina el lanzamiento posterior — Banca Empresas o Producto Pagos?
+        <div class="pending-of"><strong>Pendiente de:</strong> Sponsor · <strong>Antes de:</strong> S13</div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="apendice">
+    <h2 class="section-title" data-num="§ 07 · APÉNDICE TÉCNICO">Decisiones detalladas por workstream</h2>
+    <p class="section-lede">Notas técnicas que no necesitan dominar el flujo principal, pero que el equipo de ejecución debe leer antes de S2. Click para expandir.</p>
+
+    <div class="appendix-list">
+      <details class="appendix-item">
+        <summary data-tag="WS1">Diagnóstico — alcance del benchmark y elección de comparables</summary>
+        <div class="appendix-body">
+          <p>El benchmark cubre 6 entidades comparables: 2 Tier-1 españolas (gama amplia, alta capilaridad), 2 Tier-2 ibéricas con propuesta cash management diferenciada, y 2 europeas con presencia en España (referencia internacional). El criterio de selección prioriza propuestas <em>actuales</em> sobre históricas — no incluimos entidades en transformación incompleta.</p>
+          <ul>
+            <li>Análisis cualitativo: propuesta, segmentación, modelo comercial, plataforma digital</li>
+            <li>Análisis cuantitativo donde haya datos públicos: pricing observable, cobertura geográfica</li>
+            <li>Trabajo de campo: mystery shopping en 4 canales (oficina, web, app, gestor remoto)</li>
+          </ul>
+          <p>Output: matriz de capacidades 6×N en formato Anexo M2. La matriz no es ranking; es mapa.</p>
+        </div>
+      </details>
+
+      <details class="appendix-item">
+        <summary data-tag="WS2">Diseño — segmentación target Pyme / Mid / Corporate</summary>
+        <div class="appendix-body">
+          <p>La segmentación se construye sobre tres ejes ortogonales: <strong>facturación anual</strong>, <strong>complejidad transaccional</strong> (FX, comex, cash pooling) e <strong>intensidad digital</strong>. La asignación a cluster no es lineal en facturación — una empresa de 8&nbsp;M&nbsp;€ con operativa internacional puede caer en Mid antes que una de 25&nbsp;M&nbsp;€ doméstica.</p>
+          <ul>
+            <li>Pyme (facturación &lt; 10&nbsp;M&nbsp;€, baja complejidad): propuesta digital-first con asistencia humana puntual</li>
+            <li>Mid (10-50&nbsp;M&nbsp;€ ó alta complejidad): híbrido con gestor asignado, productos avanzados</li>
+            <li>Corporate (&gt; 50&nbsp;M&nbsp;€): gestor dedicado, mesa especializada, productos a medida</li>
+          </ul>
+          <p>Validación con datos reales de cartera en S5 antes del gate M3.</p>
+        </div>
+      </details>
+
+      <details class="appendix-item">
+        <summary data-tag="WS3">Modelo operativo — articulación red comercial / plataforma digital</summary>
+        <div class="appendix-body">
+          <p>El modelo target define para cada cluster qué tareas las atiende el gestor humano y cuáles la plataforma digital. La asignación se hace por <em>job-to-be-done</em>, no por canal. Algunas tareas (consulta saldo, transferencia simple) son siempre digitales; otras (renegociación condiciones, structuring de cobertura) son siempre humanas; el grueso es híbrido y depende del cluster.</p>
+          <p>Arquitectura tecnológica funcional (no implementación) define los módulos lógicos y sus interfaces. La elección de tecnología concreta queda fuera del alcance del programa — se aborda en una RFP posterior.</p>
+        </div>
+      </details>
+
+      <details class="appendix-item">
+        <summary data-tag="WS4">Pricing — separación de fees por servicio y arquitectura de descuentos</summary>
+        <div class="appendix-body">
+          <p>El pricing target separa explícitamente las cinco familias: <strong>tenencia</strong> (mantenimiento de cuenta), <strong>execution</strong> (transferencias, pagos, cobros), <strong>FX y comex</strong>, <strong>financiación</strong> (líneas, factoring, confirming) y <strong>servicios avanzados</strong> (cash pooling, account-information services, embedded finance).</p>
+          <p>La arquitectura de descuentos es <em>volumen-based</em> con <em>relationship-based</em> en segundo nivel. No hay descuento por relación sin volumen — eso elimina la asimetría histórica donde el cliente grande sin transaccionalidad pagaba lo mismo que un cliente pequeño activo.</p>
+          <p>Modelado financiero del impacto en S11 con tres escenarios: conservador, base, optimista. Aprobación M5 en función del escenario base con sensibilidades documentadas.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>NFQ Advisory · Playbook · Banca Empresas</span>
+    <span>Confidencial · 2026-05-09 · Versión kickoff</span>
+  </footer>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const stored = localStorage.getItem("nfq-doc-theme");
+  if (stored === "dark" || stored === "light") root.dataset.theme = stored;
+  const themeBtns = document.querySelectorAll("[data-theme-set]");
+  const sync = () => themeBtns.forEach(b => b.classList.toggle("active", b.dataset.themeSet === root.dataset.theme));
+  sync();
+  themeBtns.forEach(btn => btn.addEventListener("click", () => {
+    root.dataset.theme = btn.dataset.themeSet;
+    localStorage.setItem("nfq-doc-theme", btn.dataset.themeSet);
+    sync();
+  }));
+
+  // open all <details> for print, restore after
+  let _detailState = [];
+  window.addEventListener("beforeprint", () => {
+    _detailState = [...document.querySelectorAll("details")].map(d => d.open);
+    document.querySelectorAll("details").forEach(d => d.open = true);
+  });
+  window.addEventListener("afterprint", () => {
+    document.querySelectorAll("details").forEach((d, i) => d.open = _detailState[i] ?? false);
+  });
+</script>
+</body>
+</html>

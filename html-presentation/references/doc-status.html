@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="nfq-doc-type" content="status">
+<title>Status Report — Output Floor Basilea III · Semana 19 · NFQ Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nfq-bg: #FAFAF8;
+    --nfq-bg-surface: #FFFFFF;
+    --nfq-text: #0E0E0E;
+    --nfq-text-sec: #2C2C2C;
+    --nfq-text-muted: #6B6B6B;
+    --nfq-rule: #E5E1D8;
+    --nfq-amber: #F48B4A;
+    --nfq-coral: #E04870;
+    --nfq-violet: #9B59B6;
+    --nfq-steel: #5B7FC7;
+    --nfq-info: #3B82F6;
+    --nfq-success: #10B981;
+    --nfq-warning: #F59E0B;
+    --nfq-danger: #F43F5E;
+  }
+  [data-theme="dark"] {
+    --nfq-bg: #0E0E0E;
+    --nfq-bg-surface: #181816;
+    --nfq-text: #F5F5F0;
+    --nfq-text-sec: #C7C7C2;
+    --nfq-text-muted: #8A8A85;
+    --nfq-rule: #2A2A28;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--nfq-bg);
+    color: var(--nfq-text);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background 240ms ease, color 240ms ease;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 32px 120px;
+  }
+
+  /* masthead */
+  header.masthead {
+    padding: 88px 0 40px;
+    border-bottom: 1px solid var(--nfq-rule);
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px; height: 1.5px;
+    background: var(--nfq-amber);
+  }
+  h1 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    max-width: 24ch;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--nfq-text-sec);
+    margin: 16px 0 24px;
+    max-width: 60ch;
+    line-height: 1.55;
+  }
+  .meta-line {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+  }
+  .meta-line span strong {
+    color: var(--nfq-text-sec);
+    font-weight: 600;
+  }
+
+  /* KPI band */
+  .kpi-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0 0 48px;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--nfq-bg-surface);
+  }
+  @media (max-width: 720px) { .kpi-band { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { padding: 22px 22px; border-right: 1px solid var(--nfq-rule); position: relative; }
+  .kpi:last-child { border-right: 0; }
+  @media (max-width: 720px) {
+    .kpi:nth-child(2) { border-right: 0; }
+    .kpi:nth-child(-n+2) { border-bottom: 1px solid var(--nfq-rule); }
+  }
+  .kpi-num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--nfq-amber);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .kpi-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    line-height: 1.4;
+  }
+  .kpi-trend {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--nfq-success);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+  .kpi-trend.warn { color: var(--nfq-warning); }
+  .kpi-trend.danger { color: var(--nfq-danger); }
+
+  /* sections */
+  section {
+    margin: 0 0 56px;
+    scroll-margin-top: 24px;
+  }
+  h2.section-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.012em;
+    margin: 0 0 4px;
+    color: var(--nfq-text);
+  }
+  h2.section-title::before {
+    content: attr(data-num);
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--nfq-amber);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  p.section-lede {
+    font-size: 14.5px;
+    color: var(--nfq-text-muted);
+    margin: 0 0 20px;
+    max-width: 64ch;
+  }
+
+  /* highlights list */
+  ul.highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.highlights li {
+    padding: 14px 0 14px 28px;
+    border-bottom: 1px solid var(--nfq-rule);
+    color: var(--nfq-text-sec);
+    position: relative;
+    line-height: 1.55;
+  }
+  ul.highlights li:last-child { border-bottom: 0; }
+  ul.highlights li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 21px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--nfq-success);
+  }
+  ul.highlights li.warn::before { background: var(--nfq-warning); }
+  ul.highlights li.danger::before { background: var(--nfq-danger); }
+  ul.highlights li.info::before { background: var(--nfq-steel); }
+  ul.highlights li strong {
+    color: var(--nfq-text);
+    font-weight: 600;
+  }
+
+  /* data tables */
+  .tbl-wrap {
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--nfq-bg-surface);
+  }
+  table.data-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.data-tbl thead th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--nfq-rule);
+    background: var(--nfq-bg);
+    font-weight: 600;
+  }
+  table.data-tbl td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--nfq-rule);
+    color: var(--nfq-text-sec);
+    vertical-align: top;
+  }
+  table.data-tbl tbody tr:last-child td { border-bottom: 0; }
+  table.data-tbl td.num {
+    font-family: "JetBrains Mono", monospace;
+    text-align: right;
+    color: var(--nfq-text);
+  }
+  table.data-tbl td.mono {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    color: var(--nfq-text-muted);
+  }
+  table.data-tbl td.workstream {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--nfq-amber);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .severity-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--nfq-success);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .severity-dot.high { background: var(--nfq-danger); }
+  .severity-dot.medium { background: var(--nfq-warning); }
+  .severity-dot.low { background: var(--nfq-success); }
+  .status-tag {
+    display: inline-block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--nfq-rule);
+    color: var(--nfq-text-sec);
+    font-weight: 600;
+  }
+  .status-tag.done { background: rgba(16,185,129,0.15); color: var(--nfq-success); }
+  .status-tag.flight { background: rgba(245,158,11,0.18); color: #b97500; }
+  [data-theme="dark"] .status-tag.flight { color: var(--nfq-warning); }
+  .status-tag.block { background: rgba(244,63,94,0.18); color: var(--nfq-danger); }
+
+  /* decisions */
+  ol.decisions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: dec;
+  }
+  ol.decisions > li {
+    counter-increment: dec;
+    padding: 18px 0 18px 44px;
+    border-bottom: 1px solid var(--nfq-rule);
+    position: relative;
+    color: var(--nfq-text-sec);
+  }
+  ol.decisions > li:last-child { border-bottom: 0; }
+  ol.decisions > li::before {
+    content: counter(dec, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    color: var(--nfq-amber);
+    font-size: 0.85rem;
+  }
+  ol.decisions > li > strong {
+    display: block;
+    color: var(--nfq-text);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .dec-meta {
+    margin-top: 8px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+  }
+  .dec-meta span strong {
+    color: var(--nfq-text-sec);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  ul.simple {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.simple li {
+    padding: 11px 0 11px 22px;
+    color: var(--nfq-text-sec);
+    border-bottom: 1px solid var(--nfq-rule);
+    position: relative;
+  }
+  ul.simple li:last-child { border-bottom: 0; }
+  ul.simple li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--nfq-amber);
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  /* velocity chart */
+  .chart-block {
+    margin: 24px 0 0;
+    padding: 24px 28px;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    background: var(--nfq-bg-surface);
+  }
+  .chart-block .chart-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+  .chart-block svg { width: 100%; height: auto; display: block; }
+  .chart-block .axis-line { stroke: var(--nfq-rule); stroke-width: 1; }
+  .chart-block .axis-text {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    fill: var(--nfq-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .chart-block .bar { fill: var(--nfq-amber); }
+  .chart-block .bar.current { fill: var(--nfq-coral); }
+  .chart-block .bar-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    fill: var(--nfq-text);
+    font-weight: 600;
+    text-anchor: middle;
+  }
+
+  /* fixed chrome */
+  .nfq-mark {
+    position: fixed;
+    top: 22px;
+    left: 24px;
+    z-index: 100;
+    width: 28px;
+    height: 35px;
+    color: var(--nfq-text);
+  }
+  .nfq-mark svg { width: 100%; height: 100%; }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--nfq-bg-surface);
+    border: 1px solid var(--nfq-rule);
+    border-radius: 999px;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .theme-toggle button {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--nfq-text-muted);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .theme-toggle button.active { background: var(--nfq-amber); color: #fff; }
+
+  footer.doc-foot {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--nfq-rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--nfq-text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media print {
+    :root { color-scheme: light; }
+    .theme-toggle, .nfq-mark { display: none; }
+    .masthead { padding: 0 0 1cm; border-bottom: 0.5pt solid #000; }
+    section, .kpi-band, .chart-block, table { break-inside: avoid; }
+    a { color: #000; text-decoration: underline; }
+    body { background: white; color: black; font-size: 10pt; }
+    @page { size: A4; margin: 1.5cm 1.6cm; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="nfq-iso" viewBox="0 0 100 125">
+    <path d="M20 20 L20 105 L35 105 L35 55 L65 105 L80 105 L80 20 L65 20 L65 70 L35 20 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<a class="nfq-mark" href="https://nfq.es" aria-label="NFQ">
+  <svg><use href="#nfq-iso"/></svg>
+</a>
+
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button data-theme-set="light" class="active">Light</button>
+  <button data-theme-set="dark">Dark</button>
+</div>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Status Report · Capital · Semana 19 / 36 · 2026-05-09</div>
+    <h1>Implementación Output Floor — Basilea III</h1>
+    <p class="lede">Programa de adaptación al output floor de Basilea III: motor RWA paralelo (estandarizado vs IRB), proyección de capital 2026-2030, adaptación reporting FINREP/COREP y modelo de gobierno con supervisor. Semana 19 de un programa de 36 semanas.</p>
+    <div class="meta-line">
+      <span><strong>Sponsor:</strong> Director Capital y Modelos</span>
+      <span><strong>Delivery lead:</strong> nfq advisory</span>
+      <span><strong>Próxima revisión:</strong> 2026-05-16</span>
+    </div>
+  </header>
+
+  <div class="kpi-band">
+    <div class="kpi">
+      <div class="kpi-num">53%</div>
+      <div class="kpi-label">Avance vs plan</div>
+      <div class="kpi-trend">+2pp esta semana</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">11 / 22</div>
+      <div class="kpi-label">Hitos cerrados</div>
+      <div class="kpi-trend">on track</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">4</div>
+      <div class="kpi-label">Incidencias abiertas</div>
+      <div class="kpi-trend warn">+1 vs sem-18</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">2</div>
+      <div class="kpi-label">Decisiones pendientes</div>
+      <div class="kpi-trend danger">requiere ALCO</div>
+    </div>
+  </div>
+
+  <section id="highlights">
+    <h2 class="section-title" data-num="§ 01 · HIGHLIGHTS">Lo destacable de la semana</h2>
+    <p class="section-lede">Cinco puntos para el sponsor y el comité de seguimiento. Color de marca refleja el estado: verde cerrado, ámbar atención, rojo bloqueo.</p>
+    <ul class="highlights">
+      <li><strong>Cerrado el motor RWA estandarizado (cartera empresas) en sandbox.</strong> Primer reproceso paralelo con datos T1 2026 ejecutado con éxito. Tiempo de ejecución 2h 47min — dentro del SLA objetivo de 4h.</li>
+      <li class="warn"><strong>Identificado un gap de +180&nbsp;pb en RWA estandarizado vs producción IRB en cartera empresas.</strong> Análisis preliminar apunta a tratamiento de garantías corporate — investigación en curso, hipótesis a confirmar antes del 2026-05-23.</li>
+      <li><strong>Coordinación con supervisor: agenda Q3 2026 confirmada.</strong> Sesión de presentación de motor + metodología programada para 2026-09-18.</li>
+      <li><strong>Modelo de proyección capital 2026-2030 (escenario base) finalizado.</strong> CET1 phase-in modelado al 50% (2025) → 72,5% (2030); impacto agregado dentro del rango previsto en kickoff.</li>
+      <li class="info"><strong>Onboarding del segundo equipo de validación interna iniciado.</strong> Tres analistas en formación durante semanas 19-20; productividad plena estimada semana 21.</li>
+    </ul>
+  </section>
+
+  <section id="shipped">
+    <h2 class="section-title" data-num="§ 02 · SHIPPED">Entregado esta semana</h2>
+    <div class="tbl-wrap">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th>Workstream</th>
+            <th>Entregable</th>
+            <th>Owner</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="workstream">WS1 · Infra</td>
+            <td>Motor RWA estandarizado, módulo cartera empresas (v1.0)</td>
+            <td>NFQ + IT Capital</td>
+            <td><span class="status-tag done">Cerrado</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS1 · Infra</td>
+            <td>Reconciliación con producción IRB cartera retail</td>
+            <td>NFQ</td>
+            <td><span class="status-tag done">Cerrado</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS2 · Capital</td>
+            <td>Modelo proyección capital 2026-2030, escenario base</td>
+            <td>Capital Planning</td>
+            <td><span class="status-tag done">Cerrado</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS3 · Reporting</td>
+            <td>Mapping FINREP F.05 a nuevo motor</td>
+            <td>Reporting Regulatorio</td>
+            <td><span class="status-tag done">Cerrado</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS4 · Gobierno</td>
+            <td>Política de incidencias en cálculo paralelo (v0.9 borrador)</td>
+            <td>NFQ + Riesgos</td>
+            <td><span class="status-tag done">Cerrado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="flight">
+    <h2 class="section-title" data-num="§ 03 · IN FLIGHT">En curso</h2>
+    <div class="tbl-wrap">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th>Workstream</th>
+            <th>Entregable</th>
+            <th>Owner</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="workstream">WS1 · Infra</td>
+            <td>Motor RWA estandarizado, módulo SMEs y financiación especializada</td>
+            <td>NFQ + IT Capital</td>
+            <td><span class="status-tag flight">En curso</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS2 · Capital</td>
+            <td>Escenarios stress (severo y adverso)</td>
+            <td>Capital Planning</td>
+            <td><span class="status-tag flight">En curso</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS3 · Reporting</td>
+            <td>Mapping COREP C.07 — piloto</td>
+            <td>Reporting Regulatorio</td>
+            <td><span class="status-tag flight">En curso</span></td>
+          </tr>
+          <tr>
+            <td class="workstream">WS4 · Gobierno</td>
+            <td>Documento marco de gobierno output floor (revisión Riesgos)</td>
+            <td>NFQ + Riesgos</td>
+            <td><span class="status-tag flight">En curso</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="risks">
+    <h2 class="section-title" data-num="§ 04 · RIESGOS">Riesgos y bloqueos</h2>
+    <div class="tbl-wrap">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th>Severidad</th>
+            <th>Riesgo</th>
+            <th>Mitigación</th>
+            <th>Owner</th>
+            <th>Fecha límite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="severity-dot high"></span><span class="mono">ALTA</span></td>
+            <td>Gap +180&nbsp;pb en RWA estandarizado cartera empresas — riesgo de impacto en ratio CET1 phase-in</td>
+            <td>Análisis por subsegmento + cuantificación impacto + tratamiento provisional</td>
+            <td>NFQ</td>
+            <td class="mono">2026-05-23</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot medium"></span><span class="mono">MEDIA</span></td>
+            <td>Disponibilidad de datos históricos suficientes para recalibración IRB cartera SMEs</td>
+            <td>Solicitud formal a IT Datos completada; backfill estimado 3 semanas</td>
+            <td>IT Datos</td>
+            <td class="mono">2026-06-06</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot medium"></span><span class="mono">MEDIA</span></td>
+            <td>Coordinación con auditor externo sobre nueva infraestructura RWA</td>
+            <td>Sesión técnica conjunta agendada; documentación preparada para revisión</td>
+            <td>Capital + Auditoría</td>
+            <td class="mono">2026-05-30</td>
+          </tr>
+          <tr>
+            <td><span class="severity-dot low"></span><span class="mono">BAJA</span></td>
+            <td>Ventana de carga del motor en producción coincide con cierre trimestral T2</td>
+            <td>Coordinación con Tesorería para ventana alternativa antes del 2026-06-30</td>
+            <td>IT Capital</td>
+            <td class="mono">2026-06-15</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="decisions">
+    <h2 class="section-title" data-num="§ 05 · DECISIONES">Decisiones requeridas</h2>
+    <p class="section-lede">Decisiones que necesitan llegar a comité antes del próximo reporting. Cada una detalla el órgano competente y la fecha tope.</p>
+    <ol class="decisions">
+      <li>
+        <strong>Aprobación del tratamiento provisional del gap +180&nbsp;pb en cartera empresas</strong>
+        <p>Mientras se cierra el análisis por subsegmento, se requiere decisión sobre el tratamiento contable provisional para no afectar el reporting CET1 del T2. Tres opciones presentadas en informe técnico T19-IT-04.</p>
+        <div class="dec-meta">
+          <span><strong>Decide:</strong> Comité Capital</span>
+          <span><strong>Fecha tope:</strong> 2026-05-23</span>
+          <span><strong>Doc soporte:</strong> T19-IT-04</span>
+        </div>
+      </li>
+      <li>
+        <strong>Validación de supuestos del escenario severo (proyección capital 2026-2030)</strong>
+        <p>El escenario severo modelado sigue la metodología EBA stress 2024 con dos ajustes específicos para la cartera retail española. Se requiere validación ALCO antes de incluirlo en el ICAAP 2026.</p>
+        <div class="dec-meta">
+          <span><strong>Decide:</strong> ALCO</span>
+          <span><strong>Fecha tope:</strong> 2026-05-30</span>
+          <span><strong>Doc soporte:</strong> T19-IT-05</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="next">
+    <h2 class="section-title" data-num="§ 06 · PRÓXIMA SEMANA">Foco de la semana 20</h2>
+    <ul class="simple">
+      <li>Cerrar diagnóstico del gap +180&nbsp;pb con análisis por subsegmento (consumo, comercio, industria, servicios)</li>
+      <li>Lanzar mapping COREP C.07 piloto y validar con Reporting Regulatorio</li>
+      <li>Sesión de gobierno con Comité Capital — presentación tratamiento provisional</li>
+      <li>Avance del motor RWA estandarizado para segmento SMEs (objetivo: cierre v1.0 en sem-21)</li>
+      <li>Onboarding del segundo equipo de validación interna — productividad plena estimada</li>
+    </ul>
+  </section>
+
+  <section id="velocity">
+    <h2 class="section-title" data-num="§ 07 · VELOCITY">Avance acumulado, últimas 6 semanas</h2>
+    <div class="chart-block">
+      <div class="chart-label">% AVANCE ACUMULADO · SEMANAS 14-19</div>
+      <svg viewBox="0 0 720 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Velocity chart">
+        <!-- gridlines and y-axis -->
+        <line class="axis-line" x1="60" y1="20"  x2="700" y2="20"/>
+        <line class="axis-line" x1="60" y1="60"  x2="700" y2="60"/>
+        <line class="axis-line" x1="60" y1="100" x2="700" y2="100"/>
+        <line class="axis-line" x1="60" y1="140" x2="700" y2="140"/>
+        <line class="axis-line" x1="60" y1="180" x2="700" y2="180"/>
+        <text class="axis-text" x="50" y="24"  text-anchor="end">100%</text>
+        <text class="axis-text" x="50" y="64"  text-anchor="end">75%</text>
+        <text class="axis-text" x="50" y="104" text-anchor="end">50%</text>
+        <text class="axis-text" x="50" y="144" text-anchor="end">25%</text>
+        <text class="axis-text" x="50" y="184" text-anchor="end">0%</text>
+
+        <!-- bars: weeks 14..19, values 38, 42, 45, 49, 51, 53 -->
+        <!-- chart area: x 60..700 (640px), 6 bars + gaps. bar w=70, gap=36, start=80 -->
+        <rect class="bar" x="86"  y="120.16" width="70" height="59.84"/>
+        <rect class="bar" x="192" y="113.76" width="70" height="66.24"/>
+        <rect class="bar" x="298" y="108.96" width="70" height="71.04"/>
+        <rect class="bar" x="404" y="102.56" width="70" height="77.44"/>
+        <rect class="bar" x="510" y="99.36"  width="70" height="80.64"/>
+        <rect class="bar current" x="616" y="96.16"  width="70" height="83.84"/>
+
+        <!-- bar value labels above each bar -->
+        <text class="bar-label" x="121" y="113">38%</text>
+        <text class="bar-label" x="227" y="107">42%</text>
+        <text class="bar-label" x="333" y="102">45%</text>
+        <text class="bar-label" x="439" y="96">49%</text>
+        <text class="bar-label" x="545" y="93">51%</text>
+        <text class="bar-label" x="651" y="90">53%</text>
+
+        <!-- x-axis labels -->
+        <text class="axis-text" x="121" y="200" text-anchor="middle">Sem 14</text>
+        <text class="axis-text" x="227" y="200" text-anchor="middle">Sem 15</text>
+        <text class="axis-text" x="333" y="200" text-anchor="middle">Sem 16</text>
+        <text class="axis-text" x="439" y="200" text-anchor="middle">Sem 17</text>
+        <text class="axis-text" x="545" y="200" text-anchor="middle">Sem 18</text>
+        <text class="axis-text" x="651" y="200" text-anchor="middle">Sem 19</text>
+      </svg>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>NFQ Advisory · Status Report · Output Floor Basilea III</span>
+    <span>Confidencial · Semana 19 / 36 · 2026-05-09</span>
+  </footer>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const stored = localStorage.getItem("nfq-doc-theme");
+  if (stored === "dark" || stored === "light") root.dataset.theme = stored;
+  const themeBtns = document.querySelectorAll("[data-theme-set]");
+  const sync = () => themeBtns.forEach(b => b.classList.toggle("active", b.dataset.themeSet === root.dataset.theme));
+  sync();
+  themeBtns.forEach(btn => btn.addEventListener("click", () => {
+    root.dataset.theme = btn.dataset.themeSet;
+    localStorage.setItem("nfq-doc-theme", btn.dataset.themeSet);
+    sync();
+  }));
+</script>
+</body>
+</html>

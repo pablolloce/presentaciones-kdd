@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "hackathon-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/alexcasal/Downloads/drive-download-20260601T151316Z-3-001", "-p", "8765", "--no-clipboard"],
+      "port": 8765
+    },
+    {
+      "name": "diploma-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Volumes/Untitled/Claude/skills-master/diploma-infantil", "-p", "8770", "--no-clipboard"],
+      "port": 8770
+    }
+  ]
+}

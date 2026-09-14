@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFQ Advisory — Plantillas de Entregables</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nfq-bg: #FAFAF8;
+    --nfq-bg-surface: #FFFFFF;
+    --nfq-text: #0E0E0E;
+    --nfq-text-sec: #2C2C2C;
+    --nfq-text-muted: #6B6B6B;
+    --nfq-rule: #E5E1D8;
+    --nfq-amber: #F48B4A;
+    --nfq-coral: #E04870;
+    --nfq-violet: #9B59B6;
+    --nfq-steel: #5B7FC7;
+  }
+  [data-theme="dark"] {
+    --nfq-bg: #0E0E0E;
+    --nfq-bg-surface: #181816;
+    --nfq-text: #F5F5F0;
+    --nfq-text-sec: #C7C7C2;
+    --nfq-text-muted: #8A8A85;
+    --nfq-rule: #2A2A28;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--nfq-bg);
+    color: var(--nfq-text);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    transition: background 240ms ease, color 240ms ease;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px 120px; }
+
+  header.masthead {
+    padding: 96px 0 56px;
+    border-bottom: 1px solid var(--nfq-rule);
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 1.5px;
+    background: var(--nfq-amber);
+  }
+  h1 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.022em;
+    margin: 0 0 8px;
+    max-width: 18ch;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--nfq-amber);
+    font-weight: 500;
+  }
+  .intro {
+    font-size: 17px;
+    color: var(--nfq-text-sec);
+    margin: 22px 0 0;
+    max-width: 640px;
+  }
+
+  .group-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nfq-text-muted);
+    margin: 56px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--nfq-rule);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .group-title::after {
+    content: attr(data-count);
+    color: var(--nfq-amber);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    margin-top: 8px;
+  }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--nfq-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--nfq-bg-surface);
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    border-color: var(--nfq-amber);
+  }
+  [data-theme="dark"] .card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.45); }
+  .card[aria-disabled="true"] {
+    opacity: 0.55;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      135deg,
+      var(--nfq-bg-surface) 0,
+      var(--nfq-bg-surface) 12px,
+      var(--nfq-bg) 12px,
+      var(--nfq-bg) 14px
+    );
+  }
+  .thumb {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--nfq-rule), var(--nfq-bg));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nfq-text-muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 12px;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .card-body { padding: 20px 22px 24px; }
+  .card-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--nfq-amber);
+    margin-bottom: 10px;
+  }
+  .card[aria-disabled="true"] .card-tag { color: var(--nfq-text-muted); }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--nfq-text-sec);
+    margin: 0 0 14px;
+    line-height: 1.5;
+  }
+  .card-when {
+    font-size: 12.5px;
+    color: var(--nfq-text-muted);
+    line-height: 1.45;
+  }
+  .card-when strong { color: var(--nfq-text-sec); font-weight: 600; }
+  .card code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    background: var(--nfq-rule);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--nfq-bg-surface);
+    border: 1px solid var(--nfq-rule);
+    border-radius: 999px;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .theme-toggle button {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--nfq-text-muted);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .theme-toggle button:hover { color: var(--nfq-text); }
+  .theme-toggle button.active {
+    background: var(--nfq-amber);
+    color: #fff;
+  }
+
+  .nfq-mark {
+    position: fixed;
+    top: 22px;
+    left: 24px;
+    z-index: 100;
+    width: 28px;
+    height: 35px;
+  }
+  .nfq-mark svg { width: 100%; height: 100%; }
+
+  footer.gallery-foot {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--nfq-rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--nfq-text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="nfq-iso" viewBox="0 0 100 125">
+    <path d="M20 20 L20 105 L35 105 L35 55 L65 105 L80 105 L80 20 L65 20 L65 70 L35 20 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<a class="nfq-mark" href="https://nfq.es" aria-label="NFQ" style="color: var(--nfq-text)">
+  <svg><use href="#nfq-iso"/></svg>
+</a>
+
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button data-theme-set="light" class="active">Light</button>
+  <button data-theme-set="dark">Dark</button>
+</div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">NFQ Advisory · Plantillas v1 · 2026-05-09</div>
+    <h1>Entregables HTML por <em>objetivo</em>.</h1>
+    <p class="intro">Plantillas curadas para los formatos que NFQ Advisory produce repetidamente con clientes de banca. Elige por propósito comercial, no por tipo técnico. Todas autocontenidas, abren en navegador, exportan a PDF/PPTX, mantienen el sistema visual NFQ (Inter + JetBrains Mono, dark-first, NFQ Amber/Coral/Violet).</p>
+  </header>
+
+  <div class="group-title" data-count="2">Pitch comercial</div>
+  <div class="grid">
+    <a class="card" href="presentation-template.html">
+      <div class="thumb">
+        <img data-thumb-base="deck-export" src="gallery-thumbs/deck-export.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Deck Export · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Deck · Export</div>
+        <h3 class="card-title">Slide deck para PDF/PPTX</h3>
+        <p class="card-desc">Exportable, archivable, offline-friendly. McKinsey-grade slide format con cover, section dividers y takeaways.</p>
+        <p class="card-when"><strong>Cuándo:</strong> entregable a cliente, propuesta, comité, deck que viaja por email.</p>
+      </div>
+    </a>
+    <a class="card" href="presentation-template-live.html">
+      <div class="thumb">
+        <img data-thumb-base="deck-live" src="gallery-thumbs/deck-live.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Deck Live · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Deck · Live</div>
+        <h3 class="card-title">Slide deck con efectos en pantalla</h3>
+        <p class="card-desc">Bloom, GLTF, OrbitControls, shaders Three.js. Para presentar en vivo con impacto visual.</p>
+        <p class="card-when"><strong>Cuándo:</strong> pitch interno, demo, conferencia, showcase. No para enviar.</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="group-title" data-count="2">Análisis y opinión</div>
+  <div class="grid">
+    <a class="card" href="doc-pov.html">
+      <div class="thumb">
+        <img data-thumb-base="doc-pov" src="gallery-thumbs/doc-pov.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'POV Doc · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Doc · Thought Leadership</div>
+        <h3 class="card-title">POV / Nuestra Visión</h3>
+        <p class="card-desc">Long-scroll editorial con glossary lateral, pull quotes y citas verificables. Sample: WAM mid-market ibérico.</p>
+        <p class="card-when"><strong>Cuándo:</strong> artículo de opinión, pieza de marca, output enriquecido de <code>/pov-generator</code>.</p>
+      </div>
+    </a>
+    <a class="card" href="doc-concept.html">
+      <div class="thumb">
+        <img data-thumb-base="doc-concept" src="gallery-thumbs/doc-concept.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Concept · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Doc · Explainer</div>
+        <h3 class="card-title">Concept Explainer didáctico</h3>
+        <p class="card-desc">Definición + por qué importa + fórmulas con KaTeX + ejemplo trabajado + casos límite + referencias regulatorias. Sample: CSM bajo IFRS 17 (Seguros).</p>
+        <p class="card-when"><strong>Cuándo:</strong> primer cliente, training interno, didáctico regulatorio (IRRBB, IFRS 17, Solvencia II, FTP, etc.).</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="group-title" data-count="2">Proyecto</div>
+  <div class="grid">
+    <a class="card" href="doc-playbook.html">
+      <div class="thumb">
+        <img data-thumb-base="doc-playbook" src="gallery-thumbs/doc-playbook.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Playbook · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Doc · Plan</div>
+        <h3 class="card-title">Implementation Playbook</h3>
+        <p class="card-desc">Hitos + workstreams + RACI + riesgos + open questions. Timeline horizontal y swimlanes color-coded. Sample: transformación cash management Banca Empresas.</p>
+        <p class="card-when"><strong>Cuándo:</strong> kickoff, anexo metodológico de propuesta, plan ejecutivo de proyecto.</p>
+      </div>
+    </a>
+    <a class="card" href="doc-status.html">
+      <div class="thumb">
+        <img data-thumb-base="doc-status" src="gallery-thumbs/doc-status.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Status Report · screenshot pending'}))">
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Doc · Reporting</div>
+        <h3 class="card-title">Weekly Status Report</h3>
+        <p class="card-desc">KPI band con trends, highlights con status dots, tablas shipped/in-flight, riesgos por severidad, decisiones y velocity chart. Sample: Output Floor Basilea III.</p>
+        <p class="card-when"><strong>Cuándo:</strong> weekly a sponsor de banca, comité quincenal, snapshot de avance.</p>
+      </div>
+    </a>
+  </div>
+
+  <footer class="gallery-foot">
+    <span>NFQ Advisory · Plantillas v1</span>
+    <span>html-presentation skill · 2026-05-09</span>
+  </footer>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const stored = localStorage.getItem("nfq-gallery-theme");
+  if (stored === "dark" || stored === "light") root.dataset.theme = stored;
+
+  const buttons = document.querySelectorAll("[data-theme-set]");
+  const sync = () => buttons.forEach(b => b.classList.toggle("active", b.dataset.themeSet === root.dataset.theme));
+  sync();
+
+  // Swap card thumbs between light and dark variants based on active theme.
+  // Each <img> declares a base name via data-thumb-base; e.g. "doc-pov" loads
+  // gallery-thumbs/doc-pov.png in light and gallery-thumbs/doc-pov-dark.png in dark.
+  const swapThumbs = () => {
+    const dark = root.dataset.theme === "dark";
+    document.querySelectorAll("img[data-thumb-base]").forEach(img => {
+      const base = img.dataset.thumbBase;
+      img.src = "gallery-thumbs/" + base + (dark ? "-dark" : "") + ".png";
+    });
+  };
+  swapThumbs();
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const t = btn.dataset.themeSet;
+      root.dataset.theme = t;
+      localStorage.setItem("nfq-gallery-theme", t);
+      sync();
+      swapThumbs();
+    });
+  });
+</script>
+</body>
+</html>

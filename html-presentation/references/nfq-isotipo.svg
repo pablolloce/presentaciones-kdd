@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96.64 120.34">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clippath);
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+        fill-opacity: .2;
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-2);
+        fill-opacity: .3;
+      }
+
+      .cls-7 {
+        fill: #217bee;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" x=".17" width="96.46" height="120"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="16.08" y1="5222.41" x2="16.08" y2="5313.37" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#ec683e"/>
+      <stop offset="1" stop-color="#d13b5f"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="16.08" y1="5252.89" x2="16.08" y2="5329.29" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="14.82" y1="5318" x2="81.61" y2="5220.63" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#d13b5f"/>
+      <stop offset="1" stop-color="#217bee"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="46.31" y1="5272.31" x2="80.07" y2="5219.19" xlink:href="#linear-gradient-2"/>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-1">
+      <g>
+        <path class="cls-3" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+        <path class="cls-6" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+        <path class="cls-5" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+        <path class="cls-4" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+        <path class="cls-7" d="M96.46,101.78l-32.16,18.56V18.9L96.46.34v101.44Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
