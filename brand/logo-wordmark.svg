@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Logotipo nfq completo: isotipo + palabra. Se inyecta en la barra de marca
+     de los decks. Los ids los prefija scripts/apply-brand.mjs al incrustarlo. -->
+<svg viewBox="0 0 312.29 145.88" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="NFQ">
+        <defs>
+          <clipPath id="nfq-clip"><rect x=".17" y="6.44" width="96.46" height="120"/></clipPath>
+          <linearGradient id="nfq-lg1" x1="16.08" y1="4553.95" x2="16.08" y2="4644.91" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".25" stop-color="#ec683e"/><stop offset="1" stop-color="#d13b5f"/></linearGradient>
+          <linearGradient id="nfq-lg2" x1="16.08" y1="4584.43" x2="16.08" y2="4660.83" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/></linearGradient>
+          <linearGradient id="nfq-lg3" x1="14.82" y1="4649.54" x2="81.61" y2="4552.17" gradientTransform="translate(0 4667.61) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".25" stop-color="#d13b5f"/><stop offset="1" stop-color="#217bee"/></linearGradient>
+          <linearGradient id="nfq-lg4" x1="46.31" y1="4603.85" x2="80.07" y2="4550.73" xlink:href="#nfq-lg2"/>
+        </defs>
+        <g clip-path="url(#nfq-clip)">
+          <path fill="url(#nfq-lg1)" d="M32.16,108.22L0,126.78V25.34L32.15,6.78v101.44Z"/>
+          <path fill="url(#nfq-lg2)" fill-opacity=".3" d="M32.16,108.22L0,126.78V25.34L32.15,6.78v101.44Z"/>
+          <path fill="url(#nfq-lg3)" d="M96.46,108.22l-32.16,18.56L0,25.34,32.15,6.78l64.31,101.44Z"/>
+          <path fill="url(#nfq-lg4)" fill-opacity=".2" d="M96.46,108.22l-32.16,18.56L0,25.34,32.15,6.78l64.31,101.44Z"/>
+          <path fill="#217bee" d="M96.46,108.22l-32.16,18.56V25.34L96.46,6.78v101.44Z"/>
+        </g>
+        <g class="nfq-word">
+          <path d="M312.01,35.56l-17.64,12.6c-3.92-8.54-12.46-13.16-21.28-13.16-13.58,0-28,10.92-28,35.42s13.02,35.56,26.18,35.56c10.08,0,20.3-6.86,24.92-20.3v60.2h16.1V35.56h-.28ZM296.19,70.98c-.14,18.06-8.68,27.02-17.22,27.02s-17.22-9.1-17.22-27.58c0-20.02,9.1-29.68,17.92-29.68,8.26,0,16.38,8.54,16.52,24.64v5.6Z"/>
+          <path d="M251.33,19.46c-11.06-10.5-18.62-15.68-22.82-15.68-2.94,0-4.34,2.38-4.34,7.14v25.62h21.98v3.08h-21.98v64.82h-16.24V39.62h-9.8v-3.08h9.8v-1.54c0-27.86,13.72-35,28.56-35,5.04,0,10.22.84,14.98,1.96l-.14,17.5Z"/>
+          <path d="M146.41,51.24c5.88-11.2,15.12-16.24,23.94-16.24,12.46,0,24.08,9.94,24.08,26.04v43.4h-16.1v-40.32c0-14.84-6.72-22.12-14.42-22.12-6.16,0-13.16,4.9-17.5,14.42v48.02h-16.1V38.92l15.82-3.36h.28v15.68Z"/>
+        </g>
+      </svg>

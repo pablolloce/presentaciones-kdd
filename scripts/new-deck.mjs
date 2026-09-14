@@ -4,8 +4,8 @@
  * y le aplica la marca activa.
  *
  * Uso:
- *   node scripts/new-deck.mjs "<Título>" [--format deck|deck-live|pov|status|playbook|concept]
- *                                        [--slug mi-deck] [--brand <id>]
+ *   node scripts/new-deck.mjs "<Título>" [--format deck|deck-export|deck-live|pov|status|playbook|concept]
+ *                                        [--slug mi-deck] [--brand <id>] [--cliente <id>]
  *
  * Salida: presentations/<AAAA-MM>-<slug>/index.html + brief.md
  */
@@ -18,8 +18,11 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const REFS = join(ROOT, ".claude/skills/html-presentation/references");
 
 const FORMATS = {
-  deck: { file: "presentation-template.html", label: "Deck · exportable a PDF/PPTX" },
-  "deck-live": { file: "presentation-template-live.html", label: "Deck · presentación en pantalla" },
+  // Formato principal del repositorio: lienzo fijo 1600x900, tipografías
+  // incrustadas, cero dependencias externas.
+  deck: { file: "deck-stage.html", label: "Deck · lienzo 1600x900 (principal)" },
+  "deck-export": { file: "presentation-template.html", label: "Deck · exportable a PDF/PPTX" },
+  "deck-live": { file: "presentation-template-live.html", label: "Deck · 3D en pantalla" },
   pov: { file: "doc-pov.html", label: "Documento · punto de vista" },
   status: { file: "doc-status.html", label: "Documento · informe de estado" },
   playbook: { file: "doc-playbook.html", label: "Documento · plan de implantación" },
@@ -34,7 +37,10 @@ const flag = (n) => {
 const title = args.find((a) => !a.startsWith("--") && args.indexOf(a) === 0);
 
 if (!title) {
-  console.error(`Uso: node scripts/new-deck.mjs "<Título>" [--format ${Object.keys(FORMATS).join("|")}] [--slug x] [--brand id]`);
+  console.error(
+    `Uso: node scripts/new-deck.mjs "<Título>" [--format ${Object.keys(FORMATS).join("|")}] ` +
+      "[--slug x] [--brand id] [--cliente id]",
+  );
   process.exit(1);
 }
 
@@ -43,6 +49,9 @@ if (!FORMATS[format]) {
   console.error(`Formato desconocido "${format}". Opciones: ${Object.keys(FORMATS).join(", ")}`);
   process.exit(1);
 }
+
+const escapeHtml = (s) =>
+  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 const slugify = (s) =>
   s
@@ -69,11 +78,17 @@ copyFileSync(src, dest);
 
 // Título visible y <title> del documento
 let html = readFileSync(dest, "utf-8");
-html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`);
+html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`);
+// En el deck sobre lienzo la portada lleva su propio titulo visible.
+html = html.replace(
+  /(<h1 class="ctitle">)[\s\S]*?(<\/h1>)/i,
+  `$1${escapeHtml(title)}$2`,
+);
 writeFileSync(dest, html);
 
 const brandArgs = ["scripts/apply-brand.mjs", dest];
 if (flag("--brand")) brandArgs.push("--brand", flag("--brand"));
+if (flag("--cliente")) brandArgs.push("--cliente", flag("--cliente"));
 execFileSync("node", brandArgs, { cwd: ROOT, stdio: "inherit" });
 
 writeFileSync(

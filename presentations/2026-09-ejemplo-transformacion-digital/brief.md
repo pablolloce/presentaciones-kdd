@@ -1,40 +1,37 @@
-# Plan de transformación digital 2026
+# Transformación digital 2026
 
-- **Formato**: Deck · exportable a PDF/PPTX
+- **Formato**: Deck sobre lienzo 1600×900 (formato principal)
+- **Cliente**: BBVA — co-marca BBVA | nfq
 - **Creada**: 2026-09-14
-- **Audiencia**: Comité de Dirección (5 personas, perfil no técnico salvo el CIO)
+- **Audiencia**: Comité de Dirección
 - **Objetivo de la reunión**: aprobar el presupuesto de la ola 1, no el programa completo
-- **Mensaje único que debe quedar**: el coste no está en la tecnología antigua, está en las
-  horas que el equipo dedica a compensarla a mano; se puede atacar por fases y sin un corte total
 
-> **Presentación de ejemplo.** Sirve como referencia de maquetas y de reglas de contenido, con
-> la marca nfq aplicada. El cliente y las cifras son inventados y están marcados como
-> ilustrativos dentro del propio deck.
+> **Presentación de ejemplo.** Es la salida directa de `npm run nueva -- "…" --cliente bbva`
+> y sirve como referencia de todos los componentes del sistema. Las cifras son inventadas y
+> están marcadas como ilustrativas dentro del propio deck.
 
-## Argumento
-1. **Diagnóstico** — ningún sistema está roto; falla lo que ocurre entre ellos, y eso cuesta
-   190 horas al mes repartidas en cuatro puntos de corte.
-2. **Propuesta** — integrar por eventos en lugar de sustituir por un ERP único: mismo coste a
-   tres años, primer beneficio mucho antes y sin concentrar el riesgo en un solo corte.
-3. **Ejecución** — tres olas de seis meses, cada una entrega algo utilizable por sí solo y cada
-   una lleva su propia decisión de continuidad. El equilibrio cae en el mes 14.
+## Componentes que demuestra
 
-## Maquetas que demuestra
-| Slide | Primitiva |
-|---|---|
-| 0, 12 | Portada y cierre oscuros con mapa de capacidades |
-| 1, 4, 7 | Separadores de sección |
-| 2 | Slide editorial (tesis + tres tarjetas, sin gráfico forzado) |
-| 3 | Barras de reparto + tabla de datos con fuente citada |
-| 5 | Diagrama de flujo horizontal + capas de arquitectura |
-| 6 | Matriz de opciones con marcadores neutros (✓ / △ / —) |
-| 8 | Plan por fases en tarjetas con acento superior |
-| 9 | Tabla de riesgos con etiquetas de impacto |
-| 10 | Rejilla de KPIs + tabla financiera |
-| 11 | Slide de decisión |
+| Slide | Tipo | Componentes |
+|---|---|---|
+| 01 | Portada | Lockup de marcas, `ctitle`, `tagline`, `sub`, `cover-foot` |
+| 02 | Sumario | `toc` con salto a sección vía `data-goto` |
+| 03, 06, 09, 14 | Separador | `dv-eyebrow`, `dv-mega`, `dv-sub`, chrome invertido |
+| 04 | Editorial | `cards` de tres con acentos por tarjeta |
+| 05 | Datos | `split s37`, `kpicard`, `tblwrap` + `table.data`, `footnote` con fuente |
+| 07 | Proceso | `steps` con flechas, `chips` |
+| 08 | Cita | `quote` con atribución |
+| 10 | Plan | `cards` por fase |
+| 11 | Riesgos | `table.data` con `tag` de impacto |
+| 12 | Caso de negocio | `kpiband` de tres |
+| 13 | Decisión | `cards` de decisiones |
+
+## Cómo se navega
+Flechas ← →, `Inicio` / `Fin`, clic en el navegador de secciones, o `?slide=7` en la URL.
+Exportar a PDF: Cmd+P, horizontal, sin márgenes.
 
 ## Fuentes
 | Dato | Fuente | Fecha |
 |---|---|---|
 | Reparto de la jornada y horas por punto de corte | Cifras ilustrativas de ejemplo | — |
-| Caso de negocio a tres años | Cifras ilustrativas de ejemplo | — |
+| Caso de negocio | Cifras ilustrativas de ejemplo | — |

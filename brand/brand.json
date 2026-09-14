@@ -5,20 +5,27 @@
   "tagline": "Advisory para banca, seguros y wealth & asset management",
   "legalLine": "nfq advisory · Documento confidencial",
   "palette": {
-    "ink": "#0B1026",
-    "inkLight": "#1A2340",
-    "inkMid": "#2A3558",
-    "accent1": "#F48B4A",
-    "accent2": "#E04870",
+    "ink": "#14141C",
+    "inkLight": "#44444F",
+    "inkMid": "#6F6F7A",
+    "accent1": "#EC683E",
+    "accent2": "#D13B5F",
     "accent3": "#9B59B6",
-    "accent4": "#5B7FC7",
-    "accent5": "#3B82F6"
+    "accent4": "#217BEE",
+    "accent5": "#1C9D6C"
   },
   "fonts": {
     "sans": "Inter",
+    "serif": "Fraunces",
     "mono": "JetBrains Mono"
   },
   "url": "nfq.es",
   "logo": "brand/logo.svg",
-  "logoMono": "brand/logo-mono.svg"
+  "logoMono": "brand/logo-mono.svg",
+  "surfaces": {
+    "paper": "#FFFFFF",
+    "bg": "#F4F3EE",
+    "bg2": "#ECEBE4"
+  },
+  "logoWordmark": "brand/logo-wordmark.svg"
 }

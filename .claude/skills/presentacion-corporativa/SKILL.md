@@ -7,30 +7,33 @@ user-invocable: true
 Guion completo para pasar de un encargo hablado a un fichero entregable. Sigue los pasos en orden;
 cada uno tiene una salida concreta.
 
-## Paso 1 · Encuadrar el encargo (2 preguntas, no más)
+## Paso 1 · Encuadrar el encargo (1 pregunta, no más)
 
-Pregunta solo lo que cambia materialmente el resultado:
+**El formato por defecto es `deck`** — el deck sobre lienzo 1600×900, que es el estándar de la
+casa. No preguntes por el formato salvo que el encargo suene claramente a documento de lectura
+larga en vez de a presentación.
 
-**P1 · Formato.** «¿Es un **deck de slides** para exponer, o un **documento** para leer en pantalla?»
+Lo único que hay que saber antes de arrancar es:
 
-**P2 · según la respuesta:**
-- Deck → «¿Para **exportar a PDF/PPTX** y enviarlo, o para **presentar en pantalla** con efectos?»
-- Documento → «¿**Punto de vista**, **informe de estado**, **playbook** o **explicativo de concepto**?»
+> «¿Para qué **cliente** es? Así aplico su co-marca.»
 
-Todo lo demás (audiencia, duración, tono) se infiere del contexto o se asume y se declara.
+Si no hay cliente (interno, propuesta genérica), se genera solo con marca nfq.
+
+Todo lo demás —audiencia, duración, tono— se infiere del contexto o se asume declarándolo.
 Si el usuario ya lo ha dicho en su mensaje, no lo repreguntes.
 
-| Respuesta | `--format` |
+| Encargo | `--format` |
 |---|---|
-| Deck para enviar | `deck` |
-| Deck para presentar en pantalla | `deck-live` |
-| Punto de vista | `pov` |
-| Informe de estado | `status` |
-| Playbook / plan | `playbook` |
+| **Cualquier presentación (por defecto)** | **`deck`** |
+| Hace falta PPTX editable para que el cliente lo retoque | `deck-export` |
+| Escenas 3D en pantalla | `deck-live` |
+| Punto de vista / thought leadership | `pov` |
+| Informe de estado periódico | `status` |
+| Plan de implantación | `playbook` |
 | Explicativo de concepto | `concept` |
 
-En caso de duda con un deck, elige `deck`. Un deck que se exporta perfecto vale más que uno
-espectacular que el cliente no puede llevarse.
+Clientes dados de alta: `brand/clients/`. Para uno nuevo bastan su SVG (que pinte con
+`currentColor`) y un JSON con su color corporativo.
 
 ## Paso 2 · Construir el argumento antes que el HTML
 
@@ -46,7 +49,7 @@ veinte slides ya maquetadas cuesta una tarde.
 ## Paso 3 · Crear el esqueleto
 
 ```bash
-node scripts/new-deck.mjs "<Título>" --format <formato>
+node scripts/new-deck.mjs "<Título>" --cliente <id>
 ```
 
 Crea `presentations/<AAAA-MM>-<slug>/` con `index.html` (plantilla + marca activa ya aplicada)
@@ -54,9 +57,13 @@ y `brief.md`. Rellena `brief.md` con lo del paso 2.
 
 ## Paso 4 · Escribir el contenido
 
-Lee `.claude/skills/html-presentation/SKILL.md` y el estilobook que corresponda **antes** de
-tocar el HTML. Ahí está la anatomía exacta de cada tipo de slide, las primitivas de CSS
-disponibles y las maquetas prohibidas.
+Lee **`.claude/skills/html-presentation/references/deck-stage-stylebook.md`** antes de tocar el
+HTML. Ahí está la anatomía exacta de cada tipo de slide, la escala tipográfica, los tokens de
+color, el catálogo de componentes y los anti-patrones.
+
+Tres reglas del formato que no se negocian: **ningún hex suelto en el markup** (usa los tokens,
+o el cambio de marca deja de funcionar), **ninguna dependencia de red** (el verificador la
+rechaza) y **ningún contador ni etiqueta de sección escrito a mano** (se calculan solos).
 
 Reglas que más se incumplen, en orden de frecuencia:
 
@@ -98,6 +105,10 @@ tema Glass o tablas grandes — y siempre que vaya a un cliente:
 npm run capturar -- presentations/<carpeta>/index.html --theme light --lang es --width 1280 --height 720
 ```
 
+En el formato principal la exportación a PDF es la impresión del navegador (Cmd+P, horizontal,
+sin márgenes): no lleva librerías de exportación a propósito, porque cargarlas desde un CDN
+rompería la promesa de fichero autosuficiente.
+
 Repite por cada idioma activo (`--lang en` puebla `_PRECAPTURED_EN`). Vuelve a ejecutarlo
 después de cualquier edición de slides: si no, la exportación entrega contenido caducado.
 
@@ -110,7 +121,8 @@ posible de este repositorio.
 ## Cambiar de marca
 
 ```bash
-npm run marca -- presentations/<carpeta>/index.html --brand <id>
+npm run marca -- presentations/<carpeta>/index.html --brand <id>     # cambiar de marca propia
+npm run marca -- presentations/<carpeta>/index.html --cliente bbva   # aplicar co-marca de cliente
 ```
 
 Los presets viven en `brand/presets/`. La marca activa está en `brand/brand.json`. Para crear

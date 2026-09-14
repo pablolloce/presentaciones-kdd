@@ -14,7 +14,8 @@
  * y permite cambiar de marca N veces sin degradar el fichero.
  *
  * Uso:
- *   node scripts/apply-brand.mjs <fichero.html> [--brand <id|ruta.json>] [--from <id>] [--dry]
+ *   node scripts/apply-brand.mjs <fichero.html> [--brand <id|ruta.json>] [--cliente <id>]
+ *                                 [--from <id>] [--dry]
  */
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { resolve, dirname, join } from "path";
@@ -30,7 +31,10 @@ const dry = args.includes("--dry");
 const target = args.find((a) => !a.startsWith("--") && a.endsWith(".html"));
 
 if (!target || !existsSync(target)) {
-  console.error("Uso: node scripts/apply-brand.mjs <fichero.html> [--brand <id|ruta.json>] [--from <id>] [--dry]");
+  console.error(
+    "Uso: node scripts/apply-brand.mjs <fichero.html> [--brand <id|ruta.json>] " +
+      "[--cliente <id>] [--from <id>] [--dry]",
+  );
   process.exit(1);
 }
 
@@ -103,9 +107,15 @@ const declared = html.match(/<html[^>]*\sdata-brand="([^"]+)"/i);
 const fromId = flag("--from") || declared?.[1] || "base";
 const from = loadBrand(fromId);
 
-if (from.id === to.id && declared) {
-  console.log(`Sin cambios: ${target} ya lleva la marca "${to.id}".`);
-  process.exit(0);
+// Reaplicar la misma marca no es un no-op: regenera los bloques de logotipo y
+// de tokens, que es justo lo que hace falta al crear un deck desde la plantilla
+// o al cambiar solo el cliente. Solo se sale pronto si no hay nada que hacer.
+if (from.id === to.id && declared && !flag("--cliente") && !args.includes("--forzar")) {
+  const bloques = /<!-- brand:(client|nfq):start -->\s*<svg/.test(html);
+  if (bloques) {
+    console.log(`Sin cambios: ${target} ya lleva la marca "${to.id}".`);
+    process.exit(0);
+  }
 }
 
 const changes = [];
@@ -197,8 +207,10 @@ if (!existsSync(logoPath)) {
     return `${reVb}\n${inner}\n${close}`;
   });
   if (before !== html) changes.push(`logo (mono): ${logoRel}`);
-} else {
-  console.warn('Aviso: no hay <symbol id="brand-iso"> en el fichero; logo no aplicado.');
+} else if (!/<!-- brand:nfq:start -->/.test(html)) {
+  // Las plantillas sobre lienzo llevan el logotipo completo en su propio
+  // bloque brand:nfq, no un <symbol>. Ahi el aviso seria ruido.
+  console.warn('Aviso: no hay <symbol id="brand-iso"> ni bloque brand:nfq; logotipo no aplicado.');
 }
 
 // 4 · Tipografías
@@ -209,6 +221,61 @@ for (const slot of ["sans", "mono"]) {
   const before = html;
   html = html.replaceAll(f, t);
   if (before !== html) changes.push(`tipografía ${slot}: ${f} → ${t}`);
+}
+
+// 4b · Lockup de marcas del deck sobre lienzo (cliente | nfq) y color corporativo
+//
+// Los dos logotipos viven en bloques marcados y se regeneran enteros. El del
+// cliente pinta con currentColor, asi que el color corporativo se inyecta como
+// token CSS --client y basta cambiarlo en brand/clients/<id>.json.
+function injectMark(html, marker, svgPath, cls, prefix) {
+  // Bandera global: los logotipos aparecen mas de una vez (barra de marca y
+  // portada). Sin la "g" solo se rellenaba el primero y la portada quedaba muda.
+  const re = new RegExp(`(<!-- brand:${marker}:start -->)([\\s\\S]*?)(<!-- brand:${marker}:end -->)`, "gi");
+  if (!existsSync(svgPath)) return { html, done: false };
+  re.lastIndex = 0;
+  if (!re.test(html)) return { html, done: false };
+  re.lastIndex = 0;
+  const src = readFileSync(svgPath, "utf-8");
+  const vb = svgViewBox(src);
+  // Cada copia del logotipo necesita ids propios. Con el mismo prefijo en las
+  // dos (barra de marca y portada), el clipPath y los gradientes quedan
+  // duplicados y el navegador resuelve url(#id) contra el primero del
+  // documento — que esta oculto en la portada — y el isotipo sale recortado.
+  let n = 0;
+  const out = html.replace(re, (_m, a, _b, c) => {
+    const inner = svgInner(src, `${prefix}${++n}-`);
+    return `${a}<svg class="${cls}" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>${c}`;
+  });
+  return { html: out, done: true };
+}
+
+const clienteRef = flag("--cliente");
+if (clienteRef) {
+  const rutas = [clienteRef, join(ROOT, clienteRef), join(ROOT, "brand/clients", `${clienteRef}.json`)];
+  const hit = rutas.find((r) => r.endsWith(".json") && existsSync(r));
+  if (!hit) throw new Error(`Cliente no encontrado: ${clienteRef}. Ver brand/clients/.`);
+  const cliente = JSON.parse(readFileSync(hit, "utf-8"));
+  const r = injectMark(html, "client", join(ROOT, cliente.logo), "client-mark", `${cliente.id}-`);
+  if (r.done) {
+    html = r.html;
+    changes.push(`logotipo de cliente: ${cliente.name}`);
+  }
+  // El color corporativo entra como token, no como hex repartido por el CSS.
+  html = html.replace(/(--client:\s*)#[0-9a-fA-F]{3,8}/, `$1${cliente.color}`);
+  html = html.replace(/(--client-dark:\s*)#[0-9a-fA-F]{3,8}/, `$1${cliente.colorOnDark || "#FFFFFF"}`);
+  html = html.replace(/(<html[^>]*?)\s*data-cliente="[^"]*"/i, "$1");
+  html = html.replace(/<html\b/i, `<html data-cliente="${cliente.id}"`);
+  changes.push(`color de cliente: ${cliente.color}`);
+}
+
+// El logotipo de nfq (isotipo + palabra) va siempre que la plantilla lo pida.
+if (to.logoWordmark) {
+  const r = injectMark(html, "nfq", join(ROOT, to.logoWordmark), "nfq-mark", `${to.id}w-`);
+  if (r.done) {
+    html = r.html;
+    changes.push(`logotipo nfq: ${to.logoWordmark}`);
+  }
 }
 
 // 5 · Sello de marca aplicada

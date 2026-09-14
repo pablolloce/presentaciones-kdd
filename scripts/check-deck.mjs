@@ -15,6 +15,14 @@ import { fileURLToPath } from "url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
+/**
+ * Recoge las presentaciones a verificar.
+ *
+ * Las carpetas "ejemplos-*" quedan fuera del barrido por defecto: son material
+ * de referencia de terceros o anterior al sistema, no entregables de este
+ * repositorio, y hacerlas fallar cada vez solo ensena a ignorar el informe.
+ * Se pueden verificar pasandolas explicitamente por argumento.
+ */
 function collect(paths) {
   if (paths.length) return paths.filter((p) => p.endsWith(".html") && existsSync(p));
   const base = join(ROOT, "presentations");
@@ -22,6 +30,7 @@ function collect(paths) {
   const out = [];
   const walk = (d) => {
     for (const e of readdirSync(d)) {
+      if (e.startsWith("ejemplos-")) continue;
       const p = join(d, e);
       if (statSync(p).isDirectory()) walk(p);
       else if (e.endsWith(".html")) out.push(p);
@@ -88,8 +97,10 @@ const RULES = [
   {
     id: "logo",
     level: "error",
-    msg: 'no se usa el isotipo (<use href="#brand-iso">)',
-    test: (h) => /href="#brand-iso"/.test(h),
+    msg: "no lleva la marca: falta el lockup (.nfq-mark) o el isotipo (#brand-iso)",
+    // Dos formatos, dos mecanismos: el deck sobre lienzo incrusta el logotipo
+    // completo en .nfq-mark; las plantillas antiguas referencian un <symbol>.
+    test: (h) => /href="#brand-iso"/.test(h) || /class="nfq-mark"/.test(h),
   },
   {
     id: "titulo",
@@ -159,12 +170,33 @@ const RULES = [
     },
   },
   {
+    // El formato principal se define por ser autosuficiente: tipografias
+    // incrustadas y ninguna peticion de red al abrirlo. Un CDN caido o una red
+    // corporativa restrictiva no pueden degradar un deck delante del cliente.
+    id: "sin-cdn",
+    level: "error",
+    msg: null,
+    onlyStage: true,
+    find: (h) => {
+      const markup = h.replace(/<script[\s\S]*?<\/script>/gi, "");
+      const hosts = new Set();
+      for (const m of markup.matchAll(/(?:src|href)="(https?:\/\/[^"/]+)/gi)) hosts.add(m[1]);
+      for (const m of markup.matchAll(/url\((["']?)(https?:\/\/[^"'/]+)/gi)) hosts.add(m[2]);
+      // El espacio de nombres SVG es una URI, no una descarga.
+      return [...hosts].filter((u) => !/^https?:\/\/www\.w3\.org$/.test(u));
+    },
+  },
+  {
     id: "exportacion",
     level: "warn",
     msg: "faltan librerías de exportación (pptxgenjs / html2canvas / jspdf)",
     test: (h) =>
       ["pptxgen", "html2canvas", "jspdf"].every((l) => h.toLowerCase().includes(l)),
     onlyDeck: true,
+    // El formato principal no las lleva a proposito: cargarlas desde un CDN
+    // rompería la promesa de fichero autosuficiente. Ahi el PDF sale por
+    // impresion del navegador.
+    skipStage: true,
   },
   {
     id: "precaptura",
@@ -230,20 +262,28 @@ for (const file of files) {
   // .slide-themed + .ex-title + .takeaway; la live usa .chrome + .divider y
   // construye el discurso con reveals. Aplicar las reglas de una a la otra
   // produce decenas de falsos positivos.
+  const modo = (html.match(/<meta[^>]+name="deck-mode"[^>]+content="([^"]+)"/i) || [])[1];
+  // Formato principal: lienzo fijo, .cover / .divider / contenido.
+  const isStage = modo === "stage";
   const isLiveDeck =
-    /<meta[^>]+name="deck-mode"[^>]+content="live"/i.test(html) ||
-    (isDeck && !new RegExp(classAttr("slide-themed")).test(html));
+    !isStage &&
+    (modo === "live" || (isDeck && !new RegExp(classAttr("slide-themed")).test(html)));
   const problems = [];
 
   for (const rule of RULES) {
     if (rule.onlyDeck && !isDeck) continue;
+    if (rule.onlyStage && !isStage) continue;
+    if (rule.skipStage && isStage) continue;
     if (rule.find) {
       const faltan = rule.find(html, file);
       if (faltan.length) {
         const muestra = faltan.slice(0, 4).join(", ") + (faltan.length > 4 ? `, +${faltan.length - 4}` : "");
         problems.push({
           level: rule.level,
-          text: `referencia ${faltan.length} recurso(s) que no viajan con el fichero: ${muestra}`,
+          text:
+            rule.id === "sin-cdn"
+              ? `depende de ${faltan.length} dominio(s) externo(s): ${muestra}`
+              : `referencia ${faltan.length} recurso(s) que no viajan con el fichero: ${muestra}`,
         });
       }
       continue;
@@ -255,6 +295,31 @@ for (const file of files) {
     const slides = extractSlides(html);
     slides.forEach((s, i) => {
       const n = i + 1;
+
+      if (isStage) {
+        const clases = s.open.match(/class="([^"]*)"/)?.[1] || "";
+        const esPortada = /(^|\s)cover(\s|$)/.test(clases);
+        const esSeparador = /(^|\s)divider(\s|$)/.test(clases);
+        // El sumario enumera, no argumenta: no le corresponde una conclusion.
+        const esSumario = /(^|\s)index(\s|$)/.test(clases);
+        if (esSeparador && !/\bdata-nav="[^"]+"/.test(s.open)) {
+          // El navegador de secciones se construye con estas etiquetas.
+          problems.push({ level: "error", text: `slide ${n}: separador sin data-nav` });
+        }
+        if (!esPortada && !esSeparador && !esSumario) {
+          if (!new RegExp(classAttr("takeaway")).test(s.body)) {
+            problems.push({ level: "error", text: `slide ${n}: falta .takeaway` });
+          }
+          if (!new RegExp(classAttr("headline")).test(s.body)) {
+            problems.push({ level: "error", text: `slide ${n}: falta .headline` });
+          }
+          if (!new RegExp(classAttr("eyebrow")).test(s.body)) {
+            problems.push({ level: "warn", text: `slide ${n}: falta .eyebrow` });
+          }
+        }
+        return;
+      }
+
       const isDark = new RegExp(`${classAttr("slide-dark")}|${classAttr("slide-div")}`).test(s.open) ||
         /\bslide-(dark|div)\b/.test(s.open.match(/class="([^"]*)"/)?.[1] || "");
       if (!/\bdata-section=/.test(s.open)) {

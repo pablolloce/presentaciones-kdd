@@ -10,8 +10,40 @@ Toda la identidad visual de las presentaciones sale de aquí. Un solo fichero ma
 | `brand.json` | La marca activa. Es la que aplica `scripts/new-deck.mjs` por defecto |
 | `logo.svg` | Isotipo a todo color, para la portada y el cierre de los decks |
 | `logo-mono.svg` | Isotipo monocromo (`currentColor`), para documentos y plantilla live |
+| `logo-wordmark.svg` | Logotipo completo (isotipo + palabra) para el lockup de los decks |
+| `fonts/embedded-fonts.css` | Fraunces, Inter y JetBrains Mono en woff2 base64 |
+| `clients/` | Logotipo y color corporativo de cada cliente |
 | `presets/` | Marcas alternativas, intercambiables con un comando |
 | `assets/` | Material corporativo de apoyo (plantilla PPTX, etc.) |
+
+## Clientes y co-marca
+
+El formato principal lleva un lockup **cliente | nfq** en la barra de marca y en la portada:
+
+```bash
+npm run marca -- presentations/<carpeta>/index.html --cliente bbva
+npm run nueva -- "Título" --cliente bbva     # ya lo aplica al crear
+```
+
+Cada cliente son dos ficheros en `clients/`:
+
+```jsonc
+// clients/bbva.json
+{
+  "id": "bbva",
+  "name": "BBVA",
+  "logo": "brand/clients/bbva.svg",
+  "color": "#001391",          // se inyecta en el token --client
+  "colorOnDark": "#FFFFFF"     // el mismo logotipo sobre separador oscuro
+}
+```
+
+El SVG debe pintar con `fill="currentColor"`: así el color lo manda el JSON y basta cambiarlo
+ahí para corregir toda la biblioteca. `apply-brand` prefija los ids de cada copia inyectada,
+porque las dos apariciones del logotipo compartiendo `clipPath` se recortan entre sí.
+
+**Dar de alta un cliente nuevo**: copia `bbva.json`, cambia nombre y color, y deja su SVG
+en `clients/`. Nada más.
 
 ## Campos de `brand.json`
 
@@ -23,20 +55,38 @@ Toda la identidad visual de las presentaciones sale de aquí. Un solo fichero ma
   "url":       "nfq.es",               // dominio que aparece en los pies de documento
   "tagline":   "Advisory para banca, seguros y wealth & asset management",
   "legalLine": "nfq advisory · Documento confidencial",
+  "surfaces": {              // superficies del lienzo
+    "paper": "#FFFFFF",
+    "bg":    "#F4F3EE",      // el crudo cálido, firma del sistema
+    "bg2":   "#ECEBE4"
+  },
   "palette": {
-    "ink":      "#0B1026",   // fondo de portadas y separadores
+    "ink":      "#14141C",   // texto principal
     "inkLight": "#1A2340",
     "inkMid":   "#2A3558",
-    "accent1":  "#F48B4A",   // -> utilidad Tailwind `brand-amber`
-    "accent2":  "#E04870",   //                      `brand-coral`
-    "accent3":  "#9B59B6",   //                      `brand-violet`
-    "accent4":  "#5B7FC7",   //                      `brand-steel`
-    "accent5":  "#3B82F6"    //                      `brand-azure`
+    "accent1":  "#EC683E",   // naranja  -> token --orange
+    "accent2":  "#D13B5F",   // coral    -> --coral
+    "accent3":  "#9B59B6",   // violeta  -> --purple
+    "accent4":  "#217BEE",   // azul     -> --blue (acento primario)
+    "accent5":  "#1C9D6C"    // verde    -> --green
   },
-  "fonts":    { "sans": "Inter", "mono": "JetBrains Mono" },
-  "logo":     "brand/logo.svg",
-  "logoMono": "brand/logo-mono.svg"
+  "fonts":    { "sans": "Inter", "serif": "Fraunces", "mono": "JetBrains Mono" },
+  "logo":         "brand/logo.svg",
+  "logoMono":     "brand/logo-mono.svg",
+  "logoWordmark": "brand/logo-wordmark.svg"
 }
+```
+
+Los cinco acentos son los colores reales del isotipo nfq, no una aproximación. El formato
+principal los expone como tokens CSS (`--blue`, `--coral`, `--orange`, `--purple`, `--green`):
+**nunca escribas un hex en el markup**, o el cambio de marca dejará de funcionar.
+
+## Tipografías
+
+`fonts/embedded-fonts.css` lleva las tres familias en woff2 base64 y `apply-brand` lo inyecta
+en el bloque `brand:fonts` de cada deck. Pesa ~400 KB y es lo que hace que el fichero sea
+autosuficiente: sin él el deck depende de un CDN y se degrada en cuanto la red del cliente
+bloquea Google Fonts.
 ```
 
 ## Aplicar una marca

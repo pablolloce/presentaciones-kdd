@@ -1,0 +1,8 @@
+{
+  "id": "bbva",
+  "name": "BBVA",
+  "logo": "brand/clients/bbva.svg",
+  "color": "#001391",
+  "colorOnDark": "#FFFFFF",
+  "notas": "BBVA Core Blue. El logotipo pinta con currentColor; sobre fondo oscuro se usa colorOnDark."
+}

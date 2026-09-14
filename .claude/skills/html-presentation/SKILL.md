@@ -10,7 +10,25 @@ servidor. Estética de consultoría, marca definida en `brand/brand.json` y apli
 > Las plantillas de `references/` son **solo lectura**. Para un encargo concreto se copian con
 > `node scripts/new-deck.mjs` y se edita la copia en `presentations/`.
 
-## STEP 0 — Choose template upfront (MANDATORY)
+## FORMATO PRINCIPAL — deck sobre lienzo
+
+**Por defecto, todo deck de este repositorio usa `references/deck-stage.html`.** Lienzo fijo de
+1600×900 escalado al viewport, tipografías Fraunces + Inter + JetBrains Mono incrustadas, cero
+dependencias de red, co-marca cliente | nfq.
+
+Antes de escribir o editar un deck con este formato, lee
+**`references/deck-stage-stylebook.md`**: ahí está la anatomía de slide, la escala tipográfica,
+los tokens de color, el catálogo de componentes y los anti-patrones.
+
+```bash
+node scripts/new-deck.mjs "<Título>" --format deck --cliente <id>
+```
+
+Los formatos que siguen son secundarios y solo se eligen cuando el encargo lo pide de forma
+explícita: `deck-export` cuando hace falta exportación a PPTX editable, `deck-live` para
+escenas 3D, y los cuatro `doc-*` para documentos de lectura larga.
+
+## STEP 0 — Choose template upfront (secondary formats)
 
 Before reading anything else, ask the user TWO questions in order:
 
@@ -27,7 +45,8 @@ Then pick the matching template:
 
 | User intent | Template |
 |---|---|
-| Deck · PDF/PPTX export, client deliverable | `references/presentation-template.html` |
+| **Deck · cualquier presentación (por defecto)** | **`references/deck-stage.html`** |
+| Deck · hace falta PPTX editable | `references/presentation-template.html` |
 | Deck · Live on-screen, pitch, demo, conference | `references/presentation-template-live.html` |
 | Doc · POV / thought leadership | `references/doc-pov.html` |
 | Doc · Weekly client status report | `references/doc-status.html` |
@@ -254,6 +273,8 @@ Two reference files, paired with the matching template (see STEP 0):
 - Never mix versions: addons must come from the same pinned three.js release as the core.
 
 ## Additional references
+- `references/deck-stage.html` — **plantilla principal**: deck sobre lienzo 1600×900, autosuficiente.
+- `references/deck-stage-stylebook.md` — **su estilobook**. Lectura obligatoria antes de tocar un deck.
 - `references/design-system.md` — shared visual system, component library
 - `references/stack-and-constraints.md` — Tailwind CDN rule, logo handling
 - `references/interaction-patterns.md` — navigation, animation details
