@@ -31,19 +31,34 @@ function collect(paths) {
   return out;
 }
 
-/** Extrae cada <div class="slide ..."> ... con su contenido, por conteo de divs. */
+/**
+ * Extrae cada elemento con clase "slide" junto con su contenido, equilibrando
+ * la etiqueta de apertura con su cierre.
+ *
+ * No se asume <div>: hay decks que maquetan cada slide como <section class="slide">
+ * o <article class="slide">. Anclar el analisis a una sola etiqueta hacia que el
+ * verificador informara de "0 slides" y se saltara en silencio todas las reglas
+ * por slide, que es justo lo contrario de lo que debe hacer.
+ */
 function extractSlides(html) {
   const slides = [];
-  const re = /<div\b[^>]*class="[^"]*\bslide\b[^"]*"[^>]*>/gi;
+  const re = /<([a-z][a-z0-9]*)\b[^>]*class="[^"]*\bslide\b[^"]*"[^>]*>/gi;
   let m;
   while ((m = re.exec(html))) {
+    const tag = m[1].toLowerCase();
+    // Una etiqueta vacia (<div ... />) no abre nivel: se cierra en si misma.
+    if (m[0].endsWith("/>")) {
+      slides.push({ open: m[0], body: m[0] });
+      continue;
+    }
     let depth = 1;
     let i = m.index + m[0].length;
-    const tagRe = /<\/?div\b[^>]*>/gi;
+    const tagRe = new RegExp(`<(/?)${tag}\\b[^>]*>`, "gi");
     tagRe.lastIndex = i;
     let t;
     while (depth > 0 && (t = tagRe.exec(html))) {
-      depth += t[0].startsWith("</") ? -1 : 1;
+      if (t[0].endsWith("/>")) continue;
+      depth += t[1] === "/" ? -1 : 1;
       i = tagRe.lastIndex;
     }
     slides.push({ open: m[0], body: html.slice(m.index, i) });
@@ -135,6 +150,27 @@ const RULES = [
   },
 ];
 
+/**
+ * Agrupa los problemas repetidos por slide en una sola linea.
+ * Un deck de 25 slides construido con otra anatomia genera 25 lineas identicas
+ * salvo el numero, que ahogan el resto del informe.
+ */
+function collapse(list) {
+  const groups = new Map();
+  for (const p of list) {
+    const m = p.text.match(/^slide (\d+): (.*)$/);
+    const key = m ? m[2] : p.text;
+    if (!groups.has(key)) groups.set(key, []);
+    if (m) groups.get(key).push(m[1]);
+  }
+  return [...groups].map(([key, nums]) => {
+    if (!nums.length) return key;
+    if (nums.length === 1) return `slide ${nums[0]}: ${key}`;
+    const muestra = nums.length > 6 ? `${nums.slice(0, 6).join(", ")}…` : nums.join(", ");
+    return `${key} — en ${nums.length} slides (${muestra})`;
+  });
+}
+
 let totalErr = 0;
 let totalWarn = 0;
 const files = collect(process.argv.slice(2).filter((a) => !a.startsWith("--")));
@@ -194,8 +230,9 @@ for (const file of files) {
     console.log(`OK    ${rel}`);
   } else {
     console.log(`${errs.length ? "FALLA" : "AVISO"} ${rel}`);
-    errs.forEach((p) => console.log(`  error  ${p.text}`));
-    warns.forEach((p) => console.log(`  aviso  ${p.text}`));
+    for (const [level, list] of [["error", errs], ["aviso", warns]]) {
+      for (const line of collapse(list)) console.log(`  ${level}  ${line}`);
+    }
   }
 }
 
