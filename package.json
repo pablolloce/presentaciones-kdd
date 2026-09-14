@@ -1,0 +1,18 @@
+{
+  "name": "presentaciones-kdd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sistema de presentaciones corporativas en HTML: plantillas, marca y exportación a PDF/PPTX.",
+  "scripts": {
+    "nueva": "node scripts/new-deck.mjs",
+    "marca": "node scripts/apply-brand.mjs",
+    "capturar": "node scripts/capture-slides.mjs",
+    "miniatura": "node scripts/capture-thumb.mjs",
+    "verificar": "node scripts/check-deck.mjs",
+    "servir": "npx --yes serve presentations -p 8765 --no-clipboard"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
+  }
+}

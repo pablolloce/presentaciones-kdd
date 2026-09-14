@@ -1,0 +1,24 @@
+{
+  "id": "nfq",
+  "name": "nfq advisory",
+  "nameShort": "NFQ",
+  "tagline": "Advisory para banca, seguros y wealth & asset management",
+  "legalLine": "nfq advisory · Documento confidencial",
+  "palette": {
+    "ink": "#0B1026",
+    "inkLight": "#1A2340",
+    "inkMid": "#2A3558",
+    "accent1": "#F48B4A",
+    "accent2": "#E04870",
+    "accent3": "#9B59B6",
+    "accent4": "#5B7FC7",
+    "accent5": "#3B82F6"
+  },
+  "fonts": {
+    "sans": "Inter",
+    "mono": "JetBrains Mono"
+  },
+  "url": "nfq.es",
+  "logo": "brand/presets/nfq-logo.svg",
+  "logoMono": "brand/presets/nfq-logo.svg"
+}

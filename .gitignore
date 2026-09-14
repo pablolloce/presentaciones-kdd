@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+
+# Metadatos de macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Artefactos de exportación local
+*.local.html
+/presentations/**/*.pdf
+/presentations/**/*.pptx
+/tmp/

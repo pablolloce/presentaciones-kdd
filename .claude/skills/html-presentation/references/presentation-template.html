@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<!--
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │  TEMPLATE: presentation-template.html  (MODE: EXPORT-SAFE)              │
+  │                                                                         │
+  │  Use this when the deck must export to PDF/IMG/PPTX via                 │
+  │  capture-slides.mjs. Three.js usage is restricted to scenes             │
+  │  documented in references/threejs-scenes.md (no post-processing,        │
+  │  no GLTF loaders, no OrbitControls).                                    │
+  │                                                                         │
+  │  For live-only decks with bloom, environment maps, GLTF, or             │
+  │  user-driven cameras, use presentation-template-live.html instead.      │
+  │                                                                         │
+  │  STRUCTURAL CHANGES (slide markup, theme tokens, nav, exports) MUST     │
+  │  be mirrored in presentation-template-live.html to prevent drift.       │
+  └─────────────────────────────────────────────────────────────────────────┘
+-->
+<html data-brand="nfq" lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="deck-mode" content="export">
+<title>Nombre del Proyecto — NFQ Advisory</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+// El CDN de Tailwind puede estar bloqueado (red corporativa, portatil sin
+// conexion). Sin esta guarda el script lanza y aborta el resto del <head>.
+if (typeof tailwind !== "undefined") tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['"JetBrains Mono"','monospace']},colors:{navy:{DEFAULT:'#0B1026',light:'#1A2340',mid:'#2A3558'},slate:{50:'#F8F9FB',100:'#F0F1F5',200:'#E2E4EB',300:'#C8CBD6',400:'#9DA2B3',500:'#6B7185',600:'#4A4F63'},brand:{amber:'#F48B4A',coral:'#E04870',violet:'#9B59B6',steel:'#5B7FC7',azure:'#3B82F6'}}}}}
+</script>
+<style>
+  /* ─── Theme CSS Variables ─── */
+  :root {
+    --sl-bg: #FFFFFF;
+    --sl-bg-card: #FFFFFF;
+    --sl-bg-alt: #F8F9FB;
+    --sl-text: #0B1026;
+    --sl-text-sec: #6B7185;
+    --sl-text-muted: #9DA2B3;
+    --sl-accent: #0B1026;
+    --sl-progress: #0B1026;
+    --sl-border: #E2E4EB;
+    --sl-nav-bg: #0B1026;
+    --sl-nav-text: #9DA2B3;
+    --sl-dark-bg: #0B1026;
+    --sl-dark-accent: #0B1026;
+    --sl-dark-text-sec: rgba(255,255,255,0.7);
+    --sl-dark-text-mut: rgba(255,255,255,0.4);
+    --sl-dark-module-bg: rgba(255,255,255,0.06);
+  }
+
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:'Inter',system-ui,sans-serif;background:#FFF;color:#0B1026;overflow:hidden}
+  .deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+  .slide{position:absolute;inset:0;opacity:0;transform:translateX(40px);transition:opacity .45s cubic-bezier(.25,1,.5,1),transform .45s cubic-bezier(.25,1,.5,1);display:flex;align-items:center;justify-content:center;padding:3.5rem 5.5rem;pointer-events:none}
+  .slide.active{opacity:1;transform:translateX(0);z-index:10;pointer-events:auto}
+  .slide.prev{opacity:0;transform:translateX(-40px)}
+
+  /* Themed slides use CSS variables */
+  .slide-themed{background:var(--sl-bg);color:var(--sl-text);transition:background-color 0.3s ease,color 0.3s ease}
+  .slide-themed .ex-num{color:var(--sl-text-muted)}
+  .slide-themed .ex-title{color:var(--sl-text)}
+  .slide-themed .ex-sub{color:var(--sl-text-sec)}
+  .slide-themed .box{border-color:var(--sl-border);background:var(--sl-bg-card)}
+  .slide-themed .box-m{border-color:var(--sl-border);background:var(--sl-bg-alt)}
+  .slide-themed .takeaway{border-top-color:var(--sl-accent)}
+  .slide-themed .takeaway p{color:var(--sl-text)}
+  .slide-themed .kpi-label{color:var(--sl-text-muted)}
+  .slide-themed .row-l{border-bottom-color:var(--sl-border)}
+  .slide-themed .tbl-header{background:var(--sl-bg-alt);color:var(--sl-text-muted)}
+  .slide-themed .tbl-row{border-bottom-color:var(--sl-border);color:var(--sl-text-sec)}
+  .slide-themed .tbl-row span.val{color:var(--sl-text)}
+  .slide-themed .screenshot-frame{border-color:var(--sl-border)}
+  .slide-themed .browser-bar{background:var(--sl-bg-alt);border-bottom-color:var(--sl-border)}
+  .slide-themed .flow-box{border-color:var(--sl-border);background:var(--sl-bg-card);color:var(--sl-text)}
+  .slide-themed .flow-conn{background:var(--sl-text-muted)}
+  .slide-themed .flow-conn::after{border-left-color:var(--sl-text-muted)}
+  .slide-themed .feat-box{border-color:var(--sl-border);background:var(--sl-bg-card)}
+  .slide-themed .feat-title{color:var(--sl-text)}
+  .slide-themed .feat-desc{color:var(--sl-text-sec)}
+
+  /* Dark slides — cover, divider, closing (theme-aware) */
+  .slide-dark{background:var(--sl-dark-bg);color:#FFF}
+  .slide-dark .ex-num{color:var(--sl-dark-text-mut)}.slide-dark .ex-title{color:#FFF}.slide-dark .ex-sub{color:var(--sl-dark-text-sec)}
+  .slide-div{background:var(--sl-dark-bg);color:#FFF}
+  .slide-div .ex-sub,.slide-div p{color:var(--sl-dark-text-sec)}
+  .slide-dark .takeaway{border-top-color:var(--sl-dark-accent)}
+
+  #progress-track{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;background:#F0F1F5}
+  #progress-fill{height:100%;width:0;transition:width .4s ease;background:var(--sl-progress)}
+  #section-tag{display:none}
+  .nav-bar{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;gap:.75rem;background:var(--sl-nav-bg);border-radius:6px;padding:.4rem 1.25rem;box-shadow:0 2px 12px rgba(11,16,38,.15)}
+  .nav-bar button{background:none;border:none;color:var(--sl-nav-text);cursor:pointer;font-size:.85rem;padding:.2rem .35rem;transition:color .15s;font-family:'Inter',sans-serif}
+  .nav-bar button:hover{color:#FFF}
+  .nav-bar .cnt{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.5);min-width:3.5rem;text-align:center}
+  .nav-bar .sep{width:1px;height:14px;background:rgba(255,255,255,.15)}
+  .theme-btn{font-size:.55rem !important;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem !important;border-radius:3px;transition:all .15s !important}
+  .theme-btn.active{background:rgba(255,255,255,.15);color:#FFF !important}
+  #kb-hint{position:fixed;bottom:4.25rem;left:50%;transform:translateX(-50%);z-index:200;font-size:.55rem;color:#9DA2B3;font-family:'JetBrains Mono';transition:opacity .8s;letter-spacing:.08em}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .ex-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9DA2B3;margin-bottom:.75rem}
+  .ex-title{font-size:clamp(1.4rem,2.6vw,2rem);font-weight:700;line-height:1.2;color:#0B1026;margin-bottom:.5rem}
+  .ex-sub{font-size:.85rem;color:#6B7185;line-height:1.6;max-width:38rem}
+  .box{border:1px solid #E2E4EB;border-radius:4px;padding:1.25rem;background:#FFF}
+  .box-m{border:1px solid #E2E4EB;border-radius:4px;padding:1.25rem;background:#F8F9FB}
+  .takeaway{border-top:2px solid var(--sl-accent);padding-top:.85rem;margin-top:1.25rem}
+  .takeaway p{font-size:.75rem;font-weight:600;color:#0B1026}
+  .kpi{font-family:'JetBrains Mono',monospace;font-weight:700;line-height:1}
+  .kpi-label{font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:#9DA2B3;margin-top:.3rem}
+  .tag{display:inline-block;padding:.15rem .5rem;border-radius:3px;font-size:.55rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .row-l{border-bottom:1px solid #E2E4EB;padding-bottom:.6rem;margin-bottom:.6rem}
+  .row-l:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+  .ico-s{width:1.75rem;height:1.75rem;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ico-s svg{width:.9rem;height:.9rem;stroke-width:1.75;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .si{width:100%;max-width:68rem}
+
+  /* ─── Visualization helpers ─── */
+  .viz-node{display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:.6rem;font-weight:600;text-align:center;line-height:1.2}
+  .viz-arrow{color:#C8CBD6;font-size:.75rem;display:flex;align-items:center}
+  .viz-line{background:#E2E4EB}
+  .viz-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+  /* Flow connector */
+  .flow-h{display:flex;align-items:center;gap:0}
+  .flow-box{padding:.35rem .7rem;border:1.5px solid #E2E4EB;border-radius:4px;font-size:.6rem;font-weight:600;background:#FFF;white-space:nowrap;position:relative;z-index:1}
+  .flow-conn{width:24px;height:1.5px;background:#C8CBD6;position:relative}
+  .flow-conn::after{content:'';position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left:5px solid #C8CBD6}
+
+  /* ─── Architecture layers ─── */
+  .arch-layer{padding:.6rem 1rem;border:1.5px solid var(--sl-border);border-radius:4px;background:var(--sl-bg-card);font-size:.6rem;font-weight:600;text-align:center;margin-bottom:.35rem}
+  .arch-layer:last-child{margin-bottom:0}
+  .arch-conn{display:flex;justify-content:center;padding:.15rem 0;color:var(--sl-text-muted);font-size:.55rem}
+
+  /* ─── Screenshot browser frame ─── */
+  .screenshot-frame{border:1px solid #E2E4EB;border-radius:8px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+  .screenshot-frame .browser-bar{background:#F8F9FB;padding:8px 12px;display:flex;gap:6px;align-items:center;border-bottom:1px solid #E2E4EB}
+  .screenshot-frame .dot{width:8px;height:8px;border-radius:50%}
+  .screenshot-frame .dot-red{background:#FF5F57}
+  .screenshot-frame .dot-yellow{background:#FFBD2E}
+  .screenshot-frame .dot-green{background:#28C840}
+
+  /* ─── Data table ─── */
+  .data-tbl{width:100%;border-collapse:collapse;font-size:.65rem}
+  .data-tbl th{text-align:left;padding:.5rem .6rem;font-size:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;background:var(--sl-bg-alt);color:var(--sl-text-muted);border-bottom:1px solid var(--sl-border)}
+  .data-tbl td{padding:.45rem .6rem;border-bottom:1px solid var(--sl-border);color:var(--sl-text-sec)}
+  .data-tbl td.val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--sl-text);font-size:.6rem}
+  .data-tbl tr:last-child td{border-bottom:none}
+  .tbl-wrap{border:1px solid var(--sl-border);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
+
+  /* ─── Matrix / Multi-axis grid ─── */
+  .matrix-wrap{border:1px solid var(--sl-border);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
+  .matrix-wrap .m-head{background:var(--sl-bg-alt);padding:10px 12px;font-weight:700;text-align:center}
+  .matrix-wrap .m-cell{background:var(--sl-bg-card);padding:10px 12px;text-align:center;border-top:1px solid var(--sl-border)}
+  .matrix-wrap .m-row-head{background:var(--sl-bg-card);padding:10px 14px;font-weight:600;text-align:left;border-top:1px solid var(--sl-border)}
+
+  /* ─── Section Navigator ─── */
+  .sec-nav{position:fixed;top:1rem;left:0;right:0;z-index:190;display:flex;align-items:center;justify-content:center;gap:0;padding:6px 5.5rem;background:transparent;border-bottom:none;transition:all .3s;transform:translateY(-100%)}
+  .sec-nav.visible{transform:translateY(0)}
+  .sec-nav-btn{background:none;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;color:var(--sl-text-muted);transition:all .15s;white-space:nowrap;position:relative}
+  .sec-nav-btn:hover{color:var(--sl-text)}
+  .sec-nav-btn.active{color:var(--sl-accent);font-weight:600}
+  .sec-nav-btn.active::after{content:'';position:absolute;bottom:0;left:10px;right:10px;height:2px;background:var(--sl-accent)}
+  .sec-nav.on-dark{background:transparent;border-bottom:none}
+  .sec-nav.on-dark .sec-nav-btn{color:rgba(255,255,255,.3)}
+  .sec-nav.on-dark .sec-nav-btn:hover{color:rgba(255,255,255,.7)}
+  .sec-nav.on-dark .sec-nav-btn.active{color:#fff}
+  .sec-nav.on-dark .sec-nav-btn.active::after{background:#fff}
+
+  /* ─── Export button styles ─── */
+  .export-btn{font-size:.5rem !important;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .45rem !important;border-radius:3px;transition:all .15s !important;opacity:.6}
+  .export-btn:hover{opacity:1;background:rgba(255,255,255,.12) !important}
+  .export-btn svg{vertical-align:middle;margin-right:3px}
+
+  /* ─── Glass mode — Apple Liquid Glass ─── */
+  /* Glass background — Minimal (Apple Liquid Glass) */
+  body.glass-active{
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(100,120,160,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 60%, rgba(80,100,140,0.15) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 80%, rgba(110,130,170,0.1) 0%, transparent 40%),
+      linear-gradient(145deg, #d8dae0 0%, #d0d4dc 50%, #d4d6de 100%);
+  }
+  /* Liquid glass cards — ultra-transparent, color comes from background */
+  body.glass-active .slide-themed .box,
+  body.glass-active .slide-themed .box-m,
+  body.glass-active .slide-themed .feat-box{
+    background:rgba(255,255,255,0.18) !important;
+    border:0.5px solid rgba(255,255,255,0.35) !important;
+    backdrop-filter:blur(20px) saturate(120%) brightness(1.08);
+    -webkit-backdrop-filter:blur(20px) saturate(120%) brightness(1.08);
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.45);
+    border-radius:22px !important;
+  }
+  /* Flow/arch elements */
+  body.glass-active .flow-box,
+  body.glass-active .arch-layer{
+    background:rgba(255,255,255,0.2) !important;
+    border:0.5px solid rgba(255,255,255,0.3) !important;
+    backdrop-filter:blur(16px) saturate(120%) brightness(1.06);
+    -webkit-backdrop-filter:blur(16px) saturate(120%) brightness(1.06);
+    box-shadow:0 2px 10px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.35);
+    border-radius:14px !important;
+  }
+  /* Screenshot frame */
+  body.glass-active .slide-themed .screenshot-frame{
+    border:0.5px solid rgba(255,255,255,0.3) !important;
+    background:rgba(255,255,255,0.15) !important;
+    backdrop-filter:blur(16px) brightness(1.05);
+    -webkit-backdrop-filter:blur(16px) brightness(1.05);
+    box-shadow:0 4px 24px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.3);
+    border-radius:22px !important;
+    overflow:hidden;
+  }
+  body.glass-active .slide-themed .browser-bar{
+    background:rgba(255,255,255,0.12) !important;
+    border-bottom:0.5px solid rgba(255,255,255,0.15) !important;
+  }
+  /* Nav bar — liquid glass pill */
+  body.glass-active .nav-bar{
+    background:rgba(255,255,255,0.2) !important;
+    backdrop-filter:blur(20px) saturate(120%) brightness(1.08);
+    -webkit-backdrop-filter:blur(20px) saturate(120%) brightness(1.08);
+    border:0.5px solid rgba(255,255,255,0.35);
+    box-shadow:0 2px 14px rgba(0,0,0,0.05),inset 0 1px 0 rgba(255,255,255,0.35);
+    color:#3d4255 !important;
+  }
+  body.glass-active .nav-bar button{color:#5a6070 !important}
+  body.glass-active .nav-bar button:hover{color:#1a1d28 !important}
+  body.glass-active .nav-bar .cnt{color:rgba(0,0,0,0.35) !important}
+  body.glass-active .nav-bar .sep{background:rgba(0,0,0,0.1) !important}
+  body.glass-active .theme-btn.active{background:rgba(0,0,0,0.08) !important;color:#1a1d28 !important}
+  /* Data table */
+  body.glass-active .slide-themed .data-tbl th{
+    background:rgba(255,255,255,0.25) !important;
+    border-bottom-color:rgba(0,0,0,0.05) !important;
+    color:#6b7085 !important;
+  }
+  body.glass-active .slide-themed .data-tbl td{
+    border-bottom-color:rgba(0,0,0,0.04) !important;
+    color:#3d4255 !important;
+  }
+  body.glass-active .slide-themed .row-l{
+    border-bottom-color:rgba(0,0,0,0.05) !important;
+  }
+  body.glass-active .tag{
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  /* Takeaway */
+  body.glass-active .slide-themed .takeaway{
+    border-top-color:rgba(11,16,38,0.15) !important;
+  }
+  body.glass-active .slide-themed .kpi-label{
+    color:#6b7085 !important;
+  }
+  /* Glass: matrix-wrap, tbl-wrap, sec-nav */
+  body.glass-active .matrix-wrap,body.glass-active .tbl-wrap{background:rgba(255,255,255,0.12) !important;border:0.5px solid rgba(255,255,255,0.3) !important;backdrop-filter:blur(16px) saturate(120%) brightness(1.06);-webkit-backdrop-filter:blur(16px) saturate(120%) brightness(1.06);box-shadow:0 4px 20px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.4);border-radius:22px !important}
+  body.glass-active .matrix-wrap .m-head{background:rgba(255,255,255,0.15) !important;border-color:rgba(0,0,0,0.04) !important}
+  body.glass-active .matrix-wrap .m-cell,body.glass-active .matrix-wrap .m-row-head{background:transparent !important;border-color:rgba(0,0,0,0.04) !important}
+  body.glass-active .tbl-wrap .data-tbl th{background:rgba(255,255,255,0.15) !important;border-color:rgba(0,0,0,0.04) !important}
+  body.glass-active .tbl-wrap .data-tbl td{background:transparent !important;border-color:rgba(0,0,0,0.04) !important}
+  body.glass-active .sec-nav{background:transparent !important;border-bottom:none !important}
+  body.glass-active .sec-nav .sec-nav-btn{color:#6b7085 !important}
+  body.glass-active .sec-nav .sec-nav-btn:hover{color:#1a1d28 !important}
+  body.glass-active .sec-nav .sec-nav-btn.active{color:#0B1026 !important}
+  body.glass-active .sec-nav .sec-nav-btn.active::after{background:#0B1026 !important}
+
+  /* ─── Divider & cover geometric backgrounds ─── */
+  /* Note: .slide already has position:absolute — pseudo-elements work within it */
+  .slide-div::before {
+    content: '';position: absolute;inset: 0;
+    background:
+      radial-gradient(ellipse 50% 70% at 85% 20%, rgba(244,139,74,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 10% 80%, rgba(155,89,182,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 50% 50%, rgba(91,127,199,0.03) 0%, transparent 60%);
+    pointer-events: none;z-index: 0;
+  }
+  .slide-div::after {
+    content: '';position: absolute;bottom: 3rem;right: 5.5rem;
+    width: 80px;height: 80px;
+    border-right: 1.5px solid rgba(255,255,255,0.06);
+    border-bottom: 1.5px solid rgba(255,255,255,0.06);
+    pointer-events: none;z-index: 0;
+  }
+  .slide-dark::before {
+    content: '';position: absolute;inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 90% 30%, rgba(244,139,74,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 5% 90%, rgba(91,127,199,0.04) 0%, transparent 50%);
+    pointer-events: none;z-index: 0;
+  }
+  .slide-div .si, .slide-dark .si { position: relative; z-index: 1; }
+  body.glass-active .slide-div::before {
+    background:
+      radial-gradient(ellipse 50% 70% at 85% 20%, rgba(83,221,252,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 10% 80%, rgba(155,89,182,0.04) 0%, transparent 70%);
+  }
+
+  /* ─── Staggered entrance animations ─── */
+  .slide.active .box,
+  .slide.active .feat-box,
+  .slide.active .flow-box,
+  .slide.active .arch-layer {
+    animation: cardReveal 0.5s cubic-bezier(.25,1,.5,1) both;
+  }
+  .slide.active .box:nth-child(1), .slide.active .feat-box:nth-child(1) { animation-delay: 0.08s; }
+  .slide.active .box:nth-child(2), .slide.active .feat-box:nth-child(2) { animation-delay: 0.16s; }
+  .slide.active .box:nth-child(3), .slide.active .feat-box:nth-child(3) { animation-delay: 0.24s; }
+  .slide.active .box:nth-child(4), .slide.active .feat-box:nth-child(4) { animation-delay: 0.32s; }
+  .slide.active .flow-box:nth-child(1) { animation-delay: 0.1s; }
+  .slide.active .flow-box:nth-child(3) { animation-delay: 0.2s; }
+  .slide.active .flow-box:nth-child(5) { animation-delay: 0.3s; }
+  .slide.active .flow-box:nth-child(7) { animation-delay: 0.4s; }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slide.active .box, .slide.active .feat-box,
+    .slide.active .flow-box, .slide.active .arch-layer { animation: none; }
+  }
+  body.exporting .slide .box, body.exporting .slide .feat-box,
+  body.exporting .slide .flow-box, body.exporting .slide .arch-layer {
+    animation: none !important; opacity: 1 !important; transform: none !important;
+  }
+  /* Anchor screenshot/annex-style slides at the top during export — short content
+     looks correctly placed instead of vertically centered on the page. */
+  body.exporting .slide[data-section="Anexo"],
+  body.exporting .slide[data-section="Annex"],
+  body.exporting .slide[data-section="Screenshots"] {
+    align-items: flex-start !important;
+    padding-top: 3rem !important;
+  }
+
+  /* ─── Table row hover ─── */
+  .data-tbl tbody tr { transition: background-color 0.15s ease; }
+  .slide-themed .data-tbl tbody tr:hover { background-color: var(--sl-bg-alt); }
+  body.glass-active .data-tbl tbody tr:hover { background-color: rgba(255,255,255,0.06); }
+
+  /* ─── Card hover lift ─── */
+  .box, .feat-box { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .box:hover, .feat-box:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  @media print { .box:hover, .feat-box:hover { transform: none; box-shadow: none; } }
+
+  /* ─── Progress bar visualization ─── */
+  /* Usage: <div class="bar-wrap"><span class="bar-label">IRRBB</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:#F48B4A"></div></div><span class="bar-value" style="color:#F48B4A">85%</span></div> */
+  .bar-wrap { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+  .bar-label { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sl-text-sec); min-width: 5rem; }
+  .bar-track { flex: 1; height: 6px; background: var(--sl-bg-alt); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(.25,1,.5,1); }
+  .bar-value { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700; min-width: 2.5rem; text-align: right; }
+
+  /* ─── Edit mode ─── */
+  .edit-mode .slide.active [contenteditable="true"]{outline:1px dashed var(--sl-accent);outline-offset:3px;cursor:text;border-radius:2px}
+  .edit-mode .slide-dark [contenteditable="true"]{outline-color:rgba(255,255,255,.35)}
+  .edit-mode .slide-div [contenteditable="true"]{outline-color:rgba(255,255,255,.35)}
+  .export-btn.active-tool{opacity:1 !important;background:rgba(255,255,255,.2) !important;color:#FFF !important}
+
+  /* ─── Post-it notes ─── */
+  .postit{position:absolute;width:170px;min-height:80px;background:#fef08a;border-radius:2px;padding:26px 12px 12px;font-size:.7rem;font-family:var(--brand-font-sans);color:#1a1a1a;box-shadow:2px 4px 12px rgba(0,0,0,.18);cursor:grab;z-index:100;line-height:1.4;user-select:none}
+  .postit:nth-child(odd){transform:rotate(-1.5deg)}
+  .postit:nth-child(even){transform:rotate(1deg)}
+  .postit.dragging{cursor:grabbing;box-shadow:4px 8px 20px rgba(0,0,0,.25);z-index:150}
+  .postit .postit-close{position:absolute;top:5px;right:8px;cursor:pointer;font-size:.75rem;color:#999;font-weight:bold;line-height:1;padding:2px}
+  .postit .postit-close:hover{color:#e11d48}
+  .postit .postit-text{outline:none;min-height:36px;word-break:break-word}
+  .postit .postit-label{position:absolute;top:6px;left:10px;font-size:.45rem;text-transform:uppercase;letter-spacing:.08em;color:#b8860b;font-weight:600}
+  .notes-hint{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:300;background:rgba(0,0,0,.7);color:#fff;padding:12px 24px;border-radius:6px;font-size:.75rem;pointer-events:none;opacity:0;transition:opacity .3s}
+  .notes-hint.show{opacity:1}
+
+  /* ─── Print / PDF ─── */
+  @media print {
+    @page { size: landscape; margin: 0; }
+    body { overflow: visible !important; background: #fff !important; }
+    body.glass-active { background: #fff !important; }
+    .nav-bar, #kb-hint, #progress-track, #section-tag, #slide-logo, .sec-nav,
+    .notes-hint, .postit, #export-overlay { display: none !important; }
+    .deck { position: static !important; width: auto !important; height: auto !important; overflow: visible !important; }
+    .slide {
+      position: static !important; opacity: 1 !important; transform: none !important;
+      pointer-events: auto !important; display: flex !important;
+      width: 100vw !important; height: 100vh !important;
+      page-break-after: always; break-after: page;
+      page-break-inside: avoid; break-inside: avoid;
+    }
+    .slide:last-child { page-break-after: auto; break-after: auto; }
+    /* Force light theme for readability */
+    .slide-themed { background: #fff !important; color: #0B1026 !important; }
+    .slide-themed .ex-num { color: #9DA2B3 !important; }
+    .slide-themed .ex-title { color: #0B1026 !important; }
+    .slide-themed .ex-sub { color: #6B7185 !important; }
+    .slide-themed .box, .slide-themed .feat-box { background: #fff !important; border-color: #E2E4EB !important; }
+    .slide-themed .box-m { background: #F8F9FB !important; border-color: #E2E4EB !important; }
+    .slide-themed .takeaway { border-top-color: #0B1026 !important; }
+    .slide-themed .takeaway p { color: #0B1026 !important; }
+    .slide-themed .kpi-label { color: #9DA2B3 !important; }
+    .slide-themed .screenshot-frame { border-color: #E2E4EB !important; }
+    .slide-themed .browser-bar { background: #F8F9FB !important; border-color: #E2E4EB !important; }
+    .slide-themed .flow-box { background: #fff !important; border-color: #E2E4EB !important; color: #0B1026 !important; }
+    .slide-themed .data-tbl th { background: #F8F9FB !important; color: #9DA2B3 !important; }
+    .slide-themed .data-tbl td { color: #6B7185 !important; }
+    .slide-themed .row-l { border-bottom-color: #E2E4EB !important; }
+  }
+</style>
+<!-- Export libraries -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+</head>
+<body>
+<div id="progress-track"><div id="progress-fill"></div></div>
+<div id="slide-logo" style="position:fixed;top:1.5rem;left:3rem;z-index:200;opacity:0.7;transition:opacity .3s">
+  <svg width="20" height="25"><use href="#brand-iso"/></svg>
+</div>
+<div id="section-tag" style="left:5.5rem"></div>
+<!-- brand:logo:start — bloque regenerado por scripts/apply-brand.mjs, no editar a mano -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <linearGradient id="ng1" x1="16.08" y1="5222.41" x2="16.08" y2="5313.37" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#ec683e"/><stop offset="1" stop-color="#d13b5f"/>
+    </linearGradient>
+    <linearGradient id="ng2" x1="16.08" y1="5252.89" x2="16.08" y2="5329.29" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="ng3" x1="14.82" y1="5318" x2="81.61" y2="5220.63" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#d13b5f"/><stop offset="1" stop-color="#217bee"/>
+    </linearGradient>
+    <linearGradient id="ng4" x1="46.31" y1="5272.31" x2="80.07" y2="5219.19" gradientTransform="translate(0 5329.63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <symbol id="brand-iso" viewBox="0 0 96.64 120.34">
+      <path fill="url(#ng1)" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+      <path fill="url(#ng2)" fill-opacity=".3" d="M32.16,101.78L0,120.34V18.9L32.15.34v101.44Z"/>
+      <path fill="url(#ng3)" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+      <path fill="url(#ng4)" fill-opacity=".2" d="M96.46,101.78l-32.16,18.56L0,18.9,32.15.34l64.31,101.44Z"/>
+      <path fill="#217bee" d="M96.46,101.78l-32.16,18.56V18.9L96.46.34v101.44Z"/>
+    </symbol>
+  </defs>
+</svg>
+<!-- brand:logo:end -->
+
+<div class="deck" id="deck">
+
+<!-- ━━━ 0 · COVER (always dark) ━━━ -->
+<div class="slide slide-dark" data-section="">
+  <div class="si">
+    <div class="flex items-center justify-between mb-16">
+      <svg width="28" height="35" class="opacity-90"><use href="#brand-iso"/></svg>
+      <p class="mono text-[.6rem] tracking-[.2em] uppercase" style="color:var(--sl-dark-text-mut)">Confidencial · Marzo 2026</p>
+    </div>
+    <div class="flex items-end justify-between">
+      <div>
+        <h1 class="text-[clamp(3.5rem,7vw,5.5rem)] font-black tracking-tight leading-[.95] mb-5">Nombre del<br>Proyecto</h1>
+        <div class="w-16 h-[3px] mb-5" style="background:var(--sl-dark-accent)"></div>
+        <p class="text-xl font-light max-w-md leading-relaxed mb-2" style="color:var(--sl-dark-text-sec)">Plataforma de gestión financiera con IA integrada</p>
+        <p class="text-sm max-w-md leading-relaxed" style="color:var(--sl-dark-text-mut)">Solución enterprise para la gestión integral de riesgos estructurales, liquidez y tipo de interes en entidades financieras</p>
+      </div>
+      <!-- Cover visual: Platform capability map -->
+      <div class="flex-shrink-0 ml-8 opacity-70">
+        <div class="grid grid-cols-4 gap-[3px]" style="width:220px">
+          <div class="h-12 rounded-[3px] bg-brand-amber/20 flex items-center justify-center text-[.5rem] font-semibold text-brand-amber/80">ALM</div>
+          <div class="h-12 rounded-[3px] bg-brand-coral/20 flex items-center justify-center text-[.5rem] font-semibold text-brand-coral/80">IRRBB</div>
+          <div class="h-12 rounded-[3px] bg-brand-violet/20 flex items-center justify-center text-[.5rem] font-semibold text-brand-violet/80">Liquidez</div>
+          <div class="h-12 rounded-[3px] bg-brand-steel/20 flex items-center justify-center text-[.5rem] font-semibold text-brand-steel/80">Reporting</div>
+          <div class="col-span-2 h-10 rounded-[3px] flex items-center justify-center text-[.5rem] font-medium" style="background:var(--sl-dark-module-bg);color:var(--sl-dark-text-mut)">Motor de Cálculo</div>
+          <div class="col-span-2 h-10 rounded-[3px] flex items-center justify-center text-[.5rem] font-medium" style="background:var(--sl-dark-module-bg);color:var(--sl-dark-text-mut)">Escenarios IA</div>
+          <div class="col-span-4 h-8 rounded-[3px] flex items-center justify-center text-[.5rem] font-medium" style="background:var(--sl-dark-module-bg);opacity:0.7;color:var(--sl-dark-text-mut)">Multi-entidad · SSO · RBAC · Audit Trail</div>
+          <div class="col-span-4 h-6 rounded-[3px] flex items-center justify-center text-[.45rem]" style="background:var(--sl-dark-module-bg);opacity:0.5;color:var(--sl-dark-text-mut)">Java 21 · React 19 · PostgreSQL · Redis · Docker</div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-14">
+      <p class="mono text-[.55rem] tracking-[.15em] uppercase" style="color:var(--sl-dark-text-mut);opacity:0.5">NFQ Advisory — Proceso y Tecnología para Entidades Financieras</p>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ 1 · SECTION DIVIDER (always dark) ━━━ -->
+<div class="slide slide-div" data-section="Arquitectura">
+  <div class="si">
+    <p class="mono text-[.6rem] tracking-[.2em] uppercase mb-4" style="color:var(--sl-dark-text-mut)">Sección 01</p>
+    <h2 class="text-[clamp(2.5rem,5vw,4rem)] font-black leading-tight mb-4">Arquitectura y<br>Capacidades</h2>
+    <div class="w-12 h-[3px] mb-6" style="background:var(--sl-dark-accent)"></div>
+    <p class="text-base max-w-lg" style="color:var(--sl-dark-text-sec)">Motor de cálculo · Análisis predictivo · Escenarios de estres</p>
+  </div>
+</div>
+
+<!-- ━━━ 2 · CONTENT SLIDE (themed) — 40/60 text + flow diagram ━━━ -->
+<div class="slide slide-themed" data-section="Arquitectura">
+  <div class="si">
+    <div class="ex-num">Exhibit 01 — Arquitectura</div>
+    <div class="flex gap-8 items-start">
+      <!-- Left: text content ~40% -->
+      <div class="w-[40%] flex-shrink-0">
+        <div class="ex-title">La plataforma integra análisis predictivo con motor de reglas configurable</div>
+        <p class="ex-sub mb-5">Arquitectura orientada a eventos con procesamiento en tiempo real de posiciones y sensibilidades de balance.</p>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="box text-center py-3"><p class="kpi text-[1.4rem] text-brand-amber">4</p><p class="kpi-label">Motores</p></div>
+          <div class="box text-center py-3"><p class="kpi text-[1.4rem] text-brand-coral">&lt;2s</p><p class="kpi-label">Latencia</p></div>
+          <div class="box text-center py-3"><p class="kpi text-[1.4rem] text-brand-violet">12</p><p class="kpi-label">Modelos IA</p></div>
+          <div class="box text-center py-3"><p class="kpi text-[1.4rem]" style="color:var(--sl-text)">REST</p><p class="kpi-label">API Pública</p></div>
+        </div>
+        <div class="takeaway"><p>El motor de cálculo procesa carteras de hasta 500K posiciones en menos de 2 segundos con trazabilidad completa de cada resultado.</p></div>
+      </div>
+      <!-- Right: Flow diagram ~60% -->
+      <div class="flex-1 flex flex-col items-center justify-center gap-6">
+        <!-- Flow: Data → Engine → Analysis → Output -->
+        <div class="flow-h">
+          <div class="flow-box" style="border-color:#F48B4A;color:#F48B4A;background:rgba(244,139,74,0.06)">
+            <svg class="inline-block w-3 h-3 mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#F48B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/></svg>
+            Data Input
+          </div>
+          <div class="flow-conn" style="background:#F48B4A"><div style="position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left:5px solid #F48B4A"></div></div>
+          <div class="flow-box" style="border-color:#E04870;color:#E04870;background:rgba(224,72,112,0.06)">
+            <svg class="inline-block w-3 h-3 mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#E04870" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Engine
+          </div>
+          <div class="flow-conn" style="background:#9B59B6"><div style="position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left:5px solid #9B59B6"></div></div>
+          <div class="flow-box" style="border-color:#9B59B6;color:#9B59B6;background:rgba(155,89,182,0.06)">
+            <svg class="inline-block w-3 h-3 mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#9B59B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Analysis
+          </div>
+          <div class="flow-conn" style="background:#5B7FC7"><div style="position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left:5px solid #5B7FC7"></div></div>
+          <div class="flow-box" style="border-color:#5B7FC7;color:#5B7FC7;background:rgba(91,127,199,0.06)">
+            <svg class="inline-block w-3 h-3 mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#5B7FC7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Output
+          </div>
+        </div>
+        <!-- Detail boxes below flow -->
+        <div class="grid grid-cols-4 gap-3 w-full">
+          <div class="box py-3 px-3 text-center">
+            <div class="w-6 h-6 mx-auto mb-2 rounded bg-brand-amber/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#F48B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/></svg>
+            </div>
+            <p class="text-[.6rem] font-bold mb-0.5" style="color:var(--sl-text)">Ingestion</p>
+            <p class="text-[.5rem]" style="color:var(--sl-text-sec)">Posiciones, curvas, parametros de mercado</p>
+          </div>
+          <div class="box py-3 px-3 text-center">
+            <div class="w-6 h-6 mx-auto mb-2 rounded bg-brand-coral/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#E04870" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <p class="text-[.6rem] font-bold mb-0.5" style="color:var(--sl-text)">Cálculo</p>
+            <p class="text-[.5rem]" style="color:var(--sl-text-sec)">NII, EVE, gaps, sensibilidades</p>
+          </div>
+          <div class="box py-3 px-3 text-center">
+            <div class="w-6 h-6 mx-auto mb-2 rounded bg-brand-violet/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#9B59B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <p class="text-[.6rem] font-bold mb-0.5" style="color:var(--sl-text)">Análisis</p>
+            <p class="text-[.5rem]" style="color:var(--sl-text-sec)">Escenarios, estres, what-if</p>
+          </div>
+          <div class="box py-3 px-3 text-center">
+            <div class="w-6 h-6 mx-auto mb-2 rounded bg-brand-steel/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#5B7FC7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <p class="text-[.6rem] font-bold mb-0.5" style="color:var(--sl-text)">Reporting</p>
+            <p class="text-[.5rem]" style="color:var(--sl-text-sec)">PDF, Excel, regulatorio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ 3 · DATA SLIDE (themed) — KPIs + data table ━━━ -->
+<div class="slide slide-themed" data-section="Arquitectura">
+  <div class="si">
+    <div class="ex-num">Exhibit 02 — Métricas</div>
+    <div class="ex-title">Métricas clave del balance estructural a cierre de periodo</div>
+    <p class="ex-sub mb-5">Indicadores principales de riesgo de tipo de interes, liquidez y valor economico del patrimonio.</p>
+    <!-- 4 KPI Cards -->
+    <div class="grid grid-cols-4 gap-4 mb-5">
+      <div class="box text-center py-4">
+        <p class="kpi text-[1.6rem] text-brand-amber">&euro;14.2B</p>
+        <p class="kpi-label">Portfolio Total</p>
+      </div>
+      <div class="box text-center py-4">
+        <p class="kpi text-[1.6rem] text-brand-coral">-8.42%</p>
+        <p class="kpi-label">NII Sensitivity</p>
+      </div>
+      <div class="box text-center py-4">
+        <p class="kpi text-[1.6rem] text-brand-violet">142.8%</p>
+        <p class="kpi-label">LCR Ratio</p>
+      </div>
+      <div class="box text-center py-4">
+        <p class="kpi text-[1.6rem] text-brand-steel">&euro;1.18B</p>
+        <p class="kpi-label">EVE Impact</p>
+      </div>
+    </div>
+    <!-- Data table -->
+    <div class="box p-0 overflow-hidden">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th scope="col">Posicion</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Nominal (M&euro;)</th>
+            <th scope="col">Vencimiento</th>
+            <th scope="col">Tipo Ref.</th>
+            <th scope="col">Spread (bps)</th>
+            <th scope="col">NII Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="val">Hipotecas Residenciales</td>
+            <td>Activo — Variable</td>
+            <td class="val">4,280</td>
+            <td>2038-06</td>
+            <td class="mono text-[.55rem]">EUR12M</td>
+            <td class="val">+85</td>
+            <td><span class="tag bg-red-50 text-red-600">-3.2%</span></td>
+          </tr>
+          <tr>
+            <td class="val">Credito Empresas</td>
+            <td>Activo — Fijo</td>
+            <td class="val">2,150</td>
+            <td>2029-12</td>
+            <td class="mono text-[.55rem]">Fixed</td>
+            <td class="val">+120</td>
+            <td><span class="tag bg-green-50 text-green-600">+0.8%</span></td>
+          </tr>
+          <tr>
+            <td class="val">Depositos Vista</td>
+            <td>Pasivo — NMD</td>
+            <td class="val">6,840</td>
+            <td>Sin vcto.</td>
+            <td class="mono text-[.55rem]">Admin</td>
+            <td class="val">—</td>
+            <td><span class="tag bg-amber-50 text-amber-600">-1.8%</span></td>
+          </tr>
+          <tr>
+            <td class="val">Emisiones Covered</td>
+            <td>Pasivo — Fijo</td>
+            <td class="val">1,500</td>
+            <td>2031-03</td>
+            <td class="mono text-[.55rem]">Fixed</td>
+            <td class="val">+45</td>
+            <td><span class="tag bg-green-50 text-green-600">+0.4%</span></td>
+          </tr>
+          <tr>
+            <td class="val">Swaps Cobertura</td>
+            <td>Derivado — IRS</td>
+            <td class="val">3,200</td>
+            <td>2030-06</td>
+            <td class="mono text-[.55rem]">EUR6M</td>
+            <td class="val">—</td>
+            <td><span class="tag bg-blue-50 text-blue-600">Hedge</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="takeaway"><p>La sensibilidad NII del -8.42% ante un shock de +200bps esta dentro del apetito al riesgo definido, con cobertura activa via swaps IRS por €3.2B nominal.</p></div>
+  </div>
+</div>
+
+<!-- ━━━ 4 · SCREENSHOT SLIDE (themed) — 40/60 text + browser frame ━━━ -->
+<div class="slide slide-themed" data-section="Arquitectura">
+  <div class="si">
+    <div class="ex-num">Exhibit 03 — Interfaz</div>
+    <div class="flex gap-8 items-start">
+      <!-- Left: text content ~40% -->
+      <div class="w-[40%] flex-shrink-0">
+        <div class="ex-title">Dashboard operativo con visualizacion de métricas en tiempo real</div>
+        <p class="ex-sub mb-5">Interfaz unificada para la monitorizacion de riesgos estructurales con alertas configurables.</p>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="feat-box box py-3 px-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="ico-s bg-brand-amber/10 text-brand-amber"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+              <h3 class="feat-title text-[.65rem] font-bold uppercase">KPIs</h3>
+            </div>
+            <p class="feat-desc text-[.6rem]">Indicadores clave con tendencias y alertas</p>
+          </div>
+          <div class="feat-box box py-3 px-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="ico-s bg-brand-coral/10 text-brand-coral"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <h3 class="feat-title text-[.65rem] font-bold uppercase">Escenarios</h3>
+            </div>
+            <p class="feat-desc text-[.6rem]">Simulacion what-if con resultados instantaneos</p>
+          </div>
+          <div class="feat-box box py-3 px-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="ico-s bg-brand-violet/10 text-brand-violet"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <h3 class="feat-title text-[.65rem] font-bold uppercase">Reporting</h3>
+            </div>
+            <p class="feat-desc text-[.6rem]">Generacion automatica multi-formato</p>
+          </div>
+          <div class="feat-box box py-3 px-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="ico-s bg-brand-steel/10 text-brand-steel"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+              <h3 class="feat-title text-[.65rem] font-bold uppercase">Seguridad</h3>
+            </div>
+            <p class="feat-desc text-[.6rem]">RBAC granular con audit trail completo</p>
+          </div>
+        </div>
+        <div class="takeaway"><p>La interfaz esta disenada para gestores de balance: información critica visible, drill-down bajo demanda, y exportacion directa a comite.</p></div>
+      </div>
+      <!-- Right: Browser frame with placeholder gradient ~60% -->
+      <div class="flex-1">
+        <div class="screenshot-frame">
+          <div class="browser-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="ml-3 text-[.55rem] mono" style="color:var(--sl-text-muted)">app.nfq.es/dashboard</span>
+          </div>
+          <!-- Placeholder gradient instead of img -->
+          <div style="width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,#0B1026 0%,#1A2340 25%,#2A3558 50%,#5B7FC7 75%,#3B82F6 100%);position:relative;overflow:hidden">
+            <!-- Simulated dashboard elements -->
+            <div style="position:absolute;top:12%;left:4%;right:4%;display:flex;gap:3%;height:18%">
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+            </div>
+            <div style="position:absolute;top:38%;left:4%;width:58%;height:50%;background:rgba(255,255,255,0.06);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+            <div style="position:absolute;top:38%;right:4%;width:32%;height:50%;background:rgba(255,255,255,0.06);border-radius:6px;border:1px solid rgba(255,255,255,0.1)"></div>
+            <!-- Sidebar -->
+            <div style="position:absolute;top:0;left:0;width:3%;height:100%;background:rgba(255,255,255,0.04)"></div>
+            <!-- Placeholder text -->
+            <div style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:.55rem;color:rgba(255,255,255,0.25);letter-spacing:.15em;text-transform:uppercase">Screenshot Placeholder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ CLOSING (always dark) ━━━ -->
+<div class="slide slide-dark" data-section="">
+  <div class="si">
+    <div class="flex flex-col items-center justify-center text-center" style="min-height:60vh">
+      <svg width="36" height="45" class="mb-8 opacity-80"><use href="#brand-iso"/></svg>
+      <h2 class="text-[clamp(2.5rem,5vw,4rem)] font-black tracking-tight leading-[.95] mb-4">Gracias</h2>
+      <div class="w-12 h-[3px] mx-auto mb-6" style="background:var(--sl-dark-accent)"></div>
+      <p class="text-base font-light mb-2" style="color:var(--sl-dark-text-sec)">¿Preguntas?</p>
+      <p class="mono text-[.55rem] tracking-[.15em] uppercase mt-12" style="color:var(--sl-dark-text-mut);opacity:0.5">NFQ Advisory — Proceso y Tecnología para Entidades Financieras</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <button id="btn-prev" aria-label="Anterior">&#8592;</button>
+  <span class="cnt" id="counter">1 / 5</span>
+  <button id="btn-next" aria-label="Siguiente">&#8594;</button>
+  <div class="sep"></div>
+  <button class="theme-btn active" data-theme="light">Light</button>
+  <button class="theme-btn" data-theme="dark">Dark</button>
+  <button class="theme-btn" data-theme="glass">Glass</button>
+  <div class="sep"></div>
+  <button class="theme-btn active" data-lang="es" id="lang-es" style="font-size:.5rem !important">ES</button>
+  <button class="theme-btn" data-lang="en" id="lang-en" style="font-size:.5rem !important">EN</button>
+  <div class="sep"></div>
+  <button class="export-btn" id="btn-pdf" title="Descargar PDF (generado al vuelo)" aria-label="Descargar PDF">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF
+  </button>
+  <button class="export-btn" id="btn-print" title="Imprimir (respeta zoom del navegador)" aria-label="Imprimir">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir
+  </button>
+  <button class="export-btn" id="btn-pptx" title="Exportar como imagen" aria-label="Exportar como imagen">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>IMG
+  </button>
+  <button class="export-btn" id="btn-slides" title="Exportar editable (Google Slides / PowerPoint)" aria-label="Exportar PPTX editable">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M7 10h4"/><path d="M7 13h6"/></svg>PPTX
+  </button>
+  <div class="sep"></div>
+  <button class="export-btn" id="btn-edit" title="Editar texto de las slides" aria-label="Editar texto de las slides">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit
+  </button>
+  <button class="export-btn" id="btn-notes" title="Anadir notas post-it" aria-label="Anadir notas post-it">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Notes
+  </button>
+</div>
+<div class="notes-hint" id="notes-hint">Doble-click en la slide para anadir una nota</div>
+<div id="kb-hint">&#8592; &#8594; o Space para navegar</div>
+
+<script>
+(function(){
+  /* ─── Pre-captured slides (set by capture-slides.mjs) ─── */
+  /* When populated, PDF/IMG/PPTX use these pixel-perfect images instead of html2canvas */
+  var _PRECAPTURED = null;
+  var _PRECAPTURED_EN = null;
+
+  /* ─── Theme definitions ─── */
+  var themes = {
+    light: {
+      '--sl-bg': '#FFFFFF',
+      '--sl-bg-card': '#FFFFFF',
+      '--sl-bg-alt': '#F8F9FB',
+      '--sl-text': '#0B1026',
+      '--sl-text-sec': '#6B7185',
+      '--sl-text-muted': '#9DA2B3',
+      '--sl-accent': '#0B1026',
+      '--sl-progress': '#0B1026',
+      '--sl-border': '#E2E4EB',
+      '--sl-nav-bg': '#0B1026',
+      '--sl-nav-text': '#9DA2B3',
+      '--sl-dark-bg': '#0B1026',
+      '--sl-dark-accent': '#0B1026',
+      '--sl-dark-text-sec': 'rgba(255,255,255,0.7)',
+      '--sl-dark-text-mut': 'rgba(255,255,255,0.4)',
+      '--sl-dark-module-bg': 'rgba(255,255,255,0.06)'
+    },
+    dark: {
+      '--sl-bg': '#0e0e0e',
+      '--sl-bg-card': '#1a1919',
+      '--sl-bg-alt': '#201f1f',
+      '--sl-text': '#ffffff',
+      '--sl-text-sec': '#adaaaa',
+      '--sl-text-muted': '#64605e',
+      '--sl-accent': '#F48B4A',
+      '--sl-progress': '#ffffff',
+      '--sl-border': '#2a2827',
+      '--sl-nav-bg': '#1a1919',
+      '--sl-nav-text': '#adaaaa',
+      '--sl-dark-bg': '#0a0a0a',
+      '--sl-dark-accent': '#F48B4A',
+      '--sl-dark-text-sec': '#adaaaa',
+      '--sl-dark-text-mut': '#64605e',
+      '--sl-dark-module-bg': 'rgba(255,255,255,0.04)'
+    },
+    glass: {
+      '--sl-bg': 'transparent',
+      '--sl-bg-card': 'rgba(255,255,255,0.18)',
+      '--sl-bg-alt': 'rgba(255,255,255,0.1)',
+      '--sl-text': '#1a1d28',
+      '--sl-text-sec': '#3d4255',
+      '--sl-text-muted': '#6b7085',
+      '--sl-accent': '#0B1026',
+      '--sl-progress': '#0B1026',
+      '--sl-border': 'rgba(0,0,0,0.06)',
+      '--sl-nav-bg': 'rgba(255,255,255,0.45)',
+      '--sl-nav-text': '#5a6070',
+      '--sl-dark-bg': '#1a1d28',
+      '--sl-dark-accent': '#0B1026',
+      '--sl-dark-text-sec': 'rgba(255,255,255,0.7)',
+      '--sl-dark-text-mut': 'rgba(255,255,255,0.4)',
+      '--sl-dark-module-bg': 'rgba(255,255,255,0.08)'
+    }
+  };
+
+  var currentTheme = 'light';
+
+  function applyTheme(name) {
+    currentTheme = name;
+    var t = themes[name];
+    var root = document.documentElement;
+    // Smooth transition for theme change
+    document.body.style.transition = 'background-color 0.3s ease';
+    for (var k in t) { root.style.setProperty(k, t[k]); }
+    setTimeout(function() { document.body.style.transition = ''; }, 350);
+    // Toggle glass-active class for animated background + blur effects
+    document.body.classList.toggle('glass-active', name === 'glass');
+    // Update theme buttons
+    document.querySelectorAll('.theme-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-theme') === name);
+    });
+    // Re-apply slide styling for current slide
+    go(C);
+  }
+
+  document.querySelectorAll('.theme-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      applyTheme(btn.getAttribute('data-theme'));
+    });
+  });
+
+  /* ─── Navigation ─── */
+  var S = document.querySelectorAll('.slide'), T = S.length, C = 0, H = true;
+  var F = document.getElementById('progress-fill'), N = document.getElementById('counter'),
+      G = document.getElementById('section-tag'), K = document.getElementById('kb-hint'),
+      PT = document.getElementById('progress-track');
+
+  // Phase 4.2: keyboard hint timeout — hide after 5s or on first nav keypress
+  var kbHintTimer = setTimeout(function() { if (K) K.style.opacity = '0'; }, 5000);
+
+  function go(i) {
+    if (i < 0 || i >= T) return; C = i;
+    for (var j = 0; j < T; j++) {
+      S[j].classList.remove('active', 'prev');
+      if (j === C) S[j].classList.add('active');
+      else if (j < C) S[j].classList.add('prev');
+    }
+    F.style.width = ((C + 1) / T * 100) + '%';
+    N.textContent = (C + 1) + ' / ' + T;
+    G.textContent = S[C].getAttribute('data-section') || '';
+
+    // Dark slides always override theme colors for nav elements
+    var isDark = S[C].classList.contains('slide-dark') || S[C].classList.contains('slide-div');
+    if (isDark) {
+      G.style.color = 'rgba(255,255,255,.3)';
+      F.style.background = '#FFF';
+      PT.style.background = 'rgba(255,255,255,.08)';
+    } else {
+      var t = themes[currentTheme];
+      G.style.color = t['--sl-text-muted'];
+      F.style.background = t['--sl-progress'];
+      PT.style.background = currentTheme === 'light' ? '#F0F1F5' : (currentTheme === 'dark' ? '#201f1f' : 'rgba(30,33,58,0.5)');
+    }
+
+    history.replaceState(null, '', '#slide-' + (C + 1));
+    // Phase 4.2: hide keyboard hint on first navigation (before 5s timeout)
+    if (H) { H = false; clearTimeout(kbHintTimer); K.style.opacity = '0'; }
+
+    // Phase 2.1: set focus on active slide for accessibility
+    S[C].setAttribute('tabindex', '-1');
+    S[C].focus({ preventScroll: true });
+
+    // Phase 1.2: update section navigator active state
+    var curSection = S[C].getAttribute('data-section') || '';
+    var secNavEl = document.getElementById('sec-nav');
+    if (secNavEl) {
+      var secBtns = secNavEl.querySelectorAll('.sec-nav-btn');
+      secBtns.forEach(function(btn) {
+        var isActive = btn.getAttribute('data-go-section') === curSection && curSection !== '';
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      // Show/hide section nav
+      if (curSection) {
+        secNavEl.classList.add('visible');
+      } else {
+        secNavEl.classList.remove('visible');
+      }
+      // Toggle on-dark class
+      secNavEl.classList.toggle('on-dark', isDark);
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    var tag = e.target.tagName;
+    if (e.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(C + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(C - 1); }
+  });
+  document.getElementById('btn-prev').addEventListener('click', function() { go(C - 1); });
+  document.getElementById('btn-next').addEventListener('click', function() { go(C + 1); });
+
+  // Touch support
+  var tx = 0;
+  document.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', function(e) {
+    var d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 80) d > 0 ? go(C + 1) : go(C - 1);
+  });
+
+  // Hash-based initial slide
+  var h = window.location.hash;
+  if (h && h.indexOf('#slide-') === 0) {
+    var n = parseInt(h.replace('#slide-', '')) - 1;
+    if (n >= 0 && n < T) C = n;
+  }
+  go(C);
+
+  // ── Export progress overlay ───────────────────────────
+  var exportOverlay = document.createElement('div');
+  exportOverlay.id = 'export-overlay';
+  exportOverlay.setAttribute('role', 'status');
+  exportOverlay.setAttribute('aria-live', 'polite');
+  exportOverlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(11,16,38,0.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem';
+  var exportMsg = document.createElement('p');
+  exportMsg.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#fff;letter-spacing:.08em;text-transform:uppercase";
+  var exportBar = document.createElement('div');
+  exportBar.style.cssText = 'width:240px;height:3px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden';
+  var exportFill = document.createElement('div');
+  exportFill.style.cssText = 'height:100%;width:0;background:#F48B4A;transition:width .3s ease';
+  exportBar.appendChild(exportFill);
+  exportOverlay.appendChild(exportMsg);
+  exportOverlay.appendChild(exportBar);
+  document.body.appendChild(exportOverlay);
+
+  function showExportProgress(label, current, total) {
+    exportOverlay.style.display = 'flex';
+    exportMsg.textContent = label + ' ' + current + ' / ' + total;
+    exportFill.style.width = (current / total * 100) + '%';
+  }
+  function hideExportProgress() { exportOverlay.style.display = 'none'; }
+
+  // ── html2canvas workarounds ─────────────────────────
+  // Fix: html2canvas misrenders letter-spacing, word-spacing, text-align
+  // Proven approach from BBVA presentation: inject <style> with !important resets
+  function injectH2cFix() {
+    if (document.getElementById('h2c-fix')) return;
+    var s = document.createElement('style');
+    s.id = 'h2c-fix';
+    s.textContent = '* { letter-spacing: normal !important; text-align: left !important; word-spacing: normal !important; } .mono, .ex-num, .kpi-label, .tag, .sec-nav-btn, .theme-btn, [class*="tracking-"] { letter-spacing: 0.04em !important; } .kpi { letter-spacing: -0.02em !important; }';
+    document.head.appendChild(s);
+  }
+  function removeH2cFix() {
+    var s = document.getElementById('h2c-fix');
+    if (s && s.parentNode) s.parentNode.removeChild(s);
+  }
+  // Fix 2: SVG <use href="#id"> not rendered by html2canvas
+  // Also copies <defs> (gradients) into the inline SVG so html2canvas can find them
+  function inlineSvgUses(el) {
+    var uses = el.querySelectorAll('use[href]');
+    var saved = [];
+    // Find the global defs container (the hidden SVG with gradient definitions)
+    var globalDefs = document.querySelector('svg[style*="position:absolute"] defs');
+    uses.forEach(function(use) {
+      var svg = use.closest('svg');
+      if (!svg) return;
+      var href = use.getAttribute('href') || '';
+      var symbolId = href.replace('#', '');
+      var symbol = document.getElementById(symbolId);
+      if (!symbol) return;
+      var vb = symbol.getAttribute('viewBox');
+      var origContent = svg.cloneNode(true);
+      saved.push({ svg: svg, clone: origContent, parent: svg.parentNode, nextSib: svg.nextSibling });
+      // Build new SVG with defs + symbol paths
+      if (vb) svg.setAttribute('viewBox', vb);
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      // Copy gradient defs into this SVG so html2canvas can resolve fill="url(#ng1)"
+      if (globalDefs) {
+        var defsClone = globalDefs.cloneNode(true);
+        svg.appendChild(defsClone);
+      }
+      // Copy symbol children (the actual paths)
+      Array.from(symbol.children).forEach(function(child) {
+        svg.appendChild(child.cloneNode(true));
+      });
+    });
+    return saved;
+  }
+  function restoreSvgUses(saved) {
+    saved.forEach(function(item) {
+      if (item.parent) {
+        if (item.nextSib) {
+          item.parent.insertBefore(item.clone, item.nextSib);
+        } else {
+          item.parent.appendChild(item.clone);
+        }
+        if (item.svg.parentNode) item.svg.parentNode.removeChild(item.svg);
+      }
+    });
+  }
+
+  // ── Imprimir — abre diálogo nativo (respeta zoom del navegador) ──
+  document.getElementById('btn-print').addEventListener('click', function() { window.print(); });
+
+  // ── file:// detection — canvas with images gets tainted under file:// origin ──
+  var IS_FILE_PROTOCOL = window.location.protocol === 'file:';
+  function fileProtocolHelp() {
+    var dir = location.pathname.split('/').slice(0, -1).join('/') || '.';
+    var fname = location.pathname.split('/').pop();
+    return (
+      'El deck se está ejecutando desde file://, lo que impide que el navegador ' +
+      'exporte canvas con imágenes (SecurityError).\n\n' +
+      'Abre una terminal y ejecuta:\n\n' +
+      '  cd ' + dir + '\n' +
+      '  python3 -m http.server 8080\n\n' +
+      'y abre http://localhost:8080/' + fname + '\n\n' +
+      '(Imprimir → Guardar como PDF sí funciona desde file://)'
+    );
+  }
+  function isSecurityError(err) {
+    if (!err) return false;
+    if (err.name === 'SecurityError') return true;
+    var m = (err.message || String(err)).toLowerCase();
+    return m.indexOf('insecure') !== -1 || m.indexOf('tainted') !== -1 || m.indexOf('securityerror') !== -1;
+  }
+
+  // ── Helpers: safe button state swap (no innerHTML) ──
+  function snapshotButton(btn) { var kids = []; for (var i = 0; i < btn.childNodes.length; i++) kids.push(btn.childNodes[i].cloneNode(true)); return kids; }
+  function setButtonLabel(btn, label) { while (btn.firstChild) btn.removeChild(btn.firstChild); btn.appendChild(document.createTextNode(label)); }
+  function restoreButton(btn, kids) { while (btn.firstChild) btn.removeChild(btn.firstChild); kids.forEach(function(k) { btn.appendChild(k); }); }
+
+  // ── PDF Export (precaptured → instant jsPDF | fallback → html2canvas+jsPDF on the fly | último fallback → window.print) ──
+  document.getElementById('btn-pdf').addEventListener('click', async function() {
+    var docTitle = (document.title.split(' — ')[0] || 'Presentacion NFQ');
+    var _pc = getPrecaptured();
+    // Fast path: pre-captured slides exist → assemble PDF instantly
+    if (_pc && _pc.length > 0) {
+      if (!window.jspdf) { alert('jsPDF no disponible. Usando impresión.'); window.print(); return; }
+      var img = new Image(); img.src = _pc[0];
+      await new Promise(function(r) { img.onload = r; img.onerror = r; });
+      var pw = img.naturalWidth / 2, ph = img.naturalHeight / 2;
+      var pdf = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [pw, ph], hotfixes: ['px_scaling'] });
+      for (var i = 0; i < _pc.length; i++) {
+        if (i > 0) pdf.addPage([pw, ph], 'landscape');
+        pdf.addImage(_pc[i], 'JPEG', 0, 0, pw, ph);
+      }
+      pdf.save(docTitle + '.pdf');
+      return;
+    }
+    // Slow path: html2canvas + jsPDF on the fly → actually saves a PDF file
+    if (typeof html2canvas !== 'function' || !window.jspdf) {
+      alert('Librerías no disponibles. Usando impresión.'); window.print(); return;
+    }
+    var btn = this; var snap = snapshotButton(btn);
+    setButtonLabel(btn, 'Generando...'); btn.style.pointerEvents = 'none';
+    document.body.classList.add('exporting'); injectH2cFix(); showExportProgress('Generando PDF', 0, T);
+    var savedC = C;
+    var taintedSlides = 0;
+    try {
+      var pdf2 = null, pw2 = 0, ph2 = 0;
+      for (var j = 0; j < T; j++) {
+        showExportProgress('Generando PDF', j + 1, T); go(j);
+        await new Promise(function(r) { setTimeout(r, 280); });
+        var svgState = inlineSvgUses(S[j]); var txtState = fixTextInline(S[j]);
+        var hasImages = S[j].querySelector('img') !== null;
+        var preloadState = hasImages ? await preloadAndInlineImages(S[j]) : null;
+        var imgState = hasImages ? hideBase64Images(S[j]) : null;
+        var canvas;
+        try {
+          var h2cPdfOpts = { scale: 2, useCORS: true, imageTimeout: 15000, foreignObjectRendering: true, backgroundColor: null, width: window.innerWidth, height: window.innerHeight, windowWidth: window.innerWidth, windowHeight: window.innerHeight, scrollX: 0, scrollY: 0 };
+          canvas = await Promise.race([
+            html2canvas(S[j], h2cPdfOpts),
+            new Promise(function(_, rej) { setTimeout(function() { rej(new Error('timeout')); }, 20000); })
+          ]);
+        } catch (e) { canvas = null; console.warn('PDF slide ' + (j + 1) + ' failed', e); }
+        if (imgState) restoreBase64Images(imgState);
+        if (preloadState) restorePreloadedImages(preloadState);
+        restoreTextInline(txtState); restoreSvgUses(svgState);
+        if (!canvas) continue;
+        var imgData;
+        try {
+          imgData = canvas.toDataURL('image/jpeg', 0.92);
+        } catch (e) {
+          if (isSecurityError(e)) {
+            taintedSlides++;
+            console.warn('PDF slide ' + (j + 1) + ' tainted, skipping', e);
+            continue;
+          }
+          throw e;
+        }
+        if (!pdf2) {
+          pw2 = canvas.width / 2; ph2 = canvas.height / 2;
+          pdf2 = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [pw2, ph2], hotfixes: ['px_scaling'] });
+        } else {
+          pdf2.addPage([pw2, ph2], 'landscape');
+        }
+        pdf2.addImage(imgData, 'JPEG', 0, 0, pw2, ph2);
+      }
+      if (pdf2) {
+        pdf2.save(docTitle + '.pdf');
+        if (taintedSlides > 0) {
+          alert('PDF generado, pero ' + taintedSlides + ' slide(s) con pantallazos no se pudieron incluir.\n\n' + fileProtocolHelp());
+        }
+      } else {
+        alert(taintedSlides > 0 ? ('Ninguna slide se pudo exportar (canvas tainted).\n\n' + fileProtocolHelp()) : 'No se pudo capturar ninguna slide.');
+      }
+      go(savedC);
+    } catch (err) {
+      console.error('PDF export:', err);
+      alert(isSecurityError(err) ? fileProtocolHelp() : ('Error export: ' + err.message));
+      go(savedC);
+    }
+    removeH2cFix(); hideExportProgress(); document.body.classList.remove('exporting');
+    restoreButton(btn, snap); btn.style.pointerEvents = 'auto';
+  });
+
+  // ── IMG Export (precaptured → instant | fallback → html2canvas) ──
+  document.getElementById('btn-pptx').addEventListener('click', async function() {
+    if (typeof PptxGenJS === 'undefined') { alert('PptxGenJS no disponible.'); return; }
+    var docTitle = (document.title.split(' — ')[0] || 'Presentacion NFQ');
+    // Fast path: pre-captured slides
+    var _pc2 = getPrecaptured();
+    if (_pc2 && _pc2.length > 0) {
+      var pptx = new PptxGenJS();
+      pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+      pptx.layout = 'NFQ'; pptx.author = 'NFQ Advisory';
+      for (var i = 0; i < _pc2.length; i++) {
+        var ps = pptx.addSlide();
+        ps.addImage({ data: _pc2[i], x: 0, y: 0, w: '100%', h: '100%', sizing: { type: 'cover', w: 10, h: 5.625 } });
+      }
+      pptx.writeFile({ fileName: docTitle + '.pptx' });
+      return;
+    }
+    // Slow path: html2canvas fallback
+    if (typeof html2canvas !== 'function') { alert('html2canvas no disponible.'); return; }
+    var btn = this;
+    var originalNodes = Array.from(btn.childNodes).map(function(n) { return n.cloneNode(true); });
+    while (btn.firstChild) btn.removeChild(btn.firstChild);
+    btn.appendChild(document.createTextNode('Generando...'));
+    btn.style.opacity = '1'; btn.style.pointerEvents = 'none';
+    document.body.classList.add('exporting');
+    injectH2cFix();
+    showExportProgress('Generando IMG', 0, T);
+    try {
+      var pptx = new PptxGenJS();
+      pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+      pptx.layout = 'NFQ'; pptx.author = 'NFQ Advisory';
+      var saved = C;
+      var taintedImgSlides = 0;
+      for (var i = 0; i < T; i++) {
+        showExportProgress('Generando IMG', i + 1, T);
+        go(i); await new Promise(function(r) { setTimeout(r, 300); });
+        var svgState = inlineSvgUses(S[i]);
+        var txtState = fixTextInline(S[i]);
+        var hasImages = S[i].querySelector('img') !== null;
+        var preloadState = hasImages ? await preloadAndInlineImages(S[i]) : null;
+        var imgState = hasImages ? hideBase64Images(S[i]) : null;
+        var h2cOpts = { scale: 2, useCORS: true, imageTimeout: 15000, foreignObjectRendering: true, backgroundColor: null, width: window.innerWidth, height: window.innerHeight };
+        try {
+          var canvas = await Promise.race([html2canvas(S[i], h2cOpts), new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'))},15000)})]);
+          var dataUrl;
+          try {
+            dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+          } catch (e) {
+            if (isSecurityError(e)) {
+              taintedImgSlides++;
+              console.warn('IMG slide ' + (i + 1) + ' tainted, skipping', e);
+              pptx.addSlide();
+              dataUrl = null;
+            } else {
+              throw e;
+            }
+          }
+          if (dataUrl) {
+            var pSlide = pptx.addSlide();
+            pSlide.addImage({ data: dataUrl, x: 0, y: 0, w: '100%', h: '100%', sizing: { type: 'cover', w: 10, h: 5.625 } });
+          }
+        } catch(err) { console.warn('IMG: skip slide ' + (i+1), err); pptx.addSlide(); }
+        if (imgState) restoreBase64Images(imgState);
+        if (preloadState) restorePreloadedImages(preloadState);
+        restoreTextInline(txtState);
+        restoreSvgUses(svgState);
+      }
+      go(saved);
+      pptx.writeFile({ fileName: docTitle + '.pptx' });
+      if (taintedImgSlides > 0) {
+        alert('PPTX generado, pero ' + taintedImgSlides + ' slide(s) con pantallazos quedaron en blanco.\n\n' + fileProtocolHelp());
+      }
+    } catch(err) {
+      console.error('IMG export error:', err);
+      alert(isSecurityError(err) ? fileProtocolHelp() : ('Error al exportar: ' + err.message));
+    }
+    removeH2cFix();
+    hideExportProgress();
+    document.body.classList.remove('exporting');
+    while (btn.firstChild) btn.removeChild(btn.firstChild);
+    originalNodes.forEach(function(n) { btn.appendChild(n); });
+    btn.style.pointerEvents = 'auto';
+    btn.style.opacity = '';
+  });
+
+  // ── EDITABLE PPTX EXPORT (Google Slides compatible) ──
+  document.getElementById('btn-slides').addEventListener('click', function() {
+    if (typeof PptxGenJS === 'undefined') {
+      alert('PptxGenJS no disponible. Verifica tu conexion a internet.');
+      return;
+    }
+    if (typeof html2canvas !== 'function') {
+      alert('html2canvas no disponible. Verifica tu conexion a internet.');
+      return;
+    }
+    var btn = document.getElementById('btn-slides');
+    var savedBtn = btn.cloneNode(true);
+    btn.textContent = 'Generando...';
+    btn.disabled = true;
+
+    function restoreBtn() {
+      while (btn.firstChild) btn.removeChild(btn.firstChild);
+      while (savedBtn.firstChild) btn.appendChild(savedBtn.firstChild);
+      btn.disabled = false;
+    }
+
+    exportEditablePptx().then(restoreBtn).catch(function(err) {
+      console.error('Editable PPTX export error:', err);
+      restoreBtn();
+      alert(isSecurityError(err) ? fileProtocolHelp() : ('Error al exportar: ' + err.message));
+    });
+  });
+
+  async function exportEditablePptx() {
+    document.body.classList.add('exporting');
+    injectH2cFix();
+    var pptx = new PptxGenJS();
+    pptx.defineLayout({ name: 'NFQ', width: 10, height: 5.625 });
+    pptx.layout = 'NFQ';
+    pptx.author = 'NFQ Advisory';
+    pptx.company = 'NFQ Advisory';
+
+    var FILL_LIGHT = 'FFFFFF';
+    var FILL_DARK = '0B1026';
+    var CLR_WHITE = 'FFFFFF';
+    var CLR_TEXT = '0B1026';
+    var CLR_TEXT_SEC = '6B7185';
+    var CLR_TEXT_MUT = '9DA2B3';
+
+    var allSlides = document.querySelectorAll('.slide');
+    var savedC = C;
+    var activeThemeBtn = document.querySelector('.theme-btn.active');
+    var savedTheme = activeThemeBtn ? activeThemeBtn.getAttribute('data-theme') : 'light';
+    if (savedTheme !== 'light') {
+      var lightBtn = document.querySelector('[data-theme="light"]');
+      if (lightBtn) lightBtn.click();
+    }
+    var uiEls = [
+      document.querySelector('.nav-bar'), document.getElementById('kb-hint'),
+      document.getElementById('progress-track'), document.getElementById('slide-logo'),
+      document.getElementById('section-tag'), document.querySelector('.sec-nav')
+    ];
+    uiEls.forEach(function(el) { if (el) el.style.display = 'none'; });
+
+    function waitRender(ms) {
+      return new Promise(function(r) { requestAnimationFrame(function() { setTimeout(r, ms || 100); }); });
+    }
+    function showSlideFor(idx) {
+      allSlides.forEach(function(s, j) {
+        s.style.transition = 'none';
+        if (j === idx) {
+          s.classList.add('active'); s.classList.remove('prev');
+          s.style.opacity = '1'; s.style.transform = 'none'; s.style.pointerEvents = 'auto';
+        } else {
+          s.classList.remove('active', 'prev');
+          s.style.opacity = '0'; s.style.pointerEvents = 'none';
+        }
+      });
+    }
+    async function captureSlide() {
+      try {
+        // Phase 1.1: 15-second timeout for editable export
+        var canvas = await Promise.race([
+          html2canvas(document.body, {
+            scale: 2, useCORS: true, foreignObjectRendering: true, backgroundColor: null,
+            width: window.innerWidth, height: window.innerHeight
+          }),
+          new Promise(function(_, reject) {
+            setTimeout(function() { reject(new Error('html2canvas timeout')); }, 15000);
+          })
+        ]);
+        try {
+          return canvas.toDataURL('image/jpeg', 0.92);
+        } catch (e) {
+          console.warn('toDataURL failed in editable export:', e);
+          return '';
+        }
+      } catch (err) {
+        console.warn('captureSlide error in editable export:', err);
+        return '';
+      }
+    }
+    function getRect(el, slideEl) {
+      if (!el) return null;
+      var sr = slideEl.getBoundingClientRect();
+      var er = el.getBoundingClientRect();
+      var sx = 10 / sr.width, sy = 5.625 / sr.height;
+      return {
+        x: Math.max(0, (er.left - sr.left) * sx),
+        y: Math.max(0, (er.top - sr.top) * sy),
+        w: Math.min(er.width * sx, 10),
+        h: Math.min(er.height * sy + 0.06, 5.625)
+      };
+    }
+    function addOverlay(ps, text, rect, opts) {
+      if (!text || !rect || rect.w < 0.1) return;
+      var x = Math.max(0, rect.x), y = Math.max(0, rect.y);
+      var w = Math.min(rect.w + 0.05, 10 - x);
+      var h = Math.min(rect.h, 5.5 - y);
+      if (h < 0.05 || y > 5.5) return;
+      ps.addText(text, Object.assign({
+        x: x, y: y, w: w, h: h,
+        fontFace: 'Calibri', valign: 'top', margin: 0, wrap: true
+      }, opts));
+    }
+
+    // Phase 1.1: centralized restore for editable export
+    function restoreEditable() {
+      removeH2cFix();
+      allSlides.forEach(function(s) {
+        s.style.transition = ''; s.style.opacity = ''; s.style.transform = ''; s.style.pointerEvents = '';
+        s.classList.remove('active', 'prev');
+      });
+      uiEls.forEach(function(el) { if (el) el.style.display = ''; });
+      go(savedC);
+      if (savedTheme !== 'light') {
+        var rb = document.querySelector('[data-theme="' + savedTheme + '"]');
+        if (rb) rb.click();
+      }
+      document.body.classList.remove('exporting');
+    }
+
+    await waitRender(300);
+
+    try {
+      for (var i = 0; i < allSlides.length; i++) {
+        var sl = allSlides[i];
+        var isDark = sl.classList.contains('slide-dark');
+        var isDiv = sl.classList.contains('slide-div');
+        var isThemed = sl.classList.contains('slide-themed');
+
+        showSlideFor(i);
+        await waitRender(150);
+        var imgData;
+        var _pc3 = getPrecaptured();
+        if (_pc3 && _pc3[i]) {
+          imgData = _pc3[i];
+        } else {
+          var svgState = inlineSvgUses(sl);
+          var preloadState = sl.querySelector('img') ? await preloadAndInlineImages(sl) : null;
+          imgData = await captureSlide();
+          if (preloadState) restorePreloadedImages(preloadState);
+          restoreSvgUses(svgState);
+        }
+        var ps = pptx.addSlide();
+        if (imgData) {
+          ps.addImage({ data: imgData, x: 0, y: 0, w: 10, h: 5.625 });
+        }
+
+        if (isDark && !isDiv && i === 0) {
+          // ═══ COVER ═══
+          var h1 = sl.querySelector('h1');
+          if (h1) addOverlay(ps, (h1.innerText || h1.textContent).trim(), getRect(h1, sl), {
+            fontSize: 40, bold: true, color: CLR_WHITE, fill: { color: FILL_DARK }, lineSpacing: 44
+          });
+          var coverPs = Array.from(sl.querySelectorAll('p')).filter(function(p) {
+            return !p.closest('.mono') && !p.classList.contains('mono') && !p.closest('.grid') && p.textContent.trim().length > 15;
+          });
+          if (coverPs[0]) addOverlay(ps, coverPs[0].textContent.trim(), getRect(coverPs[0], sl), {
+            fontSize: 11, color: 'C0C5D0', fill: { color: FILL_DARK }, lineSpacing: 16
+          });
+          if (coverPs[1]) addOverlay(ps, coverPs[1].textContent.trim(), getRect(coverPs[1], sl), {
+            fontSize: 8, color: '9095A0', fill: { color: FILL_DARK }, lineSpacing: 12
+          });
+
+        } else if (isDiv) {
+          // ═══ SECTION DIVIDER ═══
+          var h2 = sl.querySelector('h2');
+          if (h2) addOverlay(ps, (h2.innerText || h2.textContent).trim(), getRect(h2, sl), {
+            fontSize: 34, bold: true, color: CLR_WHITE, fill: { color: FILL_DARK }, lineSpacing: 40
+          });
+          var divDesc = Array.from(sl.querySelectorAll('p')).filter(function(p) {
+            return !p.classList.contains('mono') && p.textContent.trim().length > 5;
+          });
+          if (divDesc[0]) addOverlay(ps, divDesc[0].textContent.trim(), getRect(divDesc[0], sl), {
+            fontSize: 10, color: 'C0C5D0', fill: { color: FILL_DARK }
+          });
+
+        } else if (isThemed) {
+          // ═══ CONTENT ═══
+          var splitLeft = sl.querySelector('[class*="w-[40%]"], [class*="w-[42%]"], [class*="w-[45%]"], [class*="w-[38%]"]');
+          var textScope = splitLeft || sl;
+
+          var eyebrow = sl.querySelector('.ex-num');
+          if (eyebrow) addOverlay(ps, eyebrow.textContent.trim(), getRect(eyebrow, sl), {
+            fontSize: 6.5, color: CLR_TEXT_MUT, fill: { color: FILL_LIGHT }, charSpacing: 1.5
+          });
+          var title = sl.querySelector('.ex-title') || sl.querySelector('.si > h2');
+          if (title) addOverlay(ps, title.textContent.trim(), getRect(title, sl), {
+            fontSize: 13, bold: true, color: CLR_TEXT, fill: { color: FILL_LIGHT }, lineSpacing: 16, autoFit: true
+          });
+          var sub = textScope.querySelector('.ex-sub');
+          if (sub) addOverlay(ps, sub.textContent.trim(), getRect(sub, sl), {
+            fontSize: 8, color: CLR_TEXT_SEC, fill: { color: FILL_LIGHT }, lineSpacing: 12
+          });
+          var takeaway = sl.querySelector('.takeaway p');
+          if (takeaway) addOverlay(ps, takeaway.textContent.trim(), getRect(takeaway, sl), {
+            fontSize: 7.5, bold: true, color: CLR_TEXT, fill: { color: FILL_LIGHT }, lineSpacing: 11
+          });
+        }
+        // CLOSING / OTHER DARK: image-only, no overlays
+
+        ps.addText(String(i + 1), {
+          x: 9.2, y: 5.2, w: 0.6, h: 0.3, fontSize: 8, fontFace: 'Calibri',
+          color: (isDark || isDiv) ? '555555' : CLR_TEXT_MUT, align: 'right', valign: 'bottom'
+        });
+      }
+
+      var docTitle = document.title.split(' — ')[0] || 'Presentacion NFQ';
+      await pptx.writeFile({ fileName: docTitle + ' (editable).pptx' });
+    } finally {
+      restoreEditable();
+    }
+  }
+
+  // ── EDIT MODE ──────────────────────────────────────
+  var editActive = false;
+  var editBtn = document.getElementById('btn-edit');
+  var editableSelectors = '.ex-title, .ex-sub, .ex-num, .takeaway p, .kpi, .kpi-label, h1, h2, .feat-title, .feat-desc';
+
+  editBtn.addEventListener('click', function() {
+    editActive = !editActive;
+    document.body.classList.toggle('edit-mode', editActive);
+    editBtn.classList.toggle('active-tool', editActive);
+    editBtn.querySelector('svg').nextSibling.textContent = editActive ? 'Editing' : 'Edit';
+
+    var elements = document.querySelectorAll(editableSelectors);
+    elements.forEach(function(el) {
+      if (editActive) {
+        el.setAttribute('contenteditable', 'true');
+      } else {
+        el.removeAttribute('contenteditable');
+      }
+    });
+
+    // Disable notes mode if switching to edit
+    if (editActive && notesActive) {
+      toggleNotes();
+    }
+  });
+
+  // ── POST-IT NOTES ─────────────────────────────────
+  var notesActive = false;
+  var notesBtn = document.getElementById('btn-notes');
+  var notesHint = document.getElementById('notes-hint');
+  var notesData = {}; // { slideIndex: [{ id, x, y, text }] }
+  var noteIdCounter = 0;
+  var lastNoteX = 200, lastNoteY = 200; // Phase 4.1: track last note position
+  var notesContainer = document.createElement('div');
+  notesContainer.id = 'notes-container';
+  notesContainer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:99';
+  document.body.appendChild(notesContainer);
+
+  // Phase 4.4: localStorage helpers
+  function getDeckHash() {
+    var title = document.title || 'untitled';
+    var hash = 0;
+    for (var i = 0; i < title.length; i++) {
+      hash = ((hash << 5) - hash) + title.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash).toString(36);
+  }
+  var deckHash = getDeckHash();
+
+  function saveNotesToStorage() {
+    try {
+      localStorage.setItem('deck-' + deckHash + '-notes', JSON.stringify(notesData));
+    } catch (e) { /* quota exceeded or unavailable */ }
+  }
+
+  function loadNotesFromStorage() {
+    try {
+      var raw = localStorage.getItem('deck-' + deckHash + '-notes');
+      if (raw) {
+        var data = JSON.parse(raw);
+        for (var slideIdx in data) {
+          if (data.hasOwnProperty(slideIdx)) {
+            var notes = data[slideIdx];
+            for (var n = 0; n < notes.length; n++) {
+              var nd = notes[n];
+              notesData[slideIdx] = notesData[slideIdx] || [];
+              notesData[slideIdx].push(nd);
+              createPostit(parseInt(slideIdx), nd.x, nd.y, nd.text, nd.id);
+              if (nd.id) {
+                var num = parseInt(nd.id.replace('note-', ''));
+                if (num > noteIdCounter) noteIdCounter = num;
+              }
+            }
+          }
+        }
+      }
+    } catch (e) { /* parse error or unavailable */ }
+  }
+
+  // Phase 2.2: Delegated drag listeners (registered ONCE, not per-note)
+  var currentDragging = null;
+  var dragOffX = 0, dragOffY = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    if (!currentDragging) return;
+    var nx = e.clientX - dragOffX;
+    var ny = e.clientY - dragOffY;
+    currentDragging.style.left = nx + 'px';
+    currentDragging.style.top = ny + 'px';
+    var slideIdx = parseInt(currentDragging.dataset.slide);
+    var noteId = currentDragging.id;
+    var entries = notesData[slideIdx];
+    if (entries) {
+      var entry = entries.find(function(n) { return n.id === noteId; });
+      if (entry) { entry.x = nx; entry.y = ny; }
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (currentDragging) {
+      currentDragging.classList.remove('dragging');
+      currentDragging = null;
+      saveNotesToStorage();
+    }
+  });
+
+  function toggleNotes() {
+    notesActive = !notesActive;
+    notesBtn.classList.toggle('active-tool', notesActive);
+    notesBtn.querySelector('svg').nextSibling.textContent = notesActive ? 'Notes ON' : 'Notes';
+    notesContainer.style.pointerEvents = notesActive ? 'auto' : 'none';
+
+    // Show hint briefly
+    if (notesActive) {
+      notesHint.classList.add('show');
+      setTimeout(function() { notesHint.classList.remove('show'); }, 2000);
+      // Disable edit mode if switching to notes
+      if (editActive) {
+        editBtn.click();
+      }
+    }
+  }
+
+  notesBtn.addEventListener('click', toggleNotes);
+
+  function createPostit(slideIdx, x, y, text, existingId) {
+    var id = existingId || ('note-' + (++noteIdCounter));
+    if (!notesData[slideIdx]) notesData[slideIdx] = [];
+
+    var note = document.createElement('div');
+    note.className = 'postit';
+    note.id = id;
+    note.dataset.slide = slideIdx;
+    note.style.left = x + 'px';
+    note.style.top = y + 'px';
+    note.style.pointerEvents = 'auto';
+
+    var label = document.createElement('div');
+    label.className = 'postit-label';
+    label.textContent = 'NOTA';
+
+    var closeBtn = document.createElement('span');
+    closeBtn.className = 'postit-close';
+    closeBtn.textContent = '\u00d7';
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      note.remove();
+      // Phase 2.2: clear currentDragging if it matches
+      if (currentDragging === note) currentDragging = null;
+      notesData[slideIdx] = notesData[slideIdx].filter(function(n) { return n.id !== id; });
+      saveNotesToStorage();
+    });
+
+    var textDiv = document.createElement('div');
+    textDiv.className = 'postit-text';
+    textDiv.setAttribute('contenteditable', 'true');
+    textDiv.textContent = text || 'Escribe tu nota aqui...';
+    textDiv.addEventListener('focus', function() {
+      if (textDiv.textContent === 'Escribe tu nota aqui...') textDiv.textContent = '';
+    });
+    textDiv.addEventListener('input', function() {
+      var entry = notesData[slideIdx].find(function(n) { return n.id === id; });
+      if (entry) entry.text = textDiv.textContent;
+      saveNotesToStorage();
+    });
+
+    note.appendChild(label);
+    note.appendChild(closeBtn);
+    note.appendChild(textDiv);
+    notesContainer.appendChild(note);
+
+    // Phase 2.2: Drag via delegated listener — only store reference on mousedown
+    note.addEventListener('mousedown', function(e) {
+      if (e.target === textDiv || e.target === closeBtn) return;
+      currentDragging = note;
+      note.classList.add('dragging');
+      dragOffX = e.clientX - note.offsetLeft;
+      dragOffY = e.clientY - note.offsetTop;
+      e.preventDefault();
+    });
+
+    // Show only if on current slide
+    note.style.display = (parseInt(slideIdx) === C) ? 'block' : 'none';
+
+    if (!existingId) {
+      notesData[slideIdx].push({ id: id, x: x, y: y, text: text || '' });
+      // Phase 4.1: track last note position
+      lastNoteX = x;
+      lastNoteY = y;
+      saveNotesToStorage();
+    }
+
+    return note;
+  }
+
+  // Double-click to create note
+  document.addEventListener('dblclick', function(e) {
+    if (!notesActive) return;
+    // Don't create on nav bar or existing post-its
+    if (e.target.closest('.nav-bar') || e.target.closest('.postit') || e.target.closest('#progress-track')) return;
+    // Phase 4.1: offset from last created note by +15px
+    var newX = e.clientX - 85;
+    var newY = e.clientY - 40;
+    if (Math.abs(newX - lastNoteX) < 20 && Math.abs(newY - lastNoteY) < 20) {
+      newX = lastNoteX + 15;
+      newY = lastNoteY + 15;
+    }
+    createPostit(C, newX, newY, '', null);
+  });
+
+  // Show/hide notes on slide change — patch the go() function
+  var originalGo = go;
+  go = function(i) {
+    originalGo(i);
+    // Update post-it visibility
+    var allNotes = notesContainer.querySelectorAll('.postit');
+    allNotes.forEach(function(n) {
+      n.style.display = (parseInt(n.dataset.slide) === C) ? 'block' : 'none';
+    });
+  };
+
+  // ── Phase 1.2: Section Navigator — auto-generated from data-section ──
+  (function buildSectionNav() {
+    var sections = [];
+    var seen = {};
+    for (var si = 0; si < S.length; si++) {
+      var sec = S[si].getAttribute('data-section') || '';
+      if (sec && !seen[sec]) {
+        seen[sec] = true;
+        sections.push(sec);
+      }
+    }
+    if (sections.length === 0) return;
+
+    var nav = document.createElement('nav');
+    nav.className = 'sec-nav';
+    nav.id = 'sec-nav';
+    nav.setAttribute('role', 'tablist');
+
+    sections.forEach(function(secName) {
+      var btn = document.createElement('button');
+      btn.className = 'sec-nav-btn';
+      btn.setAttribute('data-go-section', secName);
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', 'false');
+      btn.textContent = secName;
+      btn.addEventListener('click', function() {
+        // Find first slide with matching data-section
+        for (var k = 0; k < S.length; k++) {
+          if (S[k].getAttribute('data-section') === secName) {
+            go(k);
+            break;
+          }
+        }
+      });
+      nav.appendChild(btn);
+    });
+
+    document.body.appendChild(nav);
+    // Trigger initial state
+    go(C);
+  })();
+
+  // ── Phase 4.4: localStorage persistence for Edit Mode ──
+  function saveEditsToStorage() {
+    var edits = {};
+    S.forEach(function(slide, idx) {
+      var editables = slide.querySelectorAll(editableSelectors);
+      var slideEdits = [];
+      editables.forEach(function(el) {
+        slideEdits.push(el.textContent);
+      });
+      if (slideEdits.length > 0) edits[idx] = slideEdits;
+    });
+    try {
+      localStorage.setItem('deck-' + deckHash + '-edits', JSON.stringify(edits));
+    } catch (e) { /* quota exceeded or unavailable */ }
+  }
+
+  function loadEditsFromStorage() {
+    try {
+      var raw = localStorage.getItem('deck-' + deckHash + '-edits');
+      if (!raw) return;
+      var edits = JSON.parse(raw);
+      for (var idx in edits) {
+        if (edits.hasOwnProperty(idx)) {
+          var slideEdits = edits[idx];
+          var slide = S[parseInt(idx)];
+          if (!slide) continue;
+          var editables = slide.querySelectorAll(editableSelectors);
+          for (var e = 0; e < editables.length && e < slideEdits.length; e++) {
+            if (slideEdits[e]) editables[e].textContent = slideEdits[e];
+          }
+        }
+      }
+    } catch (e) { /* parse error or unavailable */ }
+  }
+
+  // Patch edit mode toggle to save on deactivation
+  var originalEditClick = editBtn.onclick;
+  var editBtnHandler = editBtn;
+  editBtnHandler.addEventListener('click', function() {
+    // Save edits when toggling OFF (editActive was already toggled in the main handler)
+    if (!editActive) {
+      saveEditsToStorage();
+    }
+  });
+
+  // Load persisted data on page load
+  loadEditsFromStorage();
+  loadNotesFromStorage();
+
+  // ── Helper functions for html2canvas workarounds ──
+  function fixTextInline(slideEl) {
+    var all = slideEl.querySelectorAll('*');
+    var saved = [];
+    all.forEach(function(el) {
+      var cs = window.getComputedStyle(el);
+      var ls = cs.letterSpacing;
+      var ws = cs.wordSpacing;
+      var ta = cs.textAlign;
+      if (ls !== 'normal' && ls !== '0px' || ws !== 'normal' && ws !== '0px' || ta === 'justify') {
+        saved.push({ el: el, letterSpacing: el.style.letterSpacing, wordSpacing: el.style.wordSpacing, textAlign: el.style.textAlign });
+        el.style.letterSpacing = 'normal';
+        el.style.wordSpacing = 'normal';
+        if (ta === 'justify') el.style.textAlign = 'left';
+      }
+    });
+    return saved;
+  }
+  function restoreTextInline(saved) {
+    saved.forEach(function(item) {
+      item.el.style.letterSpacing = item.letterSpacing;
+      item.el.style.wordSpacing = item.wordSpacing;
+      item.el.style.textAlign = item.textAlign;
+    });
+  }
+  function hideBase64Images(slideEl) {
+    var imgs = slideEl.querySelectorAll('img[src^="data:image"]');
+    var saved = [];
+    imgs.forEach(function(img) {
+      try {
+        var c = document.createElement('canvas');
+        c.width = img.offsetWidth * 2;
+        c.height = img.offsetHeight * 2;
+        var ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        c.style.width = img.offsetWidth + 'px';
+        c.style.height = img.offsetHeight + 'px';
+        var smallSrc = c.toDataURL('image/jpeg', 0.88);
+        saved.push({ img: img, originalSrc: img.src });
+        img.src = smallSrc;
+      } catch(e) { console.warn('hideBase64Images: skip', e); }
+    });
+    return saved;
+  }
+  function restoreBase64Images(saved) {
+    saved.forEach(function(item) { item.img.src = item.originalSrc; });
+  }
+
+  // Preload non-data <img> sources and inline them as data URIs so html2canvas
+  // renders them reliably (avoids file:// CORS taint and foreignObject issues).
+  async function preloadAndInlineImages(slideEl) {
+    var imgs = slideEl.querySelectorAll('img:not([src^="data:"])');
+    var saved = [];
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      try {
+        if (!img.complete) {
+          await new Promise(function(r) {
+            img.addEventListener('load', r, { once: true });
+            img.addEventListener('error', r, { once: true });
+          });
+        }
+        if (img.decode) { try { await img.decode(); } catch (e) {} }
+      } catch (e) {}
+      if (!img.naturalWidth) continue;
+      try {
+        var c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        var dataUrl = c.toDataURL('image/png');
+        saved.push({ img: img, originalSrc: img.src });
+        img.src = dataUrl;
+        if (img.decode) { try { await img.decode(); } catch (e) {} }
+      } catch (e) {
+        console.warn('preloadAndInlineImages: tainted, keeping src', img.src, e);
+      }
+    }
+    return saved;
+  }
+  function restorePreloadedImages(saved) {
+    saved.forEach(function(item) { item.img.src = item.originalSrc; });
+  }
+
+  // ── Language Toggle (ES/EN) ──────────────────────
+  // Override `translations` in your presentation with slide-specific text mappings.
+  // Format: { 'Spanish text': 'English text', ... }
+  var translations = {};
+  var currentLang = 'es';
+  var originalTexts = new Map();
+
+  function collectTexts() {
+    var selectors = '.ex-title, .ex-sub, .ex-num, .takeaway p, h1, h2, .feat-title, .feat-desc, .kpi-label, .slide-div p, .slide-dark p, .row-l p, .arch-layer';
+    document.querySelectorAll(selectors).forEach(function(el) {
+      if (!originalTexts.has(el)) originalTexts.set(el, el.textContent.trim());
+    });
+  }
+
+  function applyLang(lang) {
+    currentLang = lang;
+    collectTexts();
+    originalTexts.forEach(function(origText, el) {
+      if (lang === 'en') {
+        var translated = translations[origText];
+        if (translated !== undefined) el.textContent = translated || el.textContent;
+      } else {
+        el.textContent = origText;
+      }
+    });
+    document.querySelectorAll('[data-lang]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+  }
+
+  // Get precaptured images for current language
+  function getPrecaptured() {
+    if (currentLang === 'en' && _PRECAPTURED_EN) return _PRECAPTURED_EN;
+    return _PRECAPTURED;
+  }
+
+  document.getElementById('lang-es').addEventListener('click', function() { applyLang('es'); });
+  document.getElementById('lang-en').addEventListener('click', function() { applyLang('en'); });
+
+})();
+</script>
+</body>
+</html>

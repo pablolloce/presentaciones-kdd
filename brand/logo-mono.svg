@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Variante monocroma del isotipo: usa fill="currentColor" para heredar el color
+     del texto. Se incrusta en los <symbol id="brand-iso"> de los documentos
+     long-scroll y de la plantilla live, donde el logo cambia con el tema. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 120">
+  <path d="M0 18.6 32 0v101.4L0 120V18.6Z" fill="currentColor"/>
+  <path d="M96 101.4 64 120 0 18.6 32 0l64 101.4Z" fill="currentColor" opacity=".55"/>
+  <path d="M96 101.4 64 120V18.6L96 0v101.4Z" fill="currentColor" opacity=".75"/>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Isotipo corporativo por defecto. Sustitúyelo por el de tu marca:
+     viewBox 0 0 96 120 (ratio 4:5) y usa var(--brand-accent-N) o los hex del preset. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 120">
+  <defs>
+    <linearGradient id="brand-g1" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F48B4A"/>
+      <stop offset="1" stop-color="#E04870"/>
+    </linearGradient>
+    <linearGradient id="brand-g2" x1="8" y1="8" x2="88" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E04870"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 18.6 32 0v101.4L0 120V18.6Z" fill="url(#brand-g1)"/>
+  <path d="M96 101.4 64 120 0 18.6 32 0l64 101.4Z" fill="url(#brand-g2)" fill-opacity=".85"/>
+  <path d="M96 101.4 64 120V18.6L96 0v101.4Z" fill="#3B82F6"/>
+</svg>

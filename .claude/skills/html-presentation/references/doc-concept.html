@@ -1,0 +1,811 @@
+<!doctype html>
+<html data-brand="nfq" lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="brand-doc-type" content="concept">
+<title>Concept Explainer — Contractual Service Margin (IFRS 17) · NFQ Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<style>
+  :root {
+    --brand-bg: #FAFAF8;
+    --brand-bg-surface: #FFFFFF;
+    --brand-text: #0E0E0E;
+    --brand-text-sec: #2C2C2C;
+    --brand-text-muted: #6B6B6B;
+    --brand-rule: #E5E1D8;
+    --brand-amber: #F48B4A;
+    --brand-coral: #E04870;
+    --brand-violet: #9B59B6;
+    --brand-steel: #5B7FC7;
+    --brand-success: #10B981;
+    --brand-warning: #F59E0B;
+    --brand-danger: #F43F5E;
+  }
+  [data-theme="dark"] {
+    --brand-bg: #0E0E0E;
+    --brand-bg-surface: #181816;
+    --brand-text: #F5F5F0;
+    --brand-text-sec: #C7C7C2;
+    --brand-text-muted: #8A8A85;
+    --brand-rule: #2A2A28;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--brand-bg);
+    color: var(--brand-text);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 880px; margin: 0 auto; padding: 0 32px 120px; }
+
+  header.masthead {
+    padding: 88px 0 40px;
+    border-bottom: 1px solid var(--brand-rule);
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand-text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: var(--brand-amber); }
+  h1 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4.6vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    max-width: 22ch;
+  }
+  h1 em { font-style: italic; color: var(--brand-amber); font-weight: 500; }
+  .lede {
+    font-size: 17.5px;
+    color: var(--brand-text-sec);
+    margin: 16px 0 24px;
+    max-width: 60ch;
+    line-height: 1.55;
+  }
+  .meta-line {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-text-muted);
+  }
+  .meta-line span strong { color: var(--brand-text-sec); font-weight: 600; }
+
+  /* sticky ToC */
+  nav.toc {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(to bottom, var(--brand-bg) 80%, transparent);
+    padding: 16px 0;
+    margin-bottom: 24px;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+  nav.toc ol {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  nav.toc a {
+    color: var(--brand-text-muted);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: color 160ms ease, background 160ms ease;
+  }
+  nav.toc a:hover, nav.toc a.active { color: var(--brand-text); background: var(--brand-rule); }
+  nav.toc a.active::before { content: "● "; color: var(--brand-amber); }
+
+  /* sections */
+  .doc-body { font-size: 16.5px; }
+  section { margin-bottom: 56px; scroll-margin-top: 24px; }
+  section p { margin: 0 0 1.1em; color: var(--brand-text-sec); }
+  h2.section-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1.45rem;
+    letter-spacing: -0.012em;
+    margin: 0 0 6px;
+    color: var(--brand-text);
+  }
+  h2.section-title::before {
+    content: attr(data-num);
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--brand-amber);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  p.section-lede {
+    font-size: 15.5px;
+    color: var(--brand-text-muted);
+    margin: 8px 0 24px;
+    max-width: 64ch;
+  }
+  h3 {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 28px 0 8px;
+    color: var(--brand-text);
+  }
+  strong { color: var(--brand-text); font-weight: 600; }
+
+  /* callout */
+  .callout {
+    border: 1px solid var(--brand-rule);
+    border-left: 3px solid var(--brand-amber);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    background: var(--brand-bg-surface);
+    font-size: 14.5px;
+    color: var(--brand-text-sec);
+  }
+  .callout.info { border-left-color: var(--brand-steel); }
+  .callout.warn { border-left-color: var(--brand-coral); }
+  .callout .callout-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand-amber);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .callout.info .callout-label { color: var(--brand-steel); }
+  .callout.warn .callout-label { color: var(--brand-coral); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* formula block */
+  .formula {
+    margin: 28px 0;
+    padding: 24px 28px;
+    border-top: 2px solid var(--brand-rule);
+    border-bottom: 2px solid var(--brand-rule);
+    background: var(--brand-bg-surface);
+    text-align: center;
+    overflow-x: auto;
+  }
+  .formula .formula-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand-text-muted);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .formula .katex { font-size: 1.15em; }
+  .formula .legend {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--brand-text-muted);
+    text-align: left;
+    line-height: 1.5;
+  }
+  .formula .legend dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 6px 14px;
+    margin: 0;
+  }
+  .formula .legend dt {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    color: var(--brand-text-sec);
+  }
+  .formula .legend dd { margin: 0; }
+
+  /* worked example diagram */
+  .flow-diagram {
+    margin: 24px 0;
+    padding: 24px;
+    border: 1px solid var(--brand-rule);
+    border-radius: 10px;
+    background: var(--brand-bg-surface);
+    overflow-x: auto;
+  }
+  .flow-diagram svg { display: block; width: 100%; height: auto; min-width: 600px; }
+  .flow-diagram text {
+    font-family: "Inter", sans-serif;
+    fill: var(--brand-text);
+  }
+  .flow-diagram .lbl {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    fill: var(--brand-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .flow-diagram .num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--brand-text);
+  }
+  .flow-diagram .pos { fill: rgba(16,185,129,0.15); stroke: var(--brand-success); }
+  .flow-diagram .neg { fill: rgba(244,63,94,0.12); stroke: var(--brand-danger); }
+  .flow-diagram .neutral { fill: var(--brand-bg); stroke: var(--brand-rule); }
+  .flow-diagram .accent { fill: rgba(244,139,74,0.18); stroke: var(--brand-amber); }
+
+  /* tables */
+  .tbl-wrap {
+    border: 1px solid var(--brand-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--brand-bg-surface);
+  }
+  table.data-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.data-tbl thead th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--brand-text-muted);
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--brand-rule);
+    background: var(--brand-bg);
+    font-weight: 600;
+  }
+  table.data-tbl td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--brand-rule);
+    color: var(--brand-text-sec);
+    vertical-align: top;
+  }
+  table.data-tbl tbody tr:last-child td { border-bottom: 0; }
+  table.data-tbl td.num {
+    font-family: "JetBrains Mono", monospace;
+    text-align: right;
+    color: var(--brand-text);
+  }
+  table.data-tbl td.label {
+    font-weight: 600;
+    color: var(--brand-text);
+  }
+  table.data-tbl tr.total td {
+    background: var(--brand-bg);
+    font-weight: 700;
+    border-top: 2px solid var(--brand-amber);
+  }
+  table.data-tbl tr.total td.num { color: var(--brand-amber); }
+
+  /* citations */
+  .cite {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7em;
+    color: var(--brand-amber);
+    text-decoration: none;
+    margin-left: 1px;
+    vertical-align: super;
+    font-weight: 600;
+  }
+  ol.cite-list {
+    list-style: none;
+    counter-reset: cite;
+    padding: 0;
+    margin: 32px 0 0;
+    font-size: 14px;
+    color: var(--brand-text-muted);
+  }
+  ol.cite-list li {
+    counter-increment: cite;
+    padding: 10px 0 10px 36px;
+    border-bottom: 1px solid var(--brand-rule);
+    position: relative;
+    line-height: 1.5;
+  }
+  ol.cite-list li::before {
+    content: counter(cite);
+    position: absolute;
+    left: 0; top: 10px;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--brand-amber);
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  code.inline {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.92em;
+    background: var(--brand-rule);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--brand-text);
+  }
+
+  /* FAQ collapsibles (mirrored from doc-pov.html) */
+  .faq-list { margin: 16px 0 0; }
+  details.faq-item {
+    border-bottom: 1px solid var(--brand-rule);
+    padding: 0;
+  }
+  details.faq-item:first-of-type { border-top: 1px solid var(--brand-rule); }
+  details.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 36px 18px 28px;
+    position: relative;
+    font-weight: 500;
+    font-size: 1.02rem;
+    color: var(--brand-text);
+    line-height: 1.45;
+    transition: color 160ms ease;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary::before {
+    content: "Q";
+    position: absolute;
+    left: 0; top: 19px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--brand-amber);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  details.faq-item summary::after {
+    content: "+";
+    position: absolute;
+    right: 4px; top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.4rem;
+    color: var(--brand-amber);
+    line-height: 1;
+  }
+  details.faq-item[open] summary::after { content: "−"; }
+  details.faq-item summary:hover { color: var(--brand-amber); }
+  details.faq-item .faq-a {
+    padding: 0 36px 22px 28px;
+    color: var(--brand-text-sec);
+    font-size: 15.5px;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  details.faq-item .faq-a p { margin: 0 0 0.8em; }
+  details.faq-item .faq-a p:last-child { margin-bottom: 0; }
+
+  /* fixed chrome */
+  .brand-mark {
+    position: fixed;
+    top: 22px; left: 24px;
+    z-index: 100;
+    width: 28px; height: 35px;
+    color: var(--brand-text);
+  }
+  .brand-mark svg { width: 100%; height: 100%; }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px; right: 24px;
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--brand-bg-surface);
+    border: 1px solid var(--brand-rule);
+    border-radius: 999px;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .theme-toggle button {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--brand-text-muted);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .theme-toggle button.active { background: var(--brand-amber); color: #fff; }
+
+  footer.doc-foot {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--brand-rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--brand-text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media print {
+    :root { color-scheme: light; }
+    nav.toc, .theme-toggle, .brand-mark { display: none; }
+    .masthead { padding: 0 0 1cm; border-bottom: 0.5pt solid #000; }
+    section, .formula, .callout, .flow-diagram, table { break-inside: avoid; }
+    a { color: #000; text-decoration: underline; }
+    body { background: white; color: black; font-size: 10.5pt; }
+    @page { size: A4; margin: 1.6cm 1.8cm; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="brand-iso" viewBox="0 0 100 125">
+    <path d="M20 20 L20 105 L35 105 L35 55 L65 105 L80 105 L80 20 L65 20 L65 70 L35 20 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<a class="brand-mark" href="https://nfq.es" aria-label="NFQ">
+  <svg><use href="#brand-iso"/></svg>
+</a>
+
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button data-theme-set="light" class="active">Light</button>
+  <button data-theme-set="dark">Dark</button>
+</div>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Concept Explainer · Seguros · NFQ Advisory</div>
+    <h1>Contractual Service Margin: el motor del beneficio bajo <em>IFRS 17</em>.</h1>
+    <p class="lede">El CSM es la pieza que reemplaza el reconocimiento inmediato del beneficio del modelo IFRS 4: bajo IFRS 17, el beneficio futuro de un contrato de seguro se acumula al inicio y se libera a P&amp;L progresivamente conforme el servicio se presta. Cambiar este patrón ha forzado un rediseño completo de los sistemas, los KPIs y la conversación con CFO en toda compañía de vida-ahorro.</p>
+    <div class="meta-line">
+      <span><strong>Sector:</strong> Seguros</span>
+      <span><strong>Norma:</strong> IFRS 17</span>
+      <span><strong>Vigor:</strong> 1-ene-2023</span>
+      <span><strong>Lectura:</strong> <span id="reading-time">— min</span></span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Tabla de contenidos">
+    <ol id="toc-list"></ol>
+  </nav>
+
+  <main class="doc-body">
+
+    <section id="definicion">
+      <h2 class="section-title" data-num="§ 01 · DEFINICIÓN">Qué es exactamente el CSM</h2>
+      <p class="section-lede">El Contractual Service Margin (CSM) es el componente del pasivo de un contrato de seguro que representa el beneficio futuro no devengado.</p>
+
+      <p>Bajo <strong>IFRS 17</strong> el pasivo de un contrato de seguro se descompone en dos componentes principales: las <strong>fulfilment cash flows</strong> (FCF, valor presente de los flujos esperados más un risk adjustment por riesgo no financiero) y el <strong>CSM</strong>. El CSM se calcula al inicio del contrato como la diferencia entre la prima recibida y los FCF, y se libera a P&amp;L durante la vida del contrato a medida que se entrega el servicio.<a class="cite" href="#cite-1">¹</a></p>
+
+      <div class="callout info">
+        <div class="callout-label">IFRS 17.38 — Initial measurement</div>
+        <p>«The CSM is a component of the asset or liability for the group of insurance contracts that represents the unearned profit the entity will recognise as it provides services in the future.»</p>
+      </div>
+
+      <p>Tres modelos de medición están definidos en la norma:</p>
+      <ul>
+        <li><strong>General Measurement Model (GMM)</strong> — modelo base. Aplica a vida-ahorro, vida-riesgo de larga duración, salud.</li>
+        <li><strong>Premium Allocation Approach (PAA)</strong> — simplificación para contratos cortos (típicamente no-vida con duración &lt; 1 año).</li>
+        <li><strong>Variable Fee Approach (VFA)</strong> — para contratos con participación directa en beneficios (unit-linked, productos garantizados con perfil de inversión).</li>
+      </ul>
+    </section>
+
+    <section id="importancia">
+      <h2 class="section-title" data-num="§ 02 · POR QUÉ IMPORTA">Cambia el patrón temporal del beneficio</h2>
+      <p class="section-lede">Tres consecuencias que el CSM trae al P&amp;L de una compañía de seguros y que el CFO debe explicar al mercado.</p>
+
+      <h3>1 · Reconocimiento progresivo del beneficio</h3>
+      <p>Bajo IFRS 4, una compañía podía reconocer una parte significativa del beneficio en el momento de la emisión. Bajo IFRS 17, ese beneficio queda «aparcado» en el CSM y se libera <em>pari passu</em> con la entrega del servicio (típicamente proporcional a las <em>coverage units</em> consumidas en cada periodo). El resultado neto es un patrón de beneficio más diferido, más predecible, y menos sensible a la actividad comercial del periodo.</p>
+
+      <h3>2 · Volatilidad reducida — pero a cambio de complejidad</h3>
+      <p>El CSM absorbe los cambios en estimaciones futuras relacionadas con el servicio (mortalidad, lapsación, gastos esperados). Esos cambios no van directamente a P&amp;L; ajustan el CSM y su consiguiente liberación futura. La P&amp;L se vuelve más estable. El precio: actuariado y sistemas IT capaces de proyectar y reabsorber estos ajustes contrato a contrato.</p>
+
+      <h3>3 · KPIs financieros redefinidos</h3>
+      <p>ROE, margen de servicio (Insurance Service Result), y CSR (Combined Service Ratio) se redefinen bajo IFRS 17. La comparabilidad histórica se pierde durante el periodo de transición, lo que ha obligado a las cotizadas españolas a publicar <em>bridges</em> IFRS 4 → IFRS 17 durante 2023-2024.<a class="cite" href="#cite-2">²</a></p>
+    </section>
+
+    <section id="formula">
+      <h2 class="section-title" data-num="§ 03 · CÓMO FUNCIONA">La aritmética del CSM</h2>
+      <p class="section-lede">Dos fórmulas anchor: medición inicial y evolución posterior. Todo lo demás son ajustes específicos por tipo de contrato.</p>
+
+      <h3>Medición inicial (al emitir el contrato)</h3>
+      <p>El CSM al inicio se calcula como la diferencia entre la prima recibida y los flujos de cumplimiento — siempre que esa diferencia sea positiva. Si fuese negativa, el contrato es <em>onerous</em> y la pérdida se reconoce inmediatamente en P&amp;L (loss component).</p>
+
+      <div class="formula">
+        <div class="formula-label">CSM al inicio · IFRS 17.38</div>
+        <div>$$CSM_0 = \max\left(\,0,\;P_0 - PV(CF_{out}) - RA\,\right)$$</div>
+        <div class="legend">
+          <dl>
+            <dt>P₀</dt><dd>Prima recibida al inicio del contrato</dd>
+            <dt>PV(CFout)</dt><dd>Valor presente de los flujos de salida esperados (claims, gastos, comisiones)</dd>
+            <dt>RA</dt><dd>Risk Adjustment por riesgo no financiero</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3>Evolución en cada periodo</h3>
+      <p>El CSM se mueve cada periodo por cuatro efectos: <strong>accretion</strong> de intereses (a la <em>locked-in rate</em> definida al inicio), <strong>cambios en estimaciones futuras</strong> que ajustan el CSM (no van a P&amp;L), <strong>nuevos contratos</strong> añadidos al grupo, y la <strong>liberación a P&amp;L</strong> proporcional a las coverage units consumidas.</p>
+
+      <div class="formula">
+        <div class="formula-label">CSM al final del periodo · IFRS 17.44</div>
+        <div>$$CSM_t = CSM_{t-1} \cdot (1 + r_{lock}) + \Delta FCF^{future}_{t} + NB_t - A_t$$</div>
+        <div class="legend">
+          <dl>
+            <dt>r_lock</dt><dd>Tasa de descuento bloqueada al inicio del contrato (locked-in rate)</dd>
+            <dt>ΔFCFfuture</dt><dd>Cambio en estimaciones de flujos futuros relacionadas con el servicio</dd>
+            <dt>NB</dt><dd>CSM aportado por nuevos contratos del periodo</dd>
+            <dt>A</dt><dd>Liberación a P&amp;L del periodo (amortización por coverage units)</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p>La amortización del periodo es proporcional al ratio de coverage units consumidas frente al total esperado:</p>
+
+      <div class="formula">
+        <div class="formula-label">Amortización del periodo · IFRS 17.B119</div>
+        <div>$$A_t = CSM_{t}^{pre} \cdot \frac{u_t}{\sum_{s \geq t} u_s}$$</div>
+        <div class="legend">
+          <dl>
+            <dt>uₜ</dt><dd>Coverage units consumidas en el periodo t</dd>
+            <dt>Σ uₛ</dt><dd>Coverage units consumidas en t más las pendientes futuras</dd>
+            <dt>CSMᵗᵖʳᵉ</dt><dd>CSM tras accretion y ajustes, antes de amortizar</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="ejemplo">
+      <h2 class="section-title" data-num="§ 04 · EJEMPLO TRABAJADO">CSM de un contrato vida-ahorro a 10 años</h2>
+      <p class="section-lede">Producto vida-ahorro a 10 años, prima única, sin opciones financieras complejas. Modelo GMM, locked-in rate del 1,0%, coverage units lineales. Cifras en euros, formato es-ES.</p>
+
+      <h3>Inputs al inicio (t = 0)</h3>
+      <div class="flow-diagram">
+        <svg viewBox="0 0 760 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="CSM al inicio">
+          <!-- Premium box -->
+          <rect class="pos" x="20" y="50" width="180" height="120" rx="8" stroke-width="1.5"/>
+          <text class="lbl" x="110" y="78" text-anchor="middle">PRIMA RECIBIDA</text>
+          <text class="num" x="110" y="115" text-anchor="middle" font-size="20">100.000 €</text>
+          <text class="lbl" x="110" y="145" text-anchor="middle">P₀</text>
+
+          <text x="220" y="115" text-anchor="middle" font-size="22" font-weight="600" fill="var(--brand-text-muted)">−</text>
+
+          <!-- PV outflows -->
+          <rect class="neg" x="240" y="50" width="180" height="120" rx="8" stroke-width="1.5"/>
+          <text class="lbl" x="330" y="78" text-anchor="middle">PV FLUJOS SALIDA</text>
+          <text class="num" x="330" y="115" text-anchor="middle" font-size="20">92.000 €</text>
+          <text class="lbl" x="330" y="145" text-anchor="middle">PV(CFout)</text>
+
+          <text x="440" y="115" text-anchor="middle" font-size="22" font-weight="600" fill="var(--brand-text-muted)">−</text>
+
+          <!-- RA -->
+          <rect class="neg" x="460" y="50" width="120" height="120" rx="8" stroke-width="1.5"/>
+          <text class="lbl" x="520" y="78" text-anchor="middle">RISK ADJ.</text>
+          <text class="num" x="520" y="115" text-anchor="middle" font-size="20">3.000 €</text>
+          <text class="lbl" x="520" y="145" text-anchor="middle">RA</text>
+
+          <text x="600" y="115" text-anchor="middle" font-size="22" font-weight="600" fill="var(--brand-amber)">=</text>
+
+          <!-- CSM 0 -->
+          <rect class="accent" x="620" y="50" width="120" height="120" rx="8" stroke-width="1.5"/>
+          <text class="lbl" x="680" y="78" text-anchor="middle">CSM₀</text>
+          <text class="num" x="680" y="115" text-anchor="middle" font-size="22" fill="var(--brand-amber)">5.000 €</text>
+          <text class="lbl" x="680" y="145" text-anchor="middle">+ &gt; 0 → no onerous</text>
+        </svg>
+      </div>
+
+      <p>El CSM al inicio es de <code class="inline">5.000 €</code>. Como es positivo, el contrato no es <em>onerous</em>, y los <code class="inline">5.000 €</code> se reconocerán como beneficio progresivamente durante los 10 años de vigencia.</p>
+
+      <h3>Evolución año 1 (t = 1)</h3>
+      <p>Asumiendo coverage units lineales (<code class="inline">u₁ = 1</code>, total = 10), sin nuevos contratos ni cambios en estimaciones, la mecánica del año 1 es la siguiente:</p>
+
+      <div class="tbl-wrap">
+        <table class="data-tbl">
+          <thead>
+            <tr>
+              <th>Movimiento</th>
+              <th>Cálculo</th>
+              <th>Importe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">CSM apertura</td>
+              <td>—</td>
+              <td class="num">5.000,00 €</td>
+            </tr>
+            <tr>
+              <td class="label">Accretion (1,0%)</td>
+              <td>5.000 × 1,01 − 5.000</td>
+              <td class="num">+ 50,00 €</td>
+            </tr>
+            <tr>
+              <td class="label">CSM tras accretion</td>
+              <td>—</td>
+              <td class="num">5.050,00 €</td>
+            </tr>
+            <tr>
+              <td class="label">Δ FCF futuros</td>
+              <td>(sin cambios estimaciones)</td>
+              <td class="num">0,00 €</td>
+            </tr>
+            <tr>
+              <td class="label">Nuevos contratos</td>
+              <td>—</td>
+              <td class="num">0,00 €</td>
+            </tr>
+            <tr>
+              <td class="label">Amortización año 1</td>
+              <td>5.050 × (1 / 10)</td>
+              <td class="num">− 505,00 €</td>
+            </tr>
+            <tr class="total">
+              <td class="label">CSM cierre año 1</td>
+              <td>—</td>
+              <td class="num">4.545,00 €</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>El P&amp;L del año 1 incluye los <code class="inline">505,00 €</code> de liberación de CSM más la liberación de RA y otros componentes — el reconocimiento del beneficio queda diferido a lo largo de los 10 años, en lugar de cargarse anticipadamente.</p>
+    </section>
+
+    <section id="casos">
+      <h2 class="section-title" data-num="§ 05 · CASOS LÍMITE">Tres situaciones que requieren juicio</h2>
+
+      <div class="callout warn">
+        <div class="callout-label">Onerous contracts (IFRS 17.47)</div>
+        <p>Si <code class="inline">P₀ − PV(CFout) − RA &lt; 0</code>, el contrato es <strong>onerous</strong>: la pérdida se reconoce inmediatamente en P&amp;L como <em>loss component</em>. No hay CSM. En vidas con altas comisiones de intermediación o productos garantizados con tipos bajos, este escenario es frecuente y requiere monitorización por <em>group of contracts</em>.</p>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Modificaciones del contrato (IFRS 17.72-77)</div>
+        <p>Cuando un contrato se modifica de forma sustancial (cambio de cobertura, prima, beneficiario), debe evaluarse si la modificación constituye un nuevo contrato. Si lo es, se da de baja el contrato original y se reconoce uno nuevo a fair value — con potencial impacto en CSM y en la P&amp;L del periodo.</p>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-label">Transición (IFRS 17.C1-C24)</div>
+        <p>La norma admite tres enfoques para la primera aplicación: <strong>Full Retrospective</strong> (FRA), <strong>Modified Retrospective</strong> (MRA) y <strong>Fair Value</strong> (FVA). La elección — frecuentemente FVA en carteras antiguas por falta de datos históricos suficientes para FRA — afecta materialmente al CSM de apertura y a la trayectoria de beneficios futuros.</p>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 class="section-title" data-num="§ 06 · PREGUNTAS FRECUENTES">Lo que pregunta el cliente cuando explicamos CSM</h2>
+      <p class="section-lede">Cuatro consultas que recibimos de equipos financieros y actuariales durante implementaciones de IFRS 17. Click para expandir.</p>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>¿Si una compañía adopta el VFA en lugar del GMM, cambia mucho el patrón del CSM?</summary>
+          <div class="faq-a">
+            <p>Sí, materialmente. En el <strong>VFA</strong> (Variable Fee Approach), aplicable a contratos con participación directa en beneficios, el CSM se ajusta también por los <em>cambios en el valor del subyacente</em> que correspondan al asegurador. En GMM esos cambios irían directamente a P&amp;L como ingreso financiero.</p>
+            <p>Resultado práctico: en VFA, el CSM absorbe más volatilidad y la P&amp;L queda más estable. A cambio, el modelo VFA es más complejo de calibrar y exige mayor sofisticación de sistemas. Para productos unit-linked con garantías mínimas el VFA es habitualmente el modelo correcto.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Cómo se reconcilia el CSM contable (IFRS 17) con la métrica de Solvencia II?</summary>
+          <div class="faq-a">
+            <p>No son la misma cosa. El CSM es <strong>contable</strong> — beneficio futuro no devengado bajo IFRS 17. Solvencia II opera con <strong>fondos propios económicos</strong> y un Solvency Capital Requirement (SCR). El CSM no figura como tal en la métrica de solvencia.</p>
+            <p>EIOPA ha publicado discussion papers sobre cómo aprovechar la información IFRS 17 para fines prudenciales, pero la reconciliación operativa es responsabilidad del actuariado y de finance. En la práctica, las compañías mantienen dos lecturas en paralelo y construyen <em>bridges</em> explícitos entre ambas.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Qué pasa con un contrato que hoy no es onerous pero pasa a serlo en un trimestre futuro?</summary>
+          <div class="faq-a">
+            <p>Cuando un grupo de contratos pasa a ser <em>onerous</em> tras la emisión, el CSM acumulado se libera primero contra el deterioro esperado; si no es suficiente, la pérdida adicional se reconoce inmediatamente como <em>loss component</em> (IFRS 17.49). Posteriormente, si las condiciones mejoran, la <em>loss component</em> puede revertirse hasta su importe acumulado anterior — no más.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Por qué la mayoría de compañías españolas eligió Fair Value Approach (FVA) en transición?</summary>
+          <div class="faq-a">
+            <p>Por <strong>falta de datos históricos</strong>. La aproximación Full Retrospective (FRA) exige disponer de información granular por cohorte de emisión hacia atrás décadas — que la mayoría de compañías no tiene en formato auditable. La Modified Retrospective (MRA) admite simplificaciones pero sigue exigiendo trazabilidad.</p>
+            <p>FVA permite reconstruir el CSM a la fecha de transición a partir del fair value implícito del pasivo — más operativo, aunque significa que el patrón de beneficios futuros depende de la valoración de transición elegida. Es la opción pragmática y la que de facto se ha consolidado.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="referencias">
+      <h2 class="section-title" data-num="§ 07 · REFERENCIAS">Fuentes regulatorias y técnicas</h2>
+      <ol class="cite-list">
+        <li id="cite-1">IFRS Foundation — <em>IFRS 17 Insurance Contracts</em> (May 2017, amended 2020). Párrafos relevantes: 32-52 (initial), 38, 43-46 (subsequent), B119 (coverage units), C1-C24 (transition).</li>
+        <li id="cite-2">EFRAG — <em>Endorsement Advice on IFRS 17</em>, marzo 2021. CNMV — Comunicaciones sobre la primera aplicación de IFRS 17 en cotizadas españolas, 2023-2024.</li>
+        <li id="cite-3">DGSFP — <em>Circular y guías sobre solvencia y reporting prudencial bajo Solvencia II</em>; coordinación con IFRS 17 en compañías españolas.</li>
+        <li id="cite-4">EIOPA — <em>Discussion paper on the use of IFRS 17 information for prudential purposes</em>, 2023.</li>
+        <li id="cite-5">NFQ — <em>Marco metodológico de implementación IFRS 17</em> (interno, Seguros).</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="doc-foot">
+    <span>NFQ Advisory · Concept Explainer · IFRS 17 / CSM</span>
+    <span>nfq.es · 2026-05-09</span>
+  </footer>
+
+</div>
+
+<!-- KaTeX runtime + auto-render. Online dependency — concept docs require an online first-render. -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+<script>
+  // theme toggle
+  const root = document.documentElement;
+  const stored = localStorage.getItem("deck-doc-theme");
+  if (stored === "dark" || stored === "light") root.dataset.theme = stored;
+  const themeBtns = document.querySelectorAll("[data-theme-set]");
+  const sync = () => themeBtns.forEach(b => b.classList.toggle("active", b.dataset.themeSet === root.dataset.theme));
+  sync();
+  themeBtns.forEach(btn => btn.addEventListener("click", () => {
+    root.dataset.theme = btn.dataset.themeSet;
+    localStorage.setItem("deck-doc-theme", btn.dataset.themeSet);
+    sync();
+  }));
+
+  // ToC auto-generate
+  const tocList = document.getElementById("toc-list");
+  const sections = document.querySelectorAll("main.doc-body section[id]");
+  sections.forEach(sec => {
+    const title = sec.querySelector("h2.section-title");
+    if (!title) return;
+    const numText = (title.dataset.num || "").replace(/§\s*0?(\d+)\s*·.*/, "$1");
+    const labelText = title.textContent.trim();
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = "#" + sec.id;
+    a.dataset.target = sec.id;
+    a.textContent = "§" + numText + " · " + labelText.slice(0, 22);
+    li.appendChild(a);
+    tocList.appendChild(li);
+  });
+
+  const tocLinks = document.querySelectorAll("nav.toc a");
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        tocLinks.forEach(a => a.classList.toggle("active", a.dataset.target === en.target.id));
+      }
+    });
+  }, { rootMargin: "-30% 0px -60% 0px", threshold: 0 });
+  sections.forEach(s => obs.observe(s));
+
+  // open all <details> for print, restore after
+  let _detailState = [];
+  window.addEventListener("beforeprint", () => {
+    _detailState = [...document.querySelectorAll("details")].map(d => d.open);
+    document.querySelectorAll("details").forEach(d => d.open = true);
+  });
+  window.addEventListener("afterprint", () => {
+    document.querySelectorAll("details").forEach((d, i) => d.open = _detailState[i] ?? false);
+  });
+
+  // reading time
+  const text = document.querySelector("main.doc-body").innerText;
+  const minutes = Math.max(1, Math.round(text.trim().split(/\s+/).length / 200));
+  document.getElementById("reading-time").textContent = minutes + " min";
+</script>
+</body>
+</html>
