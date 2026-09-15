@@ -223,6 +223,17 @@
   .divider .dv-mega .blue{color:var(--blue-l);font-style:italic;font-weight:500}
   .divider .dv-sub{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.3;
     color:rgba(255,255,255,.82);max-width:1040px;position:relative;z-index:1;flex:0 0 auto}
+  /* Lista de proximos pasos sobre separador oscuro. El cierre necesita enumerar
+     sin perder el peso visual de una slide oscura, asi que va a dos columnas
+     con numeracion en el acento claro. */
+  .dv-points{display:grid;grid-template-columns:1fr 1fr;gap:18px 52px;margin-top:34px;
+    max-width:1180px;position:relative;z-index:1}
+  .dv-point{display:flex;align-items:baseline;gap:16px}
+  .dv-point .dp-n{flex:0 0 auto;width:26px;height:26px;border-radius:8px;
+    background:rgba(111,168,255,.16);color:var(--blue-l);font-family:var(--mono);
+    font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .dv-point p{font-size:17px;line-height:1.5;color:rgba(255,255,255,.78)}
+  .dv-point p b{color:#fff;font-weight:600}
   .divider .dv-foot{position:absolute;left:104px;bottom:60px;font-family:var(--mono);font-size:14px;
     letter-spacing:.06em;color:rgba(255,255,255,.5)}
 
@@ -478,6 +489,7 @@
       <li class="toc-item" data-goto="Hoy"><span class="toc-n">05</span><span class="toc-t">Qué tenemos ya: RDR</span></li>
       <li class="toc-item" data-goto="KDD Work"><span class="toc-n">06</span><span class="toc-t">A futuro: KDD Work</span></li>
       <li class="toc-item" data-goto="Soporte"><span class="toc-n">07</span><span class="toc-t">Qué gana el ANS</span></li>
+      <li class="toc-item" data-goto="A futuro"><span class="toc-n">08</span><span class="toc-t">A futuro</span></li>
     </ul>
   </div>
 </section>
@@ -698,31 +710,6 @@ traza del motivo.</pre>
   <p class="takeaway">Preguntar «¿a qué afecta este cambio?» deja de ser una conversación de pasillo: <b>se recorre el grafo</b>.</p>
 </section>
 
-<!-- ═══ 12 · QUÉ RESUELVE EL GRAFO ════════════════════════════════════════ -->
-<section class="slide" data-nav="El grafo">
-  <div class="eyebrow">El grafo</div>
-  <h2 class="headline">Tres preguntas que hoy cuestan una mañana</h2>
-  <div class="body">
-    <div class="cards">
-      <div class="card a1">
-        <div class="c-n">Pregunta 01</div>
-        <div class="c-t">«¿A qué afecta si cambio esto?»</div>
-        <p class="c-d">Hoy: preguntar a quien lleve más tiempo y cruzar los dedos. Con el grafo: <b>recorrer las aristas entrantes</b> de la spec.</p>
-      </div>
-      <div class="card a2">
-        <div class="c-n">Pregunta 02</div>
-        <div class="c-t">«¿Por qué el sistema hace esto?»</div>
-        <p class="c-d">Hoy: leer código y deducir la intención. Con el grafo: <b>la FEAT apunta a la DOM</b> que la justifica, y la DOM a la regulación.</p>
-      </div>
-      <div class="card a3">
-        <div class="c-n">Pregunta 03</div>
-        <div class="c-t">«¿Dónde está documentado?»</div>
-        <p class="c-d">Hoy: buscar en tres sitios distintos. Con el grafo: <b>un identificador</b> que se cita en la incidencia y lleva al sitio exacto.</p>
-      </div>
-    </div>
-  </div>
-  <p class="takeaway">Ninguna de las tres es una pregunta de desarrollo: <b>las tres son preguntas de soporte</b>.</p>
-</section>
 <!-- ═══ 13 · SEPARADOR ════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="Hoy">
   <div class="dv-eyebrow">Sección 05</div>
@@ -839,27 +826,27 @@ traza del motivo.</pre>
 <section class="slide" data-nav="Soporte">
   <div class="eyebrow">Soporte</div>
   <h2 class="headline">El traspaso deja de ser <em>una sesión de transferencia</em> y pasa a ser un repositorio</h2>
-  <p class="lead">Hoy llega con documentación heterogénea y dos horas de reunión. Con KDD, con su base de conocimiento.</p>
+  <p class="lead">Hoy un servicio llega con documentación dispersa. Con KDD llega con su base de conocimiento.</p>
   <div class="body">
     <div class="cards c2">
       <div class="card a1">
         <div class="c-n">Ventaja 01</div>
-        <div class="c-t">Clasificar incidencias deja de ser interpretación</div>
-        <p class="c-d">«Falla la elegibilidad» pasa a ser <b>DOM-RDR-014</b>, con dueño, versión y relaciones. La ruta de escalado sale del grafo.</p>
+        <div class="c-t">Agiliza la clasificación de incidencias</div>
+        <p class="c-d">Hoy la categoría se decide con lo que cada uno sabe del servicio. Con el conocimiento <b>versionado y estructurado</b>, la incidencia se ancla a la spec que la explica: qué versión hay en producción y quién responde de ella.</p>
       </div>
       <div class="card a2">
         <div class="c-n">Ventaja 02</div>
-        <div class="c-t">Responder sin depender de quien lleva años</div>
-        <p class="c-d">El «¿por qué hace esto?» tiene respuesta citable en el KB. <b>Baja el tiempo de primera respuesta</b> y deja de ser crítico quién esté de guardia.</p>
+        <div class="c-t">Onboarding y cambios de UUAA</div>
+        <p class="c-d">El conocimiento del área deja de depender de quién siga en el equipo. Un compañero nuevo <b>entra leyendo el KB</b>, y un cambio de UUAA no se lleva por delante lo que sabía el anterior.</p>
       </div>
       <div class="card a3">
         <div class="c-n">Ventaja 03</div>
-        <div class="c-t">Analizar el impacto antes de tocar nada</div>
+        <div class="c-t">Analiza el impacto antes de tocar nada</div>
         <p class="c-d">Antes de un correctivo, el grafo dice <b>qué specs quedan afectadas</b> y qué pruebas repetir. Menos regresiones colaterales.</p>
       </div>
       <div class="card a4">
         <div class="c-n">Ventaja 04</div>
-        <div class="c-t">Soporte deja de ser solo consumidor</div>
+        <div class="c-t">Permite establecer reglas de comportamiento</div>
         <p class="c-d">Cada incidencia resuelta es conocimiento no escrito. Convertirla en spec o RFC hace que <b>el ANS alimente el KB</b>, no solo lo consulte.</p>
       </div>
     </div>
@@ -867,43 +854,53 @@ traza del motivo.</pre>
   <p class="takeaway">La ventaja no es tener más documentación: es que <b>la documentación tenga dueño, versión y relaciones</b> el día que llega a soporte.</p>
 </section>
 
-<!-- ═══ 20 · EL DÍA A DÍA DEL ANS ═════════════════════════════════════════ -->
+<!-- ═══ 19 · EL DÍA A DÍA DEL ANS ═════════════════════════════════════════ -->
 <section class="slide" data-nav="Soporte">
   <div class="eyebrow">Soporte</div>
-  <h2 class="headline">Cómo sería una guardia con el KB delante</h2>
+  <h2 class="headline">Una guardia <em>con el KB delante</em></h2>
+  <p class="lead">Los cuatro momentos de una incidencia, apoyados en el conocimiento en lugar de en la memoria de quien esté de turno.</p>
   <div class="body">
-    <div class="split s73">
-      <div class="tblwrap">
-        <table class="data">
-          <thead><tr><th style="width:26%">Momento</th><th style="width:37%">Hoy</th><th style="width:37%">Con KDD</th></tr></thead>
-          <tbody>
-            <tr><td><b>Llega la incidencia</b></td><td>Texto libre; la categoría se elige a ojo</td><td>Se ancla a un <b>identificador de spec</b> con dueño conocido</td></tr>
-            <tr><td><b>Diagnóstico</b></td><td>Buscar en Confluence, en el código y en el chat</td><td>Preguntar al KB y obtener <b>respuesta citada</b></td></tr>
-            <tr><td><b>Escalado</b></td><td>¿A quién le toca esto? Depende de quién esté</td><td>El campo <b>owner</b> de la spec lo dice</td></tr>
-            <tr><td><b>Resolución</b></td><td>Se arregla y se cierra</td><td>Se arregla y, si había un hueco, <b>se escribe la spec</b></td></tr>
-            <tr><td><b>Cambio correctivo</b></td><td>Se prueba lo que uno recuerda que afecta</td><td>El grafo dice <b>qué más hay que probar</b></td></tr>
-          </tbody>
-        </table>
+    <div class="steps">
+      <div class="step">
+        <div class="s-n">Momento 01</div>
+        <div class="s-t">Llega la incidencia</div>
+        <p class="s-d">Se interactúa con el KDD para <b>localizar el cambio que la ha provocado</b>. La detección deja de depender de recordar qué se tocó la semana pasada.</p>
       </div>
-      <div>
-        <div class="kg-panel" style="height:100%">
-          <div class="kg-p-k">Lo que hace falta de vosotros</div>
-          <div class="loopline"><span class="lp-n">A</span><p>Que el <b>runbook</b> deje de ser un documento suelto y entre como spec <b>DOC</b>.</p></div>
-          <div class="loopline"><span class="lp-n">B</span><p>Que al cerrar una incidencia con conocimiento nuevo <b>quede escrito</b>, aunque sea en dos líneas.</p></div>
-          <div class="loopline"><span class="lp-n">C</span><p>Participar en la <b>gobernanza</b>: soporte es quien antes detecta que una spec ya no dice la verdad.</p></div>
-          <p class="footnote" style="margin-top:auto"><span class="fk">Gobernanza</span><span class="tx">Un <b>RFC</b> propone el cambio, un <b>ADR</b> registra la decisión. Soporte es de los mejores sitios desde los que abrir un RFC.</span></p>
-        </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="s-n">Momento 02</div>
+        <div class="s-t">Clasificación</div>
+        <p class="s-d">El conocimiento está versionado, así que se puede <b>identificar el origen del cambio</b>: qué spec se modificó, en qué versión y quién responde de ella.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="s-n">Momento 03</div>
+        <div class="s-t">Corrección</div>
+        <p class="s-d">Es la capa <b>Work</b> que hemos visto: se aplica sobre el repositorio el contexto de la corrección junto con el del KB, en lugar de partir de cero.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="s-n">Momento 04</div>
+        <div class="s-t">Reglas de gobernanza</div>
+        <p class="s-d">Se registra una regla que <b>impide que el error se repita</b> si se sigue la metodología. Un <b>RFC</b> la propone, un <b>ADR</b> la deja escrita.</p>
       </div>
     </div>
+    <p class="footnote"><span class="fk">Clave</span><span class="tx">El cuarto momento es el que distingue una guardia de un bucle: la incidencia no solo se cierra, <b>deja el sistema mejor de lo que estaba</b>.</span></p>
   </div>
   <p class="takeaway">El KB se degrada en cuanto deja de reflejar la realidad, y <b>quien primero ve esa desviación es soporte</b>.</p>
 </section>
 
-<!-- ═══ 21 · CIERRE ═══════════════════════════════════════════════════════ -->
-<section class="slide divider" data-nav="Gracias">
-  <div class="dv-eyebrow">Para quedarnos con esto</div>
-  <h2 class="dv-mega">Spec creada,<br><span class="blue">spec ganada</span></h2>
-  <p class="dv-sub">No hace falta esperar a que el framework esté cerrado para empezar: todo lo que se escriba como spec hoy sigue sirviendo mañana.</p>
+<!-- ═══ 20 · CIERRE · A FUTURO ═══════════════════════════════════════════ -->
+<section class="slide divider" data-nav="A futuro">
+  <div class="dv-eyebrow">Lo que viene</div>
+  <h2 class="dv-mega">A <span class="blue">futuro</span></h2>
+  <p class="dv-sub">Dos frentes para los próximos meses, y una condición que los atraviesa a los dos.</p>
+  <div class="dv-points">
+    <div class="dv-point"><span class="dp-n">01</span><p><b>Mejorar y validar la base de conocimiento de RDR.</b> Cerrar los huecos que va señalando el uso y comprobar que lo escrito sigue siendo cierto.</p></div>
+    <div class="dv-point"><span class="dp-n">02</span><p><b>Probar la metodología Work en el día a día</b> de proyectos durante el <b>Q4</b>, sobre trabajo real y no sobre un piloto aparte.</p></div>
+    <div class="dv-point"><span class="dp-n">03</span><p>El KB estará <b>en revisión y cambio constante</b>: no es un entregable que se cierra, es algo que se mantiene.</p></div>
+    <div class="dv-point"><span class="dp-n">04</span><p>Y validado <b>desde varios puntos de vista</b> — operaciones, funcionales y soporte —, porque cada uno detecta desviaciones distintas.</p></div>
+  </div>
   <div class="dv-foot">Preguntas · Equipo de soporte</div>
 </section>
 
