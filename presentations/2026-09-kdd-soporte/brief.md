@@ -13,7 +13,7 @@ El KDD no es documentar más: es que la documentación tenga **identificador, du
 relaciones** el día que el servicio llega a soporte. Eso convierte tres preguntas que hoy cuestan
 una mañana —a qué afecta, por qué hace esto, dónde está escrito— en algo que se consulta.
 
-## Recorrido (8 secciones, 21 slides)
+## Recorrido (8 secciones, 20 slides)
 | # | Sección | Lo que defiende |
 |---|---|---|
 | 01 | El origen | El problema no es escribir poca documentación, es que el artefacto no sirve. El SDD cambia el artefacto |
@@ -35,7 +35,7 @@ relaciones resaltadas y su ficha en el panel lateral. Segundo clic o clic fuera 
 | WRK-SPEC / WRK-PLAN / WRK-TASK | `presentations/ejemplos-kdd/KDD_Mockup_Nueva_Version.html` |
 | RDR como desarrollo puro de código | `presentations/ejemplos-kdd/Caballos_Ganadores_Vistazo_1.html` |
 | Gema GPT sobre RDR, mapeo con Jira | Encargo del usuario |
-| Ventajas para el ANS, los cuatro momentos de guardia y los próximos pasos | Encargo del usuario |
+| Ventajas para el ANS y los próximos pasos | Encargo del usuario |
 
 ## Marcadores de posición
 Los identificadores de spec del grafo y del ejemplo (`DOM-RDR-014`, `ARCH-RDR-002`…) y sus
