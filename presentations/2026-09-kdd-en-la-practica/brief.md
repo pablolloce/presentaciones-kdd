@@ -27,34 +27,38 @@ La sección que describía KDD Studio se retiró a propósito: la herramienta se
 contarla antes duplicaba el mismo contenido en dos registros.
 
 ## Interactividad
-La slide de demo lleva **KDD Studio reconstruido dentro del lienzo**, con el mismo cromo y el
-mismo vocabulario que el mock-up de producto:
+La slide de demo lleva **las pantallas reales de KDD Studio incrustadas**, no una
+reconstrucción: van en base64 y se vuelcan al iframe con `srcdoc`, el mismo mecanismo que usa
+el propio mock-up. Se adaptan al hueco de la slide sin escalar, y no hacen una sola petición
+de red. Están las siete: Explorador de fuentes, Home, Knowledge, Work, Governance, Sync y
+Superpowers. A cada una se le inyecta un puente que convierte los clics de sus pestañas en un
+aviso al deck, para que naveguen entre ellas como en la herramienta.
 
-- Barra superior con las dos áreas, **Knowledge Base** y **Superpowers**, el selector de motor y
-  el disparador del asistente.
-- Las seis pestañas de la fuente: **Home, Knowledge, Work, Governance, Sync y Graph**.
-- Knowledge con sus cinco herramientas, el glosario filtrable por capa y la ficha de cada spec
-  con su cabecera e *Intent · Definition · Acceptance Criteria*.
-- Work con las pestañas *Proyecto · Plan · Recursos · Criterios* y el plan en diagrama de barras.
-- El asistente en panel lateral, con preguntas que responden citando spec y versión.
-- El explorador de superpoderes, con los cuatro markdowns de cada uno.
-
-Todo es markup y JS local: ni una petición de red.
+El deck pesa **6,2 MB** por esto. Es el precio de enseñar la herramienta de verdad.
 
 ## Procedencia del contenido
 | Bloque | De dónde sale |
 |---|---|
-| Cromo, pantallas, pestañas y vocabulario de KDD Studio | `presentations/ejemplos-kdd/KDD_Mockup_Nueva_Version.html` |
-| Capas de spec, campos de cabecera (`layer`, `status`, `confidence`, `owner`, `dependencies`) y apartados del cuerpo | Pantalla `Knowledge` del mismo mock-up |
-| Herramientas de Knowledge, estados de Sync y artefactos de Work | Mismo mock-up |
-| Los cuatro markdowns de un superpoder y qué define cada uno | Encargo del usuario |
+| Las pantallas de KDD Studio | `presentations/ejemplos-kdd/KDD_Mockup_Nueva_Version.html` |
+| **El glosario: 217 specs con su id, capa, dominio, estado e Intent** | **`github.com/pablolloce/borrar` · la base de conocimiento real de RDR** |
+| **Las cifras del grafo: 218 nodos, 515 relaciones** | **`.kdd-studio/spec-graph.json` del mismo repositorio** |
+| **Las dudas pendientes, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
+| **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
+| Los cuatro markdowns de un superpoder | Encargo del usuario |
 | Definición de KDD y grafo de relaciones | `presentations/2026-09-kdd-soporte/` |
 
 ## Marcadores de posición
-- El mock-up de origen trae datos de otro servicio: **todo se ha reescrito sobre RDR** y los
-  nombres propios ajenos se han retirado.
-- Los identificadores de spec, las cifras del KB, el proyecto de Work y los superpoderes del
-  explorador son **datos de mock-up**, ahí para que la pantalla se entienda. El glosario dice
-  expresamente que enseña una muestra.
-- El deck **no contiene ninguna cifra de negocio**: no se afirma ningún ahorro ni porcentaje,
-  porque no hay medición propia que lo respalde.
+Lo que **sí es real**, extraído de la base de conocimiento de RDR: el glosario completo y sus
+217 specs, los contadores del grafo, las dudas pendientes y la ficha de la fuente.
+
+Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
+
+- **Los proyectos de Work.** El repositorio de RDR es una base de conocimiento, no tiene
+  proyectos de Work. Los cuatro que se ven vienen del mock-up con los rótulos cambiados a RDR,
+  así que sus nombres y contenidos no se corresponden con trabajo real.
+- **El catálogo de superpoderes.** Los 17 son los del mock-up.
+- **Datos de otras áreas en el explorador.** El árbol trae las demás aplicaciones de BBVA CIB y
+  **el nombre y el cargo de una persona**. Si el deck sale del equipo, hay que limpiarlo.
+
+El deck **no contiene ninguna cifra de negocio**: no se afirma ningún ahorro ni porcentaje,
+porque no hay medición propia que lo respalde.
