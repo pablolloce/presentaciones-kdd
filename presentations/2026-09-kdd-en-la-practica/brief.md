@@ -41,10 +41,11 @@ El deck pesa **6,2 MB** por esto. Es el precio de enseñar la herramienta de ver
 |---|---|
 | Las pantallas de KDD Studio | `presentations/ejemplos-kdd/KDD_Mockup_Nueva_Version.html` |
 | **El glosario: 217 specs con su id, capa, dominio, estado e Intent** | **`github.com/pablolloce/borrar` · la base de conocimiento real de RDR** |
-| **Las cifras del grafo: 218 nodos, 515 relaciones** | **`.kdd-studio/spec-graph.json` del mismo repositorio** |
+| **El grafo: 217 nodos y 513 relaciones declaradas** | **Las `dependencies` de cada spec y `.kdd-studio/spec-graph.json`** |
 | **Las dudas: 19 pendientes y 97 resueltas, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
 | **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
 | Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR |
+| Las dos conversaciones del asistente sobre la ventana | Escritas para la demo, citando specs reales de arquitectura de pantalla |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
 | Definición de KDD y grafo de relaciones | `presentations/2026-09-kdd-soporte/` |
 
@@ -64,6 +65,9 @@ dos en curso, uno en borrador y uno completado.
 Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
 
 - **El catálogo de superpoderes.** Los 17 son los del mock-up.
+- **Las conversaciones del asistente.** Las dos de la ventana están escritas para la demo: el
+  contenido es coherente con las specs que cita, pero no son diálogos que haya tenido nadie.
+  Las otras cinco vienen del mock-up.
 - **Las personas.** Los nombres que aparecen en las tareas son inventados.
 - **Datos de otras áreas en el explorador.** El árbol trae las demás aplicaciones de BBVA CIB y
   **el nombre y el cargo de una persona real**. Si el deck sale del equipo, hay que limpiarlo.
