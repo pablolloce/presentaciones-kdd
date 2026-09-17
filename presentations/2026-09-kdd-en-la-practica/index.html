@@ -517,7 +517,7 @@
 <section class="slide" data-nav="Qué es KDD">
   <div class="eyebrow">Qué es KDD</div>
   <h2 class="headline">El problema no es que se documente poco: es que <em>el documento no se puede explotar</em></h2>
-  <p class="lead">Una spec es un documento de siempre con una cabecera encima. Esa cabecera es toda la diferencia.</p>
+  <p class="lead">Esta es una de las 217 specs de RDR. Por debajo es el documento de siempre; lo que cambia es la cabecera.</p>
   <div class="body">
     <div class="split s73">
       <div class="specfile">
@@ -552,14 +552,14 @@
       </div>
     </div>
   </div>
-  <p class="takeaway">Esa cabecera es lo que separa un fichero que alguien lee de uno que <b>una persona y un agente pueden usar igual de bien</b>.</p>
+  <p class="takeaway">Sin esa cabecera, para saber quién responde de esto o a qué afecta hay que <b>preguntarle a alguien</b>. Con ella, se consulta.</p>
 </section>
 
 <!-- ═══ 5 · TIPOS Y RELACIONES ════════════════════════════════════════════ -->
 <section class="slide" data-nav="Qué es KDD">
   <div class="eyebrow">Qué es KDD</div>
-  <h2 class="headline">Cinco capas de conocimiento, y relaciones que <em>se declaran una vez</em></h2>
-  <p class="lead">Las capas ordenan. Las relaciones conectan. Sin ellas, esto sería una carpeta con ficheros dentro.</p>
+  <h2 class="headline">Las 217 specs de RDR, en cinco capas y atadas por <em>513 relaciones</em></h2>
+  <p class="lead">Cada spec declara de cuáles depende. Eso es lo que permite saber a qué afecta un cambio sin abrir los 217 ficheros.</p>
   <div class="body">
     <div class="split s73">
       <div class="tblwrap">
@@ -590,45 +590,46 @@
       </div>
     </div>
   </div>
-  <p class="takeaway">Con las relaciones declaradas, «¿a qué afecta este cambio?» deja de ser una conversación de pasillo: <b>se recorre el grafo</b>.</p>
+  <p class="takeaway">Con tres tipos de relación basta: <b>qué usa una spec, qué extiende y qué restringe a qué</b>. De ahí sale el grafo que se ve en la demo.</p>
 </section>
 
 <!-- ═══ 6 · VENTAJAS ══════════════════════════════════════════════════════ -->
 <section class="slide" data-nav="Qué es KDD">
   <div class="eyebrow">Qué es KDD</div>
-  <h2 class="headline">Lo que cambia cuando el conocimiento tiene esta forma</h2>
+  <h2 class="headline">Qué cambia el día que alguien toca <em>la ventana de contraparte</em></h2>
+  <p class="lead">Un cambio pequeño y de verdad: añadir un campo a esa pantalla. Con el KB delante, estas cuatro cosas dejan de depender de a quién preguntes.</p>
   <div class="body">
     <div class="cards c4">
       <div class="card a1">
         <div class="c-n">Impacto</div>
-        <div class="c-t">Se calcula, no se recuerda</div>
-        <p class="c-d">Antes de tocar nada, el grafo dice qué specs quedan afectadas y qué hay que volver a probar.</p>
+        <div class="c-t">Se sabe qué se rompe antes de tocarlo</div>
+        <p class="c-d">El grafo dice qué specs dependen de la que vas a cambiar. Hasta ahora eso era mirar el código y preguntar a quien llevara más años.</p>
       </div>
       <div class="card a2">
         <div class="c-n">Personas</div>
-        <div class="c-t">El relevo deja de doler</div>
-        <p class="c-d">Quien entra lee el KB en vez de esperar a que alguien tenga un hueco para contárselo.</p>
+        <div class="c-t">Quien entra nuevo, lee</div>
+        <p class="c-d">Se pone al día con el KB en vez de esperar a que alguien tenga un hueco para sentarse a contárselo.</p>
       </div>
       <div class="card a3">
         <div class="c-n">Criterio</div>
-        <div class="c-t">El porqué sobrevive</div>
-        <p class="c-d">Las decisiones quedan escritas con su motivo, así que no se vuelven a discutir cada seis meses.</p>
+        <div class="c-t">Las decisiones vienen con su motivo</div>
+        <p class="c-d">Quedó escrito por qué se valida en la pantalla y no en el motor de reglas. Sin eso, la misma discusión vuelve cada seis meses.</p>
       </div>
       <div class="card a4">
         <div class="c-n">Agentes</div>
-        <div class="c-t">Dejan de improvisar</div>
-        <p class="c-d">Un modelo con las specs delante responde sobre <b>este</b> sistema, no sobre uno parecido que vio en su entrenamiento.</p>
+        <div class="c-t">Un agente responde de este sistema</div>
+        <p class="c-d">Con las specs delante contesta sobre <b>RDR</b>, y no sobre un sistema parecido que vio en su entrenamiento.</p>
       </div>
     </div>
   </div>
-  <p class="takeaway">La última es la que lo cambia todo: <b>la calidad de la spec pasa a determinar la calidad de lo que produce un agente</b>.</p>
+  <p class="takeaway">La de los agentes es la que abre el resto de la sesión: a partir de aquí, <b>la calidad de la spec decide la calidad de lo que produce un agente</b>.</p>
 </section>
 
 <!-- ═══ 11 · SEPARADOR ════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="El día a día">
   <div class="dv-eyebrow">Sección 02</div>
   <h2 class="dv-mega">Explotar el<br><span class="blue">conocimiento</span></h2>
-  <p class="dv-sub">Un KB que solo se mantiene es un coste. Se cobra de dos maneras: preguntándole, y trabajando con él delante.</p>
+  <p class="dv-sub">Mantener un KB cuesta trabajo. Se recupera de dos formas: preguntándole, y trabajando con él delante.</p>
   <div class="dv-foot">02 · El día a día</div>
 </section>
 
@@ -654,7 +655,7 @@
       </div>
       <div class="notecol">
         <div class="note">
-          <div class="nt-k">Cita, no resume</div>
+          <div class="nt-k">Cita la spec y su versión</div>
           <p class="nt-d">Cada respuesta enseña <b>de qué spec y de qué versión</b> sale, así que se puede auditar sin creerse nada.</p>
         </div>
         <div class="note">
@@ -662,19 +663,19 @@
           <p class="nt-d">El mismo conocimiento, contado para quien pregunta. Cambia el registro, <b>no la fuente</b>.</p>
         </div>
         <div class="note">
-          <div class="nt-k">Señala el hueco</div>
+          <div class="nt-k">Dice cuándo no lo sabe</div>
           <p class="nt-d">Cuando el KB no cubre algo, lo dice y <b>lo registra como duda pendiente</b> en lugar de improvisar una respuesta razonable.</p>
         </div>
       </div>
     </div>
   </div>
-  <p class="takeaway">El valor no está en que conteste rápido: está en que <b>cada respuesta sea verificable</b> y en que sus huecos se conviertan en trabajo pendiente.</p>
+  <p class="takeaway">Una respuesta que cita su fuente <b>se puede discutir</b>. Y cuando el KB no llega, lo dice y deja la duda anotada para que alguien la responda.</p>
 </section>
 
 <!-- ═══ 13 · WORK · EL PROYECTO ═══════════════════════════════════════════ -->
 <section class="slide" data-nav="El día a día">
   <div class="eyebrow">El día a día</div>
-  <h2 class="headline">Work es un proyecto que <em>declara qué conocimiento pone sobre la mesa</em></h2>
+  <h2 class="headline">Un proyecto de Work declara <em>con qué specs se trabaja</em></h2>
   <p class="lead">Un encargo, su plan y sus tareas. Lo nuevo es el campo que los ata al conocimiento del área.</p>
   <div class="body">
     <div class="steps">
@@ -690,7 +691,7 @@
       <div class="act-i"><span class="cite">DOM-RDR-014</span><span class="cite">ARCH-RDR-007</span><span class="cite">FEAT-RDR-118</span><span class="cite c2">repo · liquidacion-core</span><span class="cite c3">db · posiciones</span></div>
     </div>
   </div>
-  <p class="takeaway">El presupuesto de contexto es la idea práctica de todo esto: <b>activar conocimiento tiene un coste</b>, y más no es mejor.</p>
+  <p class="takeaway">Studio recomienda activar <b>entre cinco y diez specs</b>: por debajo falta contexto y por encima el agente se dispersa.</p>
 </section>
 
 <!-- ═══ 15 · SEPARADOR ════════════════════════════════════════════════════ -->
@@ -704,7 +705,7 @@
 <!-- ═══ 16 · ANATOMÍA DE UN SUPERPODER ══════════════════════════════════ -->
 <section class="slide" data-nav="Superpoderes">
   <div class="eyebrow">Superpoderes</div>
-  <h2 class="headline">Un superpoder no es un prompt: son <em>cuatro ficheros</em> que se explican entre sí</h2>
+  <h2 class="headline">Un superpoder son cuatro markdowns: <em>quién es, qué sabe hacer, qué no, y cómo se comprueba</em></h2>
   <p class="lead">Cuatro markdowns, separados a propósito: así se endurecen los límites sin reescribir al agente entero.</p>
   <div class="body">
     <div class="cards c4">
@@ -731,7 +732,7 @@
     </div>
     <p class="footnote"><span class="fk">Mínimo</span><span class="tx">Son cuatro de partida, no cuatro como tope: un superpoder maduro añade sus propias <b>skills</b> y sus <b>evals</b> según crece.</span></p>
   </div>
-  <p class="takeaway">Lo que se captura no es una automatización, es <b>criterio</b>: y al estar en cuatro ficheros separados, se revisa y se versiona como cualquier otro código.</p>
+  <p class="takeaway">Lo que se guarda ahí es <b>la forma de trabajar de quien mejor lo hace</b>. Y al ser cuatro ficheros, se revisa y se versiona como el código.</p>
 </section>
 
 <!-- ═══ 17 · CÓMO SE COMBINAN ═════════════════════════════════════════════ -->
@@ -769,7 +770,7 @@
       </div>
     </div>
   </div>
-  <p class="takeaway">Por eso el catálogo escala: <b>un superpoder escrito una vez vale para dos áreas que no se parecen en nada</b>, porque el conocimiento se lo presta cada una.</p>
+  <p class="takeaway">El mismo superpoder vale para RDR y para un área que no se le parezca en nada: <b>el conocimiento se lo presta cada una</b>.</p>
 </section>
 
 <!-- ═══ 19 · SEPARADOR ════════════════════════════════════════════════════ -->
@@ -790,7 +791,7 @@
       <iframe id="kddFrame" title="KDD Studio" referrerpolicy="no-referrer"></iframe>
     </div>
     </div>
-  <p class="takeaway">Todo lo que se ve arranca de la misma decisión: <b>elegir la fuente</b>. A partir de ahí, preguntar y trabajar son dos puertas al mismo conocimiento.</p>
+  <p class="takeaway">Todo empieza <b>eligiendo la fuente</b>. Lo que viene después, preguntar o trabajar, usa ese mismo conocimiento.</p>
 </section>
 
 
@@ -798,7 +799,7 @@
 <section class="slide divider" data-nav="Gracias">
   <div class="dv-eyebrow">Gracias</div>
   <h2 class="dv-mega">¿Por dónde<br><span class="blue">empezamos?</span></h2>
-  <p class="dv-sub">Una fuente pequeña, un proyecto de verdad y un superpoder que le resuelva algo a alguien. Así arranca esto.</p>
+  <p class="dv-sub">Empezar por una fuente pequeña, un proyecto de verdad y un superpoder que le resuelva algo a alguien.</p>
   <div class="dv-foot">Preguntas · Equipos de desarrollo</div>
 </section>
   </div>
