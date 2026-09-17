@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-brand="nfq" lang="es">
+<html data-cliente="bbva" data-brand="nfq" lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,7 +112,7 @@
     --green:#1c9d6c;
     --dark:#0b1020;        /* separadores de sección */
     --client:#001391;      /* color corporativo del cliente */
-    --client-dark:#ffffff; /* el mismo logotipo sobre fondo oscuro */
+    --client-dark:#FFFFFF; /* el mismo logotipo sobre fondo oscuro */
     --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
     --serif:"Fraunces",Georgia,serif;
     --mono:"JetBrains Mono",Consolas,monospace;
@@ -416,136 +416,206 @@
   .act-d b{color:var(--ink)}
   .act-i{grid-column:2;display:flex;flex-wrap:wrap;gap:8px}
 
-  /* ═══ Demo navegable de KDD Studio ═════════════════════════════════════
-     Maqueta en píxeles absolutos sobre el lienzo, como el resto del deck.
-     Toda la interacción es local: no hay una sola petición de red. */
-  .studio{height:438px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+
+  /* ═══ Demo de KDD Studio ═══════════════════════════════════════════════
+     Reconstrucción del mock-up de producto sobre el lienzo del deck:
+     mismo cromo (barra superior, pestañas de la fuente, caja de fuente
+     activa) y mismas pantallas, con RDR dentro. Todo local, sin red. */
+  .studio{height:452px;background:var(--card);border:1px solid var(--line);border-radius:14px;
     box-shadow:0 12px 30px rgba(20,20,40,.06);overflow:hidden;display:flex;flex-direction:column;
-    font-size:14px}
-  .st-top{flex:0 0 auto;height:46px;display:flex;align-items:center;gap:12px;padding:0 18px;
-    background:var(--dark);color:var(--paper)}
-  .st-logo{font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.01em}
-  .st-crumb{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-    opacity:.62}
-  .st-crumb b{opacity:1;font-weight:600}
-  .st-model{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--mono);
-    font-size:11px;letter-spacing:.04em;background:rgba(255,255,255,.1);border-radius:999px;
-    padding:5px 13px;opacity:.9}
-  .st-model i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block}
-  .st-main{flex:1 1 auto;min-height:0;display:flex}
-  .st-side{flex:0 0 232px;background:var(--bg);border-right:1px solid var(--line);
-    padding:14px 12px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
-  .st-sk{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--mute2);padding:8px 10px 5px}
-  .st-nav{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:9px;
-    color:var(--ink2);cursor:pointer;border:1px solid transparent;text-align:left;
-    font-family:var(--sans);font-size:14px;background:none;width:100%}
-  .st-nav:hover{background:var(--card);border-color:var(--line)}
-  .st-nav.on{background:var(--card);border-color:var(--line);color:var(--ink);font-weight:600;
-    box-shadow:0 2px 8px rgba(20,20,40,.05)}
-  .st-nav i{width:7px;height:7px;border-radius:2px;background:var(--mute2);flex:0 0 auto}
-  .st-nav.on i{background:var(--blue)}
-  .st-nav[disabled]{opacity:.38;cursor:default}
-  .st-view{flex:1 1 auto;min-width:0;padding:18px 22px;overflow:hidden;display:flex;
+    font-size:13px;position:relative}
+
+  /* Barra superior. */
+  .kdtop{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:8px 14px;
+    background:var(--bg);border-bottom:1px solid var(--line)}
+  .kdlogo{width:26px;height:26px;border-radius:7px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--orange),var(--coral) 52%,var(--blue));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:8px;font-weight:700;color:var(--paper);letter-spacing:.04em}
+  .kdnav{display:flex;gap:3px}
+  .kdnav button{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink2);
+    height:30px;padding:0 12px;border-radius:8px;border:1px solid transparent;background:none;
+    cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  .kdnav button:hover{background:var(--line2)}
+  .kdnav button.on{color:var(--ink);background:var(--card);border-color:var(--line);
+    box-shadow:0 3px 10px rgba(20,20,40,.05)}
+  .kdnav button i{width:7px;height:7px;border-radius:2px;background:var(--mute2)}
+  .kdnav button.on i{background:var(--blue)}
+  .kdsp{flex:1 1 auto}
+  .kdchip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);
+    font-size:11px;color:var(--ink2);background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px}
+  .kdchip i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block}
+  .kdchip .cv{color:var(--mute2)}
+
+  /* Pestañas de la fuente. */
+  .kdtabs{flex:0 0 auto;display:flex;align-items:center;gap:3px;padding:6px 14px;
+    background:var(--card);border-bottom:1px solid var(--line)}
+  .kdtab{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink2);height:30px;
+    padding:0 12px;border-radius:8px;border:1px solid transparent;background:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px}
+  .kdtab:hover{background:var(--line2)}
+  .kdtab.on{color:var(--ink);background:var(--card);border-color:var(--line);
+    box-shadow:0 3px 10px rgba(20,20,40,.05)}
+  .kdtab i{width:7px;height:7px;border-radius:2px;background:var(--mute2)}
+  .kdtab.on i{background:var(--blue)}
+  .srcbox{margin-left:auto;display:inline-flex;align-items:center;gap:8px;font-size:12px;
+    font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);
+    border-radius:8px;padding:5px 11px;cursor:pointer}
+  .srcbox span{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--mute);
+    letter-spacing:.06em}
+
+  /* Cuerpo. */
+  .kdbody{flex:1 1 auto;min-height:0;padding:14px 16px;overflow:hidden;display:flex;
     flex-direction:column}
-  .st-h{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);
-    line-height:1.2;margin-bottom:3px}
-  .st-sub{font-size:13px;color:var(--mute);line-height:1.45;margin-bottom:14px}
+  .kdh{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);line-height:1.2}
+  .kdsub{font-size:12px;color:var(--mute);line-height:1.45;margin:2px 0 11px}
 
-  /* Explorador de fuentes. */
-  .kbgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .kbcard{background:var(--card);border:1px solid var(--line);border-radius:11px;
-    padding:14px 16px;cursor:pointer;text-align:left;font-family:var(--sans);width:100%;
-    display:flex;flex-direction:column;gap:4px}
-  .kbcard:hover{border-color:var(--blue);box-shadow:0 6px 18px rgba(33,123,238,.12)}
-  .kbcard[disabled]{opacity:.48;cursor:default}
-  .kbcard[disabled]:hover{border-color:var(--line);box-shadow:none}
-  .kb-n{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink)}
-  .kb-d{font-size:13px;color:var(--mute);line-height:1.45}
-  .kb-m{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--mute2);margin-top:2px}
-
-  /* Rejilla de ejes en el resumen de la fuente. */
-  .axgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-  .axcard{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px 15px;
+  /* Rejillas y tarjetas genéricas del cuerpo. */
+  .kdgrid{display:grid;gap:11px}
+  .kdgrid.g2{grid-template-columns:1fr 1fr}
+  .kdgrid.g3{grid-template-columns:repeat(3,1fr)}
+  .kdgrid.g4{grid-template-columns:repeat(4,1fr)}
+  .kdcard{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 13px;
     border-top:3px solid var(--blue)}
-  .axcard.a2{border-top-color:var(--purple)}
-  .axcard.a3{border-top-color:var(--green)}
-  .ax-k{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;
+  .kdcard.c2{border-top-color:var(--orange)}
+  .kdcard.c3{border-top-color:var(--purple)}
+  .kdcard.c4{border-top-color:var(--green)}
+  .kdk{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;
     text-transform:uppercase;color:var(--mute);margin-bottom:5px}
-  .ax-v{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);line-height:1.1}
-  .ax-s{font-size:12px;color:var(--mute);line-height:1.4;margin-top:4px}
+  .kdv{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);line-height:1.1}
+  .kdv small{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--mute)}
+  .kds{font-size:11.5px;color:var(--mute);line-height:1.4;margin-top:4px}
 
-  /* Lista de specs + ficha. */
-  .st-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1 1 auto;min-height:0}
-  .splist{display:flex;flex-direction:column;gap:5px;overflow:hidden}
-  .spitem{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:baseline;
-    padding:8px 11px;border-radius:9px;border:1px solid transparent;cursor:pointer;
-    background:none;text-align:left;font-family:var(--sans);width:100%}
-  .spitem:hover{background:var(--bg)}
-  .spitem.on{background:var(--card);border-color:var(--blue);
-    box-shadow:0 3px 12px rgba(33,123,238,.10)}
-  .sp-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--blue-d)}
-  .sp-t{font-size:13px;color:var(--ink2);line-height:1.35}
-  .spitem.on .sp-t{color:var(--ink);font-weight:600}
-  .spcard{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:15px 17px;
+  /* Lista de accesos directos por eje. */
+  .kdlist{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+  .kdli{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2)}
+  .kdli b{width:5px;height:5px;border-radius:50%;background:var(--blue);flex:0 0 auto}
+  .kdli.o b{background:var(--orange)}
+  .kdli.v b{background:var(--purple)}
+
+  /* Knowledge: herramientas + glosario + ficha. */
+  .kwrap{display:grid;grid-template-columns:168px 1fr;gap:14px;flex:1 1 auto;min-height:0}
+  .ktools{display:flex;flex-direction:column;gap:3px}
+  .ktool{font-family:var(--sans);font-size:12px;color:var(--ink2);text-align:left;background:none;
+    border:1px solid transparent;border-radius:8px;padding:7px 10px;cursor:pointer;width:100%}
+  .ktool:hover{background:var(--bg)}
+  .ktool.on{background:var(--bg);border-color:var(--line);color:var(--ink);font-weight:600}
+  .kmain{min-width:0;display:flex;flex-direction:column}
+  .kpills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+  .kpill{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--ink2);background:var(--bg);
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;cursor:pointer}
+  .kpill:hover{border-color:var(--blue)}
+  .kpill.on{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+  .ksplit{display:grid;grid-template-columns:1fr 1fr;gap:13px;flex:1 1 auto;min-height:0}
+  .krow{display:grid;grid-template-columns:22px 104px 1fr;gap:8px;align-items:center;
+    padding:6px 9px;border-radius:8px;border:1px solid transparent;cursor:pointer;background:none;
+    text-align:left;width:100%;font-family:var(--sans)}
+  .krow:hover{background:var(--bg)}
+  .krow.on{background:var(--bg);border-color:var(--blue)}
+  .kdot{width:7px;height:7px;border-radius:2px;background:var(--blue);display:block}
+  .kdot.d{background:var(--purple)} .kdot.a{background:var(--green)}
+  .kdot.f{background:var(--orange)} .kdot.c{background:var(--mute2)}
+  .kid{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--blue-d)}
+  .ktt{font-size:12px;color:var(--ink2);line-height:1.3;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .krow.on .ktt{color:var(--ink);font-weight:600}
+  .kspec{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
     overflow:hidden}
-  .spc-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--blue-d);
-    letter-spacing:.04em}
-  .spc-t{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);
-    line-height:1.25;margin:3px 0 9px}
-  .spc-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-  .spc-d{font-size:13px;line-height:1.55;color:var(--ink2)}
-  .spc-rel{margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
-  .spc-rk{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--mute2);margin-bottom:6px}
+  .kpath{font-family:var(--mono);font-size:10px;color:var(--mute2);margin-bottom:6px}
+  .kfm{font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;
+    margin-bottom:9px;white-space:pre}
+  .kfm b{color:var(--blue-d);font-weight:600}
+  .ksec{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--mute2);margin-top:8px}
+  .ktx{font-size:12px;line-height:1.5;color:var(--ink2);margin-top:3px}
 
-  /* Chat de la demo. */
-  .dchat{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:9px;overflow:hidden}
-  .dmsg{font-size:13px;line-height:1.5;padding:10px 13px;border-radius:10px}
+  /* Work. */
+  .wtabs{display:flex;gap:3px;margin-bottom:10px}
+  .wtab{font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--mute);background:none;
+    border:1px solid transparent;border-radius:7px;padding:5px 11px;cursor:pointer}
+  .wtab.on{color:var(--ink);background:var(--bg);border-color:var(--line)}
+  .wgantt{display:flex;flex-direction:column;gap:5px}
+  .wline{display:grid;grid-template-columns:118px 1fr 74px;gap:10px;align-items:center;
+    font-size:11.5px;color:var(--ink2)}
+  .wbarwrap{background:var(--bg);border:1px solid var(--line);border-radius:6px;height:17px;
+    position:relative;overflow:hidden}
+  .wbar{position:absolute;top:0;bottom:0;border-radius:5px;background:var(--blue);opacity:.85}
+  .wbar.d{background:var(--green)} .wbar.p{background:var(--mute2)}
+  .wst{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--mute)}
+  .wid{font-family:var(--mono);font-size:10px;color:var(--purple)}
+
+  /* Governance y Sync. */
+  .gtable{width:100%;border-collapse:collapse;font-size:12px}
+  .gtable th{text-align:left;font-family:var(--mono);font-size:9.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--mute2);padding:6px 9px;
+    border-bottom:1px solid var(--line)}
+  .gtable td{padding:7px 9px;border-bottom:1px solid var(--line2);color:var(--ink2)}
+  .gtable td b{color:var(--ink)}
+  .syncrow{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;
+    padding:8px 0;border-bottom:1px solid var(--line2)}
+  .syncbar{display:flex;height:16px;border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+  .syncbar span{display:block}
+  .sy1{background:var(--green)} .sy2{background:var(--blue)}
+  .sy3{background:var(--orange)} .sy4{background:var(--coral)}
+  .sylegend{display:flex;gap:14px;margin-top:10px;font-size:11px;color:var(--mute)}
+  .sylegend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:5px}
+
+  /* Superpoderes y sus cuatro markdowns. */
+  .spgrid{display:grid;grid-template-columns:200px 1fr;gap:14px;flex:1 1 auto;min-height:0}
+  .splist{display:flex;flex-direction:column;gap:4px}
+  .spitem{font-family:var(--sans);font-size:12px;color:var(--ink2);text-align:left;background:none;
+    border:1px solid transparent;border-radius:8px;padding:7px 10px;cursor:pointer;width:100%}
+  .spitem:hover{background:var(--bg)}
+  .spitem.on{background:var(--bg);border-color:var(--blue);color:var(--ink);font-weight:600}
+  .spitem em{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;
+    color:var(--mute2);margin-top:2px}
+  .mdgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mdcard{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--blue);
+    border-radius:9px;padding:10px 12px}
+  .mdcard.m2{border-left-color:var(--green)}
+  .mdcard.m3{border-left-color:var(--orange)}
+  .mdcard.m4{border-left-color:var(--purple)}
+  .mdf{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--blue-d)}
+  .mdcard.m2 .mdf{color:var(--green)}
+  .mdcard.m3 .mdf{color:var(--orange)}
+  .mdcard.m4 .mdf{color:var(--purple)}
+  .mdr{font-size:11px;color:var(--mute);margin:1px 0 5px}
+  .mdt{font-size:11.5px;line-height:1.45;color:var(--ink2)}
+
+  /* Grafo. */
+  .gwrap{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center}
+
+  /* Asistente: botón flotante y panel. */
+  .fab{font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--paper);
+    background:var(--blue);border:none;border-radius:999px;padding:6px 14px;cursor:pointer}
+  .fab:hover{background:var(--blue-d)}
+  .asst{position:absolute;inset:0;z-index:4;background:rgba(20,20,40,.22);display:flex;
+    align-items:stretch;justify-content:flex-end}
+  .asstpanel{width:560px;background:var(--card);border-left:1px solid var(--line);
+    display:flex;flex-direction:column;padding:14px 16px}
+  .assttop{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .asstx{margin-left:auto;font-size:15px;color:var(--mute);background:none;border:none;
+    cursor:pointer;line-height:1}
+  .asstbody{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+  .dmsg{font-size:12.5px;line-height:1.5;padding:9px 12px;border-radius:10px}
   .dmsg.u{background:var(--bg);border:1px solid var(--line);color:var(--ink);font-weight:600}
   .dmsg.a{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--blue);
     color:var(--ink2)}
   .dmsg.a b{color:var(--ink)}
   .dmsg p+p{margin-top:7px}
   .dmsg.g{background:rgba(236,104,62,.06);border:1px solid rgba(236,104,62,.22);
-    color:var(--ink2);font-size:12px}
+    color:var(--ink2);font-size:11.5px}
   .dmsg.g b{color:var(--orange)}
-  .dask{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:10px;
+  .dask{display:flex;flex-direction:column;gap:6px;margin-top:auto;padding-top:10px;
     border-top:1px solid var(--line)}
-  .dq{font-size:12px;color:var(--blue-d);background:rgba(33,123,238,.08);
+  .dq{font-family:var(--sans);font-size:11.5px;color:var(--blue-d);background:rgba(33,123,238,.08);
     border:1px solid rgba(33,123,238,.2);border-radius:999px;padding:6px 13px;cursor:pointer;
-    font-family:var(--sans);text-align:left}
+    text-align:left}
   .dq:hover{background:rgba(33,123,238,.16)}
   .dq.on{background:var(--blue);color:var(--paper);border-color:var(--blue)}
-
-  /* Tablero de Work. */
-  .wkhead{display:flex;align-items:baseline;gap:10px;margin-bottom:11px}
-  .wk-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--purple)}
-  .wkcols{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:12px}
-  .wkcol{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
-  .wk-k{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-  .wktask{background:var(--card);border:1px solid var(--line);border-radius:8px;
-    padding:8px 10px;font-size:12px;line-height:1.4;color:var(--ink2);margin-bottom:6px}
-  .wktask:last-child{margin-bottom:0}
-  .wktask b{color:var(--ink);display:block;font-size:12px}
-  .wkact{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--purple);
-    border-radius:10px;padding:12px 14px}
-  .wk-ak{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--purple);
-    margin-bottom:7px}
-  .wk-ad{font-size:12px;color:var(--mute);line-height:1.45;margin-bottom:8px}
-
-  /* Catálogo de superpoderes en la demo. */
-  .splist2{display:flex;flex-direction:column;gap:7px;overflow:hidden}
-  .sprow{display:grid;grid-template-columns:1fr 104px 92px;gap:12px;align-items:center;
-    background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 13px}
-  .spr-n{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
-  .spr-d{font-size:11px;color:var(--mute);line-height:1.35;margin-top:1px}
-  .spr-e{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--mute)}
-  .st-foot{flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--mute2);padding-top:10px;margin-top:auto}
 </style>
 
 <div id="viewport">
@@ -554,7 +624,7 @@
     <div class="progress" id="progress"></div>
 
     <div class="logobar" id="logobar">
-      <!-- brand:client:start --><!-- brand:client:end -->
+      <!-- brand:client:start --><svg class="client-mark" viewBox="0 0 600 179.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M432.2,24.4l-51.6,98.2c-1.1,2.1-4.3,2.1-5.4,0l-51.6-98.2c-0.5-1-1.5-1.6-2.6-1.6h-25c-1.7,0-2.8,1.8-2,3.3l81.3,152.2c1.1,2.1,4.1,2.1,5.3,0l81.3-152.2c0.8-1.5-0.3-3.3-2-3.3h-25C433.7,22.8,432.7,23.4,432.2,24.4z"/><path d="M461.5,155.5l51.6-98.2c1.1-2.1,4.3-2.1,5.4,0l51.6,98.2c0.5,1,1.5,1.6,2.6,1.6h25c1.7,0,2.8-1.8,2-3.3L518.4,1.6c-1.1-2.1-4.1-2.1-5.3,0l-81.3,152.2c-0.8,1.5,0.3,3.3,2,3.3h25C459.9,157,461,156.4,461.5,155.5z"/><path d="M108.8,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1H3c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C133.5,102.3,108.8,95.2,108.8,95.2z M29,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6H29c-1.6,0-3-1.3-3-3V48.5C26,46.8,27.3,45.5,29,45.5z M75.5,157l-46.5,0c-1.7,0-3-1.3-3-3l0-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C107.5,150.8,97.9,157,75.5,157z"/><path d="M267.5,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1h-77.4c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C292.2,102.3,267.5,95.2,267.5,95.2z M187.7,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6h-45.9c-1.7,0-3-1.3-3-3V48.5C184.7,46.8,186,45.5,187.7,45.5z M234.1,157l-46.5,0c-1.6,0-3-1.3-3-3v-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C266.2,150.8,256.5,157,234.1,157z"/></g></svg><!-- brand:client:end -->
       <span class="lb-div"></span>
       <!-- brand:nfq:start --><svg class="nfq-mark" viewBox="0 0 312.29 145.88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
           <clipPath id="nfqw-1-nfq-clip"><rect x=".17" y="6.44" width="96.46" height="120"/></clipPath>
@@ -583,7 +653,7 @@
 <!-- ═══ 0 · PORTADA ═══════════════════════════════════════════════════════ -->
 <section class="slide cover active" data-nav="">
   <div class="cover-logos">
-    <!-- brand:client:start --><!-- brand:client:end -->
+    <!-- brand:client:start --><svg class="client-mark" viewBox="0 0 600 179.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M432.2,24.4l-51.6,98.2c-1.1,2.1-4.3,2.1-5.4,0l-51.6-98.2c-0.5-1-1.5-1.6-2.6-1.6h-25c-1.7,0-2.8,1.8-2,3.3l81.3,152.2c1.1,2.1,4.1,2.1,5.3,0l81.3-152.2c0.8-1.5-0.3-3.3-2-3.3h-25C433.7,22.8,432.7,23.4,432.2,24.4z"/><path d="M461.5,155.5l51.6-98.2c1.1-2.1,4.3-2.1,5.4,0l51.6,98.2c0.5,1,1.5,1.6,2.6,1.6h25c1.7,0,2.8-1.8,2-3.3L518.4,1.6c-1.1-2.1-4.1-2.1-5.3,0l-81.3,152.2c-0.8,1.5,0.3,3.3,2,3.3h25C459.9,157,461,156.4,461.5,155.5z"/><path d="M108.8,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1H3c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C133.5,102.3,108.8,95.2,108.8,95.2z M29,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6H29c-1.6,0-3-1.3-3-3V48.5C26,46.8,27.3,45.5,29,45.5z M75.5,157l-46.5,0c-1.7,0-3-1.3-3-3l0-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C107.5,150.8,97.9,157,75.5,157z"/><path d="M267.5,95.2c10.8-5.4,17.5-17.1,17.5-31.4c0-24.5-19.1-41.1-46-41.1h-77.4c-1.7,0-3,1.3-3,3v151.1c0,1.7,1.3,3,3,3h74c37,0,56.5-15.9,56.5-47.1C292.2,102.3,267.5,95.2,267.5,95.2z M187.7,45.5h45.9c16.9,0,25.5,7.2,25.5,20.6c0,13.4-8.6,20.6-25.5,20.6h-45.9c-1.7,0-3-1.3-3-3V48.5C184.7,46.8,186,45.5,187.7,45.5z M234.1,157l-46.5,0c-1.6,0-3-1.3-3-3v-41.7c0-1.6,1.3-3,3-3h46.5c22.2,0,32.1,6.3,32.1,23.8C266.2,150.8,256.5,157,234.1,157z"/></g></svg><!-- brand:client:end -->
     <span class="lb-div"></span>
     <!-- brand:nfq:start --><svg class="nfq-mark" viewBox="0 0 312.29 145.88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
           <clipPath id="nfqw-2-nfq-clip"><rect x=".17" y="6.44" width="96.46" height="120"/></clipPath>
@@ -618,10 +688,9 @@
   <div class="body">
     <ul class="toc">
       <li class="toc-item" data-goto="Qué es KDD"><span class="toc-n">01</span><span class="toc-t">Qué es KDD</span></li>
-      <li class="toc-item" data-goto="KDD Studio"><span class="toc-n">02</span><span class="toc-t">La herramienta: KDD Studio</span></li>
-      <li class="toc-item" data-goto="El día a día"><span class="toc-n">03</span><span class="toc-t">Explotar el conocimiento: asistente y Work</span></li>
-      <li class="toc-item" data-goto="Superpoderes"><span class="toc-n">04</span><span class="toc-t">El eje agéntico: superpoderes</span></li>
-      <li class="toc-item" data-goto="Demo"><span class="toc-n">05</span><span class="toc-t">Demo de KDD Studio</span></li>
+      <li class="toc-item" data-goto="El día a día"><span class="toc-n">02</span><span class="toc-t">Explotar el conocimiento: asistente y Work</span></li>
+      <li class="toc-item" data-goto="Superpoderes"><span class="toc-n">03</span><span class="toc-t">El eje agéntico: superpoderes</span></li>
+      <li class="toc-item" data-goto="Demo"><span class="toc-n">04</span><span class="toc-t">Demo de KDD Studio</span></li>
     </ul>
   </div>
 </section>
@@ -772,107 +841,12 @@
   <p class="takeaway">La última es la que lo cambia todo: <b>la calidad de la spec pasa a determinar la calidad de lo que produce un agente</b>.</p>
 </section>
 
-<!-- ═══ 7 · SEPARADOR ═════════════════════════════════════════════════════ -->
-<section class="slide divider" data-nav="KDD Studio">
-  <div class="dv-eyebrow">Sección 02</div>
-  <h2 class="dv-mega">KDD<br><span class="blue">Studio</span></h2>
-  <p class="dv-sub">Un framework sin herramienta se queda en buenas intenciones. Studio es donde el conocimiento se explora, se cuida y se gobierna.</p>
-  <div class="dv-foot">02 · KDD Studio</div>
-</section>
-
-<!-- ═══ 8 · EL RECORRIDO DEL PRODUCTO ═════════════════════════════════════ -->
-<section class="slide" data-nav="KDD Studio">
-  <div class="eyebrow">KDD Studio</div>
-  <h2 class="headline">Al entrar eliges <em>sobre qué conocimiento</em> vas a trabajar</h2>
-  <p class="lead">No hay un KB único de la compañía. Hay fuentes de conocimiento, cada una con su responsable y su gente perfilada, y se entra en una.</p>
-  <div class="body">
-    <div class="steps">
-      <div class="step"><div class="s-n">Paso 01</div><div class="s-t">Home</div><p class="s-d">Dos caminos: trabajar sobre una fuente de conocimiento o gestionar los superpoderes.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 02</div><div class="s-t">Explorador</div><p class="s-d">El árbol de la organización hasta las fuentes en las que estás perfilado, cada una con su responsable.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 03</div><div class="s-t">Usar esta fuente</div><p class="s-d">Se entra en ella. Y se ve si la tienes <b>en edición o en solo lectura</b>.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">Paso 04</div><div class="s-t">A trabajar</div><p class="s-d">Con el submenú de la fuente siempre arriba: Home, Knowledge, Work, Governance, Sync y Grafo.</p></div>
-    </div>
-  </div>
-  <p class="takeaway">La fuente de conocimiento es <b>la unidad de trabajo y también la de permisos</b>: se entra en ella, y todo lo que se hace dentro queda referido a ella.</p>
-</section>
-
-<!-- ═══ 9 · LOS TRES EJES ═════════════════════════════════════════════════ -->
-<section class="slide" data-nav="KDD Studio">
-  <div class="eyebrow">KDD Studio</div>
-  <h2 class="headline">Cada fuente se trabaja en <em>tres ejes</em></h2>
-  <p class="lead">La misma base de conocimiento, mirada desde tres sitios distintos: lo que sabemos, lo que estamos haciendo con ello y quién responde de qué.</p>
-  <div class="body">
-    <div class="cards">
-      <div class="card a1">
-        <div class="c-n">Eje 01 · Knowledge</div>
-        <div class="c-t">Lo que sabemos</div>
-        <p class="c-d">Cómo <b>entra</b> el conocimiento y cómo se mantiene sano: el glosario de specs, la importación de documentos, las dudas pendientes y la salud del KB.</p>
-      </div>
-      <div class="card a2">
-        <div class="c-n">Eje 02 · Work</div>
-        <div class="c-t">Lo que estamos haciendo</div>
-        <p class="c-d">Los proyectos que <b>activan</b> el conocimiento que necesitan. Cada uno con su plan, sus tareas y sus criterios de aceptación.</p>
-      </div>
-      <div class="card a3">
-        <div class="c-n">Eje 03 · Governance</div>
-        <div class="c-t">Quién responde de qué</div>
-        <p class="c-d">Accesos y roles: quién consulta la fuente, quién la mantiene y quién aprueba los cambios que entran en ella.</p>
-      </div>
-    </div>
-    <div class="chips" style="margin-top:26px">
-      <span class="chip"><i></i>Y dos vistas transversales:</span>
-      <span class="chip c3"><i></i>Sync · qué está al día y qué no</span>
-      <span class="chip c4"><i></i>Grafo · qué se rompe si cambias esto</span>
-    </div>
-  </div>
-  <p class="takeaway">Sin el tercer eje los otros dos se degradan: <b>un KB sin gobierno vuelve a ser la wiki de siempre</b> en cuestión de meses.</p>
-</section>
-
-<!-- ═══ 10 · ALIMENTAR Y CUIDAR ═══════════════════════════════════════════ -->
-<section class="slide" data-nav="KDD Studio">
-  <div class="eyebrow">KDD Studio</div>
-  <h2 class="headline">El KB no se escribe de cero: <em>se importa, se pregunta y se vigila</em></h2>
-  <p class="lead">Nadie va a redactar a mano el conocimiento de un servicio que lleva años funcionando. Studio parte de lo que ya existe, y las cinco herramientas de Knowledge son el trabajo real del día a día.</p>
-  <div class="body">
-    <div class="split s37">
-      <div class="notecol">
-        <div class="note">
-          <div class="nt-k">Importar documentos</div>
-          <p class="nt-d">Se sueltan los PDF, DOCX o PPTX que ya hay y salen <b>specs propuestas</b>. Nada se aplica hasta que alguien las revisa.</p>
-        </div>
-        <div class="note">
-          <div class="nt-k">Dudas pendientes</div>
-          <p class="nt-d">Lo que queda ambiguo no se inventa: <b>se registra como pregunta abierta</b>, con su fichero de origen, y espera respuesta.</p>
-        </div>
-        <div class="note">
-          <div class="nt-k">Salud del KB</div>
-          <p class="nt-d">Un análisis que puntúa la base y lista incidencias por severidad: specs huérfanas, relaciones rotas, zonas sin cubrir.</p>
-        </div>
-      </div>
-      <div>
-        <div class="srcgrid">
-          <div class="src"><div class="sr-k">Glosario documental</div><div class="sr-t">Las specs, por capa</div><p class="sr-d">Y su gemelo en modo código: qué servicios están al día, desfasados o sin documentar.</p></div>
-          <div class="src s2"><div class="sr-k">Ajustar comportamiento</div><div class="sr-t">Cómo responde</div><p class="sr-d">Conversando se captura lo que falta y se afina el criterio del asistente.</p></div>
-          <div class="src s3"><div class="sr-k">Sync</div><div class="sr-t">Qué está al día</div><p class="sr-d">Cada elemento en uno de cuatro estados: sincronizado, por subir, por descargar o en conflicto.</p></div>
-          <div class="src s4"><div class="sr-k">Grafo</div><div class="sr-t">Qué depende de qué</div><p class="sr-d">Nodos y relaciones, para ver el impacto antes de tocar nada.</p></div>
-        </div>
-        <p class="footnote"><span class="fk">Nota</span><span class="tx">El modo código contrasta lo escrito con lo que se ejecuta: <b>marca como desfasada la spec cuyo servicio ha cambiado</b> sin que ella se actualizara.</span></p>
-      </div>
-    </div>
-  </div>
-  <p class="takeaway">La duda pendiente es la pieza más honesta del sistema: <b>el KB prefiere admitir un hueco antes que rellenarlo con algo plausible</b>.</p>
-</section>
-
-
 <!-- ═══ 11 · SEPARADOR ════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="El día a día">
-  <div class="dv-eyebrow">Sección 03</div>
+  <div class="dv-eyebrow">Sección 02</div>
   <h2 class="dv-mega">Explotar el<br><span class="blue">conocimiento</span></h2>
   <p class="dv-sub">Un KB que solo se mantiene es un coste. Hay dos formas de cobrárselo: preguntarle, y trabajar con él delante.</p>
-  <div class="dv-foot">03 · El día a día</div>
+  <div class="dv-foot">02 · El día a día</div>
 </section>
 
 <!-- ═══ 12 · EL ASISTENTE ═════════════════════════════════════════════════ -->
@@ -979,46 +953,43 @@
 
 <!-- ═══ 15 · SEPARADOR ════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="Superpoderes">
-  <div class="dv-eyebrow">Sección 04</div>
+  <div class="dv-eyebrow">Sección 03</div>
   <h2 class="dv-mega">El eje<br><span class="blue">agéntico</span></h2>
   <p class="dv-sub">Dentro de KDD los agentes se llaman superpoderes. No son asistentes aparte: son especialistas que cualquier asistente puede ponerse.</p>
-  <div class="dv-foot">04 · Superpoderes</div>
+  <div class="dv-foot">03 · Superpoderes</div>
 </section>
 
-<!-- ═══ 16 · QUÉ ES UN SUPERPODER ═════════════════════════════════════════ -->
+<!-- ═══ 16 · ANATOMÍA DE UN SUPERPODER ══════════════════════════════════ -->
 <section class="slide" data-nav="Superpoderes">
   <div class="eyebrow">Superpoderes</div>
-  <h2 class="headline">Un superpoder es <em>una forma de trabajar</em>, empaquetada y versionada</h2>
-  <p class="lead">No es un modelo ni un chat aparte. Es el método de un especialista —qué papel adopta, qué tiene que conseguir, qué no debe hacer y cómo se comprueba que sigue funcionando— escrito una vez y reutilizable por todos.</p>
+  <h2 class="headline">Un superpoder no es un prompt: son <em>cuatro ficheros</em> que se explican entre sí</h2>
+  <p class="lead">Como mínimo cuatro markdowns, relacionados. Separarlos es lo que permite cambiar la personalidad sin tocar las capacidades, o endurecer los límites sin reescribir el agente.</p>
   <div class="body">
-    <div class="split s73">
-      <div class="specfile">
-        <div class="sf-bar"><span class="sf-dot"></span><span class="sf-name">superpoderes/validacion-pull-request</span><span class="sf-tag">SP-PR-001 · v1.0.3</span></div>
-        <div class="sf-body"><span class="sf-k">role</span>: <span class="sf-v">Revisor de código del área</span>
-<span class="sf-k">mission</span>: <span class="sf-v">Comentar cada PR contra el libro de reglas</span>
-<span class="sf-k">limits</span>: <span class="sf-v">No aprueba. No comenta estilo sin regla escrita</span>
-<span class="sf-k">skills</span>: <span class="sf-v">[leer diff, citar regla, proponer parche]</span>
-<span class="sf-k">evals</span>: <span class="sf-v">[24 PRs de referencia, con veredicto conocido]</span>
-<span class="sf-k">harness</span>: <span class="sf-v">Se ejecuta en el propio repositorio</span>
-<span class="sf-k">estado</span>: <span class="sf-v">publicado</span>        <span class="sf-c"># borrador → revisión → publicado</span></div>
+    <div class="cards c4">
+      <div class="card a1">
+        <div class="c-n">agent.md</div>
+        <div class="c-t">La personalidad</div>
+        <p class="c-d">Quién es y con qué criterio trabaja. El papel que adopta, el tono y lo que prioriza cuando hay que elegir.</p>
       </div>
-      <div class="notecol">
-        <div class="note">
-          <div class="nt-k">limits</div>
-          <p class="nt-d">Tan importante como la misión. Un agente sin límites escritos <b>acaba opinando de todo</b> y se deja de leer.</p>
-        </div>
-        <div class="note">
-          <div class="nt-k">evals</div>
-          <p class="nt-d">Casos de referencia con el resultado ya conocido. Es lo que permite <b>publicar una versión nueva sin cruzar los dedos</b>.</p>
-        </div>
-        <div class="note">
-          <div class="nt-k">Se versiona y se publica</div>
-          <p class="nt-d">Como una spec, y con dueño. Hasta que no está publicado no lo usa nadie más que quien lo escribe.</p>
-        </div>
+      <div class="card a2">
+        <div class="c-n">skill.md</div>
+        <div class="c-t">Las capacidades</div>
+        <p class="c-d">Qué sabe hacer, paso a paso. El método del especialista, escrito para que se pueda repetir.</p>
+      </div>
+      <div class="card a3">
+        <div class="c-n">harn.md</div>
+        <div class="c-t">Las limitaciones</div>
+        <p class="c-d">Dónde se ejecuta y qué <b>no</b> debe hacer. Un agente sin límites escritos acaba opinando de todo y se deja de leer.</p>
+      </div>
+      <div class="card a4">
+        <div class="c-n">eval.md</div>
+        <div class="c-t">La evaluación</div>
+        <p class="c-d">Cómo se comprueba que sigue funcionando: casos de referencia con el resultado ya conocido, para publicar una versión nueva sin cruzar los dedos.</p>
       </div>
     </div>
+    <p class="footnote"><span class="fk">Mínimo</span><span class="tx">Son cuatro de partida, no cuatro como tope: un superpoder maduro añade sus propias <b>skills</b> y sus <b>evals</b> según crece.</span></p>
   </div>
-  <p class="takeaway">Lo que se captura no es una automatización, es <b>criterio</b>: la forma de trabajar de quien mejor lo hace, con sus límites y su manera de comprobarse.</p>
+  <p class="takeaway">Lo que se captura no es una automatización, es <b>criterio</b>: y al estar en cuatro ficheros separados, se revisa y se versiona como cualquier otro código.</p>
 </section>
 
 <!-- ═══ 17 · CÓMO SE COMBINAN ═════════════════════════════════════════════ -->
@@ -1059,37 +1030,12 @@
   <p class="takeaway">Por eso el catálogo escala: <b>un superpoder escrito una vez vale para dos áreas que no se parecen en nada</b>, porque el conocimiento se lo presta cada una.</p>
 </section>
 
-<!-- ═══ 18 · EL CATÁLOGO ══════════════════════════════════════════════════ -->
-<section class="slide" data-nav="Superpoderes">
-  <div class="eyebrow">Superpoderes</div>
-  <h2 class="headline">El catálogo crece por ejes, y no todo es desarrollo</h2>
-  <p class="lead">Cada superpoder declara su eje y su ámbito. El ámbito decide quién lo ve: toda la herramienta, una sola fuente, o solo tú.</p>
-  <div class="body">
-    <div class="tblwrap">
-      <table class="data">
-        <thead><tr><th style="width:30%">Superpoder</th><th style="width:16%">Eje</th><th style="width:18%">Ámbito</th><th style="width:14%">Estado</th><th>Contexto que toma</th></tr></thead>
-        <tbody>
-          <tr><td><b>Validación de Pull Request</b></td><td>Development</td><td><span class="tag">Transversal</span></td><td>Publicado</td><td>El libro de reglas del área</td></tr>
-          <tr><td><b>Generación de tests unitarios</b></td><td>Testing</td><td><span class="tag">Transversal</span></td><td>En revisión</td><td>Specs de funcionalidad</td></tr>
-          <tr><td><b>Triaje de incidencias</b></td><td>Support</td><td><span class="tag">Transversal</span></td><td>Publicado</td><td>Specs de operación e histórico</td></tr>
-          <tr><td><b>Casos de prueba del área</b></td><td>Testing</td><td><span class="tag t3">De una fuente</span></td><td>Publicado</td><td>El KB de esa fuente</td></tr>
-          <tr><td><b>Estimación de proyectos</b></td><td>Finance</td><td><span class="tag t3">De una fuente</span></td><td>Publicado</td><td>El histórico de esa fuente</td></tr>
-          <tr><td><b>Redactor de correos</b></td><td>Management</td><td><span class="tag t4">Personal</span></td><td>Publicado</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="footnote"><span class="fk">Nota</span><span class="tx">Selección ilustrativa para enseñar la forma del catálogo. <b>Los superpoderes concretos dependen de cada organización</b>: se dan de alta según lo que cada área necesite.</span></p>
-  </div>
-  <p class="takeaway">El ámbito personal importa más de lo que parece: es <b>por donde entra la gente</b>. Se empieza resolviendo lo propio y se acaba publicando para el área.</p>
-</section>
-
-
 <!-- ═══ 19 · SEPARADOR ════════════════════════════════════════════════════ -->
 <section class="slide divider" data-nav="Demo">
-  <div class="dv-eyebrow">Sección 05</div>
+  <div class="dv-eyebrow">Sección 04</div>
   <h2 class="dv-mega">KDD Studio,<br><span class="blue">por dentro</span></h2>
   <p class="dv-sub">Entrar en una fuente de conocimiento, preguntarle al asistente y ver un proyecto de Work. La demo es navegable: se puede pinchar.</p>
-  <div class="dv-foot">05 · Demo</div>
+  <div class="dv-foot">04 · Demo</div>
 </section>
 
 <!-- ═══ 20 · DEMO NAVEGABLE ═══════════════════════════════════════════════ -->
@@ -1097,18 +1043,8 @@
   <div class="eyebrow">Demo</div>
   <h2 class="headline">Entra, pregunta y mira qué hay en curso</h2>
   <div class="body">
-    <div class="studio" id="studio">
-      <div class="st-top">
-        <span class="st-logo">KDD Studio</span>
-        <span class="st-crumb" id="stCrumb">Knowledge Base Explorer</span>
-        <span class="st-model"><i></i><span id="stModel">Asistente · esfuerzo medio · 200K</span></span>
-      </div>
-      <div class="st-main">
-        <div class="st-side" id="stSide"></div>
-        <div class="st-view" id="stView"></div>
-      </div>
+    <div class="studio" id="studio"></div>
     </div>
-  </div>
   <p class="takeaway">Todo lo que se ve arranca de la misma decisión: <b>elegir la fuente</b>. A partir de ahí, preguntar y trabajar son dos puertas al mismo conocimiento.</p>
 </section>
 
@@ -1235,15 +1171,15 @@
 
 </script>
 <script>
-/* ═══ Demo navegable de KDD Studio ════════════════════════════════════════
-   Máquina de estados mínima: una vista activa y un puñado de datos de
-   mock-up. Sin red, sin dependencias y sin tocar el chrome del deck. */
+/* ═══ Demo de KDD Studio ══════════════════════════════════════════════════
+   Reconstrucción del mock-up de producto centrada en RDR: las dos áreas de
+   la barra superior (Knowledge Base y Superpowers), las seis pestañas de la
+   fuente y el asistente. Datos de mock-up, sin red y sin dependencias. */
 (function () {
   "use strict";
-  var view = document.getElementById("stView");
-  var side = document.getElementById("stSide");
-  var crumb = document.getElementById("stCrumb");
-  if (!view || !side) return;
+  var raiz = document.getElementById("studio");
+  if (!raiz) return;
+  var body = document.getElementById("kdBody");
 
   var esc = function (s) {
     return String(s).replace(/[&<>]/g, function (c) {
@@ -1251,237 +1187,376 @@
     });
   };
 
-  // ── Datos de mock-up ───────────────────────────────────────────────────
-  var FUENTES = [
-    { n: "RDR", code: "S128", ed: true, d: "Servicio de referencia de datos y liquidación de posiciones." },
-    { n: "Pagos", code: "S204", ed: false, d: "Iniciación y conciliación de pagos." },
-    { n: "Canal digital", code: "S311", ed: false, d: "Front de cliente y autenticación." },
-    { n: "Riesgo de crédito", code: "S402", ed: false, d: "Modelos de scoring y límites." }
+  // ── Datos ──────────────────────────────────────────────────────────────
+  var SPECS = [
+    { id: "PROD-RDR-001", t: "Qué resuelve RDR", capa: "Producto", cl: "c", ruta: "specs/product/vision.md",
+      layer: "product", status: "borrador", conf: "baja", v: "1.0.0", owner: "Producto",
+      dep: "—",
+      intent: "Dejar por escrito a quién sirve RDR y qué problema resuelve, antes de entrar en cómo.",
+      def: "RDR centraliza la referencia de datos y la liquidación diaria de posiciones para el resto de sistemas.",
+      ac: "Un compañero nuevo entiende para qué existe el servicio sin preguntar a nadie." },
+    { id: "DOM-RDR-003", t: "Modelo de posición", capa: "Dominio", cl: "d", ruta: "specs/domain/posicion.md",
+      layer: "domain", status: "vigente", conf: "alta", v: "1.6.0", owner: "Producto",
+      dep: "[DATA-RDR-021]",
+      intent: "Fijar qué es una posición, cuándo nace y qué la cierra.",
+      def: "Una posición es el saldo vivo de un instrumento para una cuenta en una fecha de valor. Nace con la primera operación casada y se cierra al liquidar.",
+      ac: "Dos sistemas que apliquen esta spec calculan la misma posición para el mismo día." },
+    { id: "DOM-RDR-014", t: "Liquidación diaria de posiciones", capa: "Dominio", cl: "d", ruta: "specs/domain/liquidacion-diaria.md",
+      layer: "domain", status: "vigente", conf: "alta", v: "2.1.0", owner: "Producto",
+      dep: "[DOM-RDR-003, ARCH-RDR-007]",
+      intent: "Definir cuándo y con qué datos se cierra la liquidación del día.",
+      def: "La liquidación se cierra a las 23:00 del día hábil, una vez conciliado el fichero definitivo del sistema de pagos.",
+      ac: "Ninguna posición queda sin liquidar al cierre; las que fallan quedan en la cola de reproceso." },
+    { id: "ARCH-RDR-002", t: "Arquitectura de servicios", capa: "Arquitectura", cl: "a", ruta: "specs/architecture/servicios.md",
+      layer: "architecture", status: "vigente", conf: "alta", v: "3.0.0", owner: "Ingeniería",
+      dep: "—",
+      intent: "Explicar en qué piezas se parte RDR y por qué.",
+      def: "Tres servicios: ingesta de operaciones, cálculo de posición y liquidación. Se despliegan por separado porque tienen ventanas de carga muy distintas.",
+      ac: "Un cambio en la ingesta no obliga a desplegar el cálculo." },
+    { id: "ARCH-RDR-007", t: "Corte nocturno y ventana de conciliación", capa: "Arquitectura", cl: "a", ruta: "specs/architecture/corte-nocturno.md",
+      layer: "architecture", status: "vigente", conf: "media", v: "1.4.0", owner: "Ingeniería",
+      dep: "[ARCH-RDR-002]",
+      intent: "Dejar escrito por qué el batch corta a las 23:00 y no al final del día natural.",
+      def: "El proveedor de pagos entrega el fichero definitivo a las 22:30. Se reservan 30 minutos de margen para reproceso antes del corte.",
+      ac: "Si el proveedor adelanta la entrega, el corte se puede mover sin tocar el dominio." },
+    { id: "FEAT-RDR-118", t: "Cálculo de liquidación", capa: "Funcionalidad", cl: "f", ruta: "specs/features/calculo-liquidacion.md",
+      layer: "feature", status: "vigente", conf: "alta", v: "2.0.1", owner: "Ingeniería",
+      dep: "[DOM-RDR-014]",
+      intent: "Describir la pieza que ejecuta el cálculo y deja la posición liquidada.",
+      def: "Recorre las posiciones abiertas del día, aplica el precio de cierre y marca el resultado. Los errores parciales no abortan el lote.",
+      ac: "Un fallo en una posición no impide liquidar el resto." },
+    { id: "DOC-RDR-007", t: "Runbook de reproceso", capa: "Documentación", cl: "c", ruta: "specs/docs/runbook-reproceso.md",
+      layer: "documentation", status: "vigente", conf: "alta", v: "3.0.1", owner: "Soporte",
+      dep: "[DOM-RDR-014]",
+      intent: "Explicar cómo se relanza una liquidación fallida.",
+      def: "Se relanza desde la consola de operación indicando la fecha de valor. Hasta las 02:00 no hace falta abrir incidencia.",
+      ac: "Quien está de guardia puede relanzar sin escalar a desarrollo." }
   ];
 
-  var SPECS = [
-    { id: "DOM-RDR-014", t: "Liquidación diaria de posiciones", capa: "Dominio", v: "2.1.0", st: "vigente", cf: "alta",
-      d: "La liquidación se cierra a las 23:00 del día hábil, una vez conciliado el fichero definitivo del sistema de pagos.",
-      rel: ["usa · DOM-RDR-003", "restringe a · DOC-RDR-007", "implementada por · FEAT-RDR-118"] },
-    { id: "DOM-RDR-003", t: "Modelo de posición", capa: "Dominio", v: "1.6.0", st: "vigente", cf: "alta",
-      d: "Qué es una posición, cuándo nace y qué la cierra. Es la pieza de la que cuelga casi todo el dominio.",
-      rel: ["usada por · DOM-RDR-014", "usa · DATA-RDR-021"] },
-    { id: "ARCH-RDR-007", t: "Corte nocturno y ventana de conciliación", capa: "Arquitectura", v: "1.4.0", st: "vigente", cf: "media",
-      d: "Por qué el batch corta a las 23:00: el proveedor entrega a las 22:30 y se reservan 30 minutos de margen para reproceso.",
-      rel: ["restringe a · DOM-RDR-014", "usa · ARCH-RDR-002"] },
-    { id: "FEAT-RDR-118", t: "Cálculo de liquidación", capa: "Funcionalidad", v: "2.0.1", st: "vigente", cf: "alta",
-      d: "La pieza que ejecuta el cálculo y deja la posición liquidada, con su tratamiento de errores parciales.",
-      rel: ["implementa · DOM-RDR-014"] },
-    { id: "DOC-RDR-007", t: "Ventana de reproceso", capa: "Documentación", v: "3.0.1", st: "vigente", cf: "alta",
-      d: "Cómo se relanza una liquidación fallida y hasta qué hora se puede hacer sin abrir incidencia.",
-      rel: ["restringida por · DOM-RDR-014"] },
-    { id: "PROD-RDR-001", t: "Qué resuelve RDR", capa: "Producto", v: "1.0.0", st: "borrador", cf: "baja",
-      d: "Visión del servicio y a quién sirve. Está en borrador: es la spec que menos se ha tocado desde el arranque.",
-      rel: ["sin relaciones declaradas"] }
+  var CAPAS = ["Todas", "Producto", "Dominio", "Arquitectura", "Funcionalidad", "Documentación"];
+
+  var TAREAS = [
+    { id: "WRK-TASK-RDR-015", t: "Contraste con el proveedor de pagos", st: "Hecha", ini: 0, dur: 18 },
+    { id: "WRK-TASK-RDR-016", t: "Impacto sobre el batch nocturno", st: "Hecha", ini: 16, dur: 20 },
+    { id: "WRK-TASK-RDR-017", t: "Modelo de datos y persistencia", st: "En curso", ini: 34, dur: 26 },
+    { id: "WRK-TASK-RDR-018", t: "Ajustar la ventana de reproceso", st: "Pendiente", ini: 58, dur: 22 }
+  ];
+
+  var SUPERS = [
+    { n: "Validación de Pull Request", id: "SP-PR-001", v: "1.0.3",
+      md: [["agent.md", "La personalidad", "Revisor de código del área. Directo, cita siempre la regla en la que se apoya y no opina de estilo sin una regla escrita detrás."],
+           ["skill.md", "Las capacidades", "Leer el diff, localizar la regla aplicable en el libro de reglas, proponer el parche mínimo y redactar el comentario."],
+           ["harn.md", "Las limitaciones", "Se ejecuta en el propio repositorio. No aprueba ni bloquea un PR: solo comenta. No toca ramas protegidas."],
+           ["eval.md", "La evaluación", "24 pull requests de referencia con veredicto conocido. Una versión nueva no se publica si baja el acierto."]] },
+    { n: "Generación de tests unitarios", id: "SP-TEST-001", v: "0.9.2",
+      md: [["agent.md", "La personalidad", "Piensa como quien mantiene el servicio, no como quien lo escribió: busca el caso que rompe, no el que confirma."],
+           ["skill.md", "Las capacidades", "Derivar casos de los criterios de aceptación de la spec, cubrir el camino feliz y los límites, y nombrarlos por lo que prueban."],
+           ["harn.md", "Las limitaciones", "No modifica código de producción. No inventa reglas de negocio que no estén en una spec."],
+           ["eval.md", "La evaluación", "Un conjunto de funciones con sus tests ya escritos a mano, para contrastar cobertura y falsos positivos."]] },
+    { n: "Triaje de incidencias", id: "SP-SUP-001", v: "1.1.2",
+      md: [["agent.md", "La personalidad", "Habla en el lenguaje de quien está de guardia a las tres de la mañana: primero qué hacer, después por qué."],
+           ["skill.md", "Las capacidades", "Clasificar la incidencia, anclarla a la spec que la explica y señalar el cambio reciente más probable."],
+           ["harn.md", "Las limitaciones", "No ejecuta nada en producción. Si el KB no cubre el caso, lo dice y abre una duda pendiente."],
+           ["eval.md", "La evaluación", "Incidencias históricas ya resueltas, para comprobar que llega a la misma causa raíz."]] },
+    { n: "Diseños técnicos", id: "SP-DOC-001", v: "1.8.1",
+      md: [["agent.md", "La personalidad", "Escribe para quien tendrá que mantener la pieza dentro de dos años y no estuvo en la reunión."],
+           ["skill.md", "Las capacidades", "Componer el documento técnico de una pieza a partir de sus specs: flujos, clases y puntos de integración."],
+           ["harn.md", "Las limitaciones", "Solo documenta lo que está declarado en el KB. Lo que no encuentra lo deja marcado como hueco."],
+           ["eval.md", "La evaluación", "Diseños técnicos ya validados por arquitectura, como referencia de forma y de nivel de detalle."]] }
   ];
 
   var PREGUNTAS = [
     { q: "¿Por qué la liquidación se cierra a las 23:00?",
-      a: "<p>Por la ventana de conciliación con el sistema de pagos, que entrega el fichero definitivo a las 22:30. El corte a las 23:00 deja media hora de margen para reproceso.</p><p>Está recogida como <b>restricción de operación, no como regla de negocio</b>: si el proveedor adelanta la entrega, el corte se puede mover.</p>",
+      a: "<p>Por la ventana de conciliación con el sistema de pagos, que entrega el fichero definitivo a las 22:30. El corte a las 23:00 deja media hora de margen para reproceso.</p><p>Está recogida como <b>restricción de arquitectura, no como regla de negocio</b>: si el proveedor adelanta la entrega, el corte se puede mover.</p>",
       c: ["DOM-RDR-014 · v2.1.0", "ARCH-RDR-007 · v1.4.0"],
       g: "No hay ninguna spec que cubra el comportamiento en día festivo. <b>Duda pendiente registrada.</b>" },
     { q: "Si toco el modelo de posición, ¿qué se rompe?",
       a: "<p>Tres specs dependen de <b>DOM-RDR-003</b> de forma directa: la liquidación diaria, el esquema de datos y el cálculo que la implementa.</p><p>La que hay que mirar primero es <b>FEAT-RDR-118</b>, porque es la única que toca código en producción todas las noches.</p>",
-      c: ["DOM-RDR-003 · v1.6.0", "DATA-RDR-021 · v1.2.0", "FEAT-RDR-118 · v2.0.1"],
-      g: "" },
-    { q: "¿Qué parte del KB me fío menos?",
-      a: "<p>La capa de producto. <b>PROD-RDR-001</b> sigue en borrador y con <b>confidence baja</b>: se escribió en el arranque y no se ha vuelto a tocar.</p><p>Es también la única spec sin relaciones declaradas, así que no aparece en ningún análisis de impacto.</p>",
+      c: ["DOM-RDR-003 · v1.6.0", "DATA-RDR-021 · v1.2.0", "FEAT-RDR-118 · v2.0.1"], g: "" },
+    { q: "¿De qué parte del KB me fío menos?",
+      a: "<p>De la capa de producto. <b>PROD-RDR-001</b> sigue en borrador y con <b>confidence baja</b>: se escribió en el arranque y no se ha vuelto a tocar.</p>",
       c: ["PROD-RDR-001 · v1.0.0"],
       g: "Recomendación: revisarla antes de usarla como contexto de un proyecto." }
   ];
 
-  var TAREAS = {
-    pend: [{ t: "Ajustar la ventana de reproceso", d: "Documentación · 1 d" }],
-    curso: [{ t: "Modelo de datos y persistencia", d: "Implementación · 2 d" }],
-    hecha: [{ t: "Contraste con el proveedor de pagos", d: "Análisis · cerrado" },
-             { t: "Impacto sobre el batch nocturno", d: "Análisis · cerrado" }]
-  };
-
-  var SUPERS = [
-    { n: "Validación de Pull Request", d: "Revisa cada PR contra el libro de reglas del área.", e: "Development", a: "Transversal" },
-    { n: "Generación de tests unitarios", d: "Casos que reflejan la realidad funcional, no solo el código.", e: "Testing", a: "Transversal" },
-    { n: "Diseños técnicos", d: "Documento técnico de una pieza a partir de sus specs.", e: "Documentation", a: "Transversal" },
-    { n: "Triaje de incidencias", d: "Clasifica y ancla la incidencia a la spec que la explica.", e: "Support", a: "Transversal" },
-    { n: "Estimación de proyectos", d: "Estima con el histórico de esta fuente delante.", e: "Finance", a: "De una fuente" }
-  ];
-
   // ── Estado ─────────────────────────────────────────────────────────────
-  var st = { vista: "explorer", spec: 0, preg: -1 };
+  var st = { area: "kb", tab: "home", spec: 2, capa: "Todas", herr: "Glosario documental",
+             wtab: "Plan", sp: 0, preg: -1, asst: false, fuente: true };
 
-  var NAV = [
-    { k: "home", n: "Home" },
-    { k: "knowledge", n: "Knowledge" },
-    { k: "asistente", n: "Asistente" },
-    { k: "work", n: "Work" },
-    { k: "super", n: "Superpoderes" }
-  ];
+  var TABS = [["home", "Home"], ["knowledge", "Knowledge"], ["work", "Work"],
+              ["gov", "Governance"], ["sync", "Sync"], ["graph", "Graph"]];
+  var HERR = ["Glosario documental", "Importar documentos", "Dudas pendientes",
+              "Ajustar comportamiento", "Salud del KB"];
 
-  // ── Pintado ────────────────────────────────────────────────────────────
-  function pintarSide() {
-    var h = "";
-    if (st.vista === "explorer") {
-      h += '<div class="st-sk">Árbol de la organización</div>';
-      h += '<div class="st-nav on"><i></i>Tecnología</div>';
-      h += '<div class="st-nav" style="padding-left:26px"><i></i>Plataformas de negocio</div>';
-      h += '<div class="st-nav" style="padding-left:26px"><i></i>Canales</div>';
-      h += '<div class="st-nav" style="padding-left:26px"><i></i>Riesgos</div>';
-    } else {
-      h += '<div class="st-sk">Fuente activa</div>';
-      h += '<div class="st-nav on" style="cursor:default"><i></i>RDR · S128</div>';
-      h += '<div class="st-sk">Ejes</div>';
-      for (var i = 0; i < NAV.length; i++) {
-        h += '<button class="st-nav' + (st.vista === NAV[i].k ? " on" : "") +
-             '" data-ir="' + NAV[i].k + '"><i></i>' + NAV[i].n + "</button>";
-      }
-      h += '<div class="st-sk">&nbsp;</div>';
-      h += '<button class="st-nav" data-ir="explorer"><i></i>Cambiar de fuente</button>';
+  // ── Vistas ─────────────────────────────────────────────────────────────
+  function vFuentes() {
+    var f = [["RDR", "S128", 1, "Servicio de referencia de datos y liquidación de posiciones."],
+             ["Pagos", "S204", 0, "Iniciación y conciliación de pagos."],
+             ["Canal digital", "S311", 0, "Front de cliente y autenticación."],
+             ["Riesgo de crédito", "S402", 0, "Modelos de scoring y límites."]];
+    var h = '<div class="kdh">KB Explorer</div><div class="kdsub">Selecciona la base de conocimiento con la que trabajar. Solo se listan aquellas en las que estás perfilado.</div><div class="kdgrid g2">';
+    for (var i = 0; i < f.length; i++) {
+      h += '<button class="kdcard' + (f[i][2] ? "" : " c2") + '"' + (f[i][2] ? ' data-fuente="1"' : " disabled") +
+        ' style="text-align:left;font-family:var(--sans);cursor:' + (f[i][2] ? "pointer" : "default") +
+        ';opacity:' + (f[i][2] ? "1" : ".5") + '">' +
+        '<div class="kdk">' + esc(f[i][1]) + " · " + (f[i][2] ? "editable" : "no estás perfilado") + "</div>" +
+        '<div class="kdv" style="font-size:17px">' + esc(f[i][0]) + "</div>" +
+        '<div class="kds">' + esc(f[i][3]) + "</div></button>";
     }
-    side.innerHTML = h;
-  }
-
-  function vExplorer() {
-    var h = '<div class="st-h">Fuentes de conocimiento</div>' +
-      '<div class="st-sub">Elige la fuente sobre la que vas a trabajar. Solo se listan aquellas en las que estás perfilado.</div>' +
-      '<div class="kbgrid">';
-    for (var i = 0; i < FUENTES.length; i++) {
-      var f = FUENTES[i];
-      h += "<button class=\"kbcard\"" + (f.ed ? ' data-kb="1"' : " disabled") + ">" +
-        '<div class="kb-n">' + esc(f.n) + "</div>" +
-        '<div class="kb-d">' + esc(f.d) + "</div>" +
-        '<div class="kb-m">' + esc(f.code) + " · " + (f.ed ? "editable" : "no estás perfilado") + "</div>" +
-        "</button>";
-    }
-    h += "</div>";
-    h += '<div class="st-foot">Demo · datos de mock-up</div>';
-    return h;
+    return h + "</div>";
   }
 
   function vHome() {
-    return '<div class="st-h">RDR · visión general</div>' +
-      '<div class="st-sub">El estado de la fuente en una pantalla, con lo último de cada eje.</div>' +
-      '<div class="axgrid">' +
-        '<div class="axcard"><div class="ax-k">Knowledge</div><div class="ax-v">84 <small>specs</small></div><div class="ax-s">121 relaciones declaradas. 4 dudas pendientes sin responder.</div></div>' +
-        '<div class="axcard a2"><div class="ax-k">Work</div><div class="ax-v">3 <small>proyectos</small></div><div class="ax-s">Uno en curso, dos completados este trimestre.</div></div>' +
-        '<div class="axcard a3"><div class="ax-k">Governance</div><div class="ax-v">12 <small>personas</small></div><div class="ax-s">2 mantienen la fuente, 1 aprueba los cambios.</div></div>' +
-      "</div>" +
-      '<div class="wkact" style="border-left-color:var(--blue)">' +
-        '<div class="wk-ak" style="color:var(--blue-d)">Sync · qué está al día</div>' +
-        '<div class="wk-ad">De las 84 specs: <b>79 sincronizadas</b>, 2 por subir, 2 por descargar y <b>1 en conflicto</b>. El conflicto es de quien edita la misma spec en dos sitios, y hay que resolverlo a mano.</div>' +
-        '<div class="act-i"><span class="cite c3">79 sincronizadas</span><span class="cite">4 pendientes</span><span class="cite c2">1 conflicto</span></div>' +
-      "</div>" +
-      '<div class="st-foot">Demo · datos de mock-up</div>';
+    return '<div class="kdgrid g2" style="align-items:start">' +
+      '<div class="kdcard"><div class="kdk">Fuente activa</div><div class="kdv" style="font-size:18px">RDR <small>· S128</small></div>' +
+      '<div class="kds">Servicio de referencia de datos y liquidación de posiciones. Responsable: Equipo de Producto.</div></div>' +
+      '<div class="kdcard c3"><div class="kdk">Accesos directos</div><div class="kdlist">' +
+        '<div class="kdli"><b></b>Knowledge · glosario, importar, dudas pendientes</div>' +
+        '<div class="kdli o"><b></b>Work · proyectos y nuevo proyecto</div>' +
+        '<div class="kdli v"><b></b>Governance · gestión de accesos</div>' +
+      "</div></div>" +
+      '<div class="kdcard c4"><div class="kdk">Graph</div><div class="kdv">84 <small>nodos</small> · 121 <small>relaciones</small></div>' +
+      '<div class="kds">Knowledge 71 · Work 13 · Governance 0.</div></div>' +
+      '<div class="kdcard c2"><div class="kdk">Sync</div><div class="kdv" style="font-size:18px">4 <small>pendientes</small></div>' +
+      '<div class="kds">79 sincronizadas, 2 por subir, 2 por descargar y 1 en conflicto.</div></div>' +
+      "</div>";
   }
 
   function vKnowledge() {
-    var h = '<div class="st-h">Glosario documental</div>' +
-      '<div class="st-sub">Las specs de la fuente, por capa. Pincha una para ver su ficha.</div>' +
-      '<div class="st-split"><div class="splist">';
-    for (var i = 0; i < SPECS.length; i++) {
-      h += '<button class="spitem' + (i === st.spec ? " on" : "") + '" data-spec="' + i + '">' +
-        '<span class="sp-id">' + esc(SPECS[i].id) + "</span>" +
-        '<span class="sp-t">' + esc(SPECS[i].t) + "</span></button>";
+    var h = '<div class="kwrap"><div class="ktools">';
+    for (var i = 0; i < HERR.length; i++) {
+      h += '<button class="ktool' + (HERR[i] === st.herr ? " on" : "") + '" data-herr="' + i + '">' + HERR[i] + "</button>";
     }
-    h += "</div>";
-    var s = SPECS[st.spec];
-    h += '<div class="spcard"><div class="spc-id">' + esc(s.id) + "</div>" +
-      '<div class="spc-t">' + esc(s.t) + "</div>" +
-      '<div class="spc-meta">' +
-        '<span class="tag">' + esc(s.capa) + "</span>" +
-        '<span class="tag t4">v' + esc(s.v) + "</span>" +
-        '<span class="tag ' + (s.st === "borrador" ? "t2" : "t3") + '">' + esc(s.st) + "</span>" +
-        '<span class="tag t4">confidence ' + esc(s.cf) + "</span>" +
-      "</div>" +
-      '<div class="spc-d">' + esc(s.d) + "</div>" +
-      '<div class="spc-rel"><div class="spc-rk">Relaciones declaradas</div><div class="cites">';
-    for (var r = 0; r < s.rel.length; r++) h += '<span class="cite">' + esc(s.rel[r]) + "</span>";
-    h += "</div></div></div></div>";
+    h += "</div><div class=\"kmain\">";
+    if (st.herr !== "Glosario documental") {
+      h += '<div class="kdh">' + esc(st.herr) + "</div><div class=\"kdsub\">" + esc({
+        "Importar documentos": "Suelta un PDF, DOCX o PPTX y te lo devuelvo como specs propuestas. Nada se aplica hasta que lo revisas.",
+        "Dudas pendientes": "Lo que quedó ambiguo al importar, registrado como pregunta abierta con su fichero de origen.",
+        "Ajustar comportamiento": "Conversando se captura lo que falta y se afina el criterio con el que responde el asistente.",
+        "Salud del KB": "Un análisis que puntúa la base y lista las incidencias por severidad."
+      }[st.herr]) + "</div>";
+      if (st.herr === "Dudas pendientes") {
+        h += '<div class="kdgrid g2">' +
+          '<div class="kdcard c2"><div class="kdk">Pendiente · oq-0b33d3</div><div class="kds" style="font-size:12px;color:var(--ink2)">¿Qué hace la liquidación en día festivo? El documento de origen no lo dice.</div><div class="kds">📄 corte-nocturno.docx</div></div>' +
+          '<div class="kdcard c2"><div class="kdk">Pendiente · oq-4a91c7</div><div class="kds" style="font-size:12px;color:var(--ink2)">¿Quién aprueba mover la hora de corte, Producto o Ingeniería?</div><div class="kds">📄 acta-comite-marzo.pdf</div></div>' +
+          "</div><div class=\"kds\" style=\"margin-top:10px\">4 pendientes · 24 resueltas</div>";
+      } else if (st.herr === "Salud del KB") {
+        h += '<div class="kdgrid g3"><div class="kdcard c4"><div class="kdk">Puntuación</div><div class="kdv">72<small>/100</small></div><div class="kds">5 incidencias sobre 84 specs.</div></div>' +
+          '<div class="kdcard c2"><div class="kdk">Severidad alta</div><div class="kdv">1</div><div class="kds">PROD-RDR-001 sin relaciones declaradas.</div></div>' +
+          '<div class="kdcard c3"><div class="kdk">Severidad media</div><div class="kdv">4</div><div class="kds">Specs sin tocar en más de un año.</div></div></div>';
+      } else {
+        h += '<div class="kdcard" style="border-top-color:var(--mute2)"><div class="kds" style="font-size:12px;color:var(--ink2)">' +
+          (st.herr === "Importar documentos"
+            ? "Arrastra un documento aquí · PDF, DOCX, PPTX, XLSX, MD y TXT"
+            : "Describe qué quieres capturar como spec…") + "</div></div>";
+      }
+      return h + "</div></div>";
+    }
+    h += '<div class="kpills">';
+    for (var p = 0; p < CAPAS.length; p++) {
+      var n = CAPAS[p] === "Todas" ? SPECS.length : SPECS.filter(function (s) { return s.capa === CAPAS[p]; }).length;
+      h += '<button class="kpill' + (CAPAS[p] === st.capa ? " on" : "") + '" data-capa="' + p + '">' + CAPAS[p] + " " + n + "</button>";
+    }
+    h += '</div><div class="ksplit"><div>';
+    for (var i2 = 0; i2 < SPECS.length; i2++) {
+      var s = SPECS[i2];
+      if (st.capa !== "Todas" && s.capa !== st.capa) continue;
+      h += '<button class="krow' + (i2 === st.spec ? " on" : "") + '" data-spec="' + i2 + '">' +
+        '<span class="kdot ' + s.cl + '"></span><span class="kid">' + esc(s.id) + "</span>" +
+        '<span class="ktt">' + esc(s.t) + "</span></button>";
+    }
+    h += '<div class="kds" style="margin-top:7px">Muestra · 7 de las 84 specs de RDR</div>';
+    var d = SPECS[st.spec];
+    h += "</div><div class=\"kspec\">" +
+      '<div class="kpath">' + esc(d.ruta) + "</div>" +
+      '<div class="kfm"><b>layer</b>: ' + esc(d.layer) + "\n<b>status</b>: " + esc(d.status) +
+        "\n<b>confidence</b>: " + esc(d.conf) + "\n<b>version</b>: " + esc(d.v) +
+        "\n<b>owner</b>: " + esc(d.owner) + "\n<b>dependencies</b>: " + esc(d.dep) + "</div>" +
+      '<div class="ksec">Intent</div><div class="ktx">' + esc(d.intent) + "</div>" +
+      '<div class="ksec">Definition</div><div class="ktx">' + esc(d.def) + "</div>" +
+      '<div class="ksec">Acceptance Criteria</div><div class="ktx">' + esc(d.ac) + "</div>" +
+      "</div></div></div></div>";
     return h;
   }
 
-  function vAsistente() {
-    var h = '<div class="st-h">Asistente</div>' +
-      '<div class="st-sub">Responde a partir del conocimiento de esta fuente, y cita las specs de las que sale cada cosa.</div>' +
-      '<div class="dchat">';
+  function vWork() {
+    var h = '<div style="display:flex;align-items:baseline;gap:9px"><span class="wid">WRK-SPEC-RDR-014</span>' +
+      '<span class="kdh">Adelantar el corte de liquidación a las 22:45</span></div>' +
+      '<div class="kdsub">En curso · Q3 2026 · cuatro tareas, y solo se trabaja la pendiente.</div><div class="wtabs">';
+    var wt = ["Proyecto", "Plan", "Recursos", "Criterios"];
+    for (var i = 0; i < wt.length; i++) {
+      h += '<button class="wtab' + (wt[i] === st.wtab ? " on" : "") + '" data-wtab="' + i + '">' + wt[i] + "</button>";
+    }
+    h += "</div>";
+    if (st.wtab === "Plan") {
+      h += '<div class="wgantt">';
+      for (var t = 0; t < TAREAS.length; t++) {
+        var k = TAREAS[t];
+        var cls = k.st === "Hecha" ? "d" : k.st === "Pendiente" ? "p" : "";
+        h += '<div class="wline"><span class="wid">' + esc(k.id.replace("WRK-TASK-RDR-", "TASK-")) + "</span>" +
+          '<span class="wbarwrap"><span class="wbar ' + cls + '" style="left:' + k.ini + "%;width:" + k.dur + '%"></span></span>' +
+          '<span class="wst">' + esc(k.st) + "</span></div>";
+        h += '<div class="wline"><span></span><span class="kds" style="margin:0">' + esc(k.t) + "</span><span></span></div>";
+      }
+      h += "</div>";
+    } else if (st.wtab === "Proyecto") {
+      h += '<div class="kdgrid g2"><div class="kdcard"><div class="kdk">1 · Alcance</div><div class="kds" style="color:var(--ink2);font-size:12px">Mover el corte quince minutos sin tocar el modelo de dominio.</div></div>' +
+        '<div class="kdcard c2"><div class="kdk">2 · Cambio propuesto</div><div class="kds" style="color:var(--ink2);font-size:12px">Dentro: ventana de conciliación y reproceso. Fuera: cálculo de posición.</div></div>' +
+        '<div class="kdcard c3"><div class="kdk">3 · Contexto de conocimiento</div><div class="kds" style="color:var(--ink2);font-size:12px">RDR · 5 specs · Pagos · 1 spec</div></div>' +
+        '<div class="kdcard c4"><div class="kdk">6 · Riesgos</div><div class="kds" style="color:var(--ink2);font-size:12px">Que el proveedor no confirme el adelanto de entrega. Mitigación: contraste previo.</div></div></div>';
+    } else if (st.wtab === "Recursos") {
+      h += '<div class="kdgrid g2"><div class="kdcard"><div class="kdk">Inputs</div><div class="kdlist">' +
+        '<div class="kdli"><b></b>6 specs activadas, de 2 fuentes</div><div class="kdli o"><b></b>repo · liquidacion-core</div>' +
+        '<div class="kdli v"><b></b>db · posiciones</div></div></div>' +
+        '<div class="kdcard c4"><div class="kdk">Outputs</div><div class="kdlist"><div class="kdli"><b></b>ARCH-RDR-007 · v1.5.0 propuesta</div>' +
+        '<div class="kdli o"><b></b>rama · feat/corte-2245</div></div></div></div>' +
+        '<div class="kds" style="margin-top:10px">Activadas 6 specs de 2 fuentes, dentro del presupuesto recomendado de 5 a 10.</div>';
+    } else {
+      h += '<div class="kdgrid g2">' +
+        '<div class="kdcard c4"><div class="kdk">AC-1 · cumplido</div><div class="kds" style="color:var(--ink2);font-size:12px">El corte se ejecuta a las 22:45 en el entorno de preproducción.</div></div>' +
+        '<div class="kdcard c4"><div class="kdk">AC-2 · cumplido</div><div class="kds" style="color:var(--ink2);font-size:12px">La ventana de reproceso sigue siendo de 30 minutos.</div></div>' +
+        '<div class="kdcard"><div class="kdk">AC-3 · pendiente</div><div class="kds" style="color:var(--ink2);font-size:12px">ARCH-RDR-007 actualizada con la hora nueva y su motivo.</div></div>' +
+        '<div class="kdcard"><div class="kdk">AC-4 · pendiente</div><div class="kds" style="color:var(--ink2);font-size:12px">El runbook de reproceso refleja el horario nuevo.</div></div></div>' +
+        '<div class="kds" style="margin-top:10px">Hay que validarlos todos para poder archivar el proyecto.</div>';
+    }
+    return h;
+  }
+
+  function vGov() {
+    return '<div class="kdh">Gestión de accesos</div><div class="kdsub">Quién entra en la fuente y con qué rol.</div>' +
+      '<table class="gtable"><thead><tr><th>Rol</th><th>Personas</th><th>Qué puede hacer</th></tr></thead><tbody>' +
+      '<tr><td><b>Consulta</b></td><td>9</td><td>Leer las specs y preguntar al asistente.</td></tr>' +
+      '<tr><td><b>Mantenimiento</b></td><td>2</td><td>Crear y editar specs, resolver dudas pendientes.</td></tr>' +
+      '<tr><td><b>Aprobación</b></td><td>1</td><td>Aprobar los cambios que entran en la fuente.</td></tr>' +
+      "</tbody></table>";
+  }
+
+  function vSync() {
+    var filas = [["Knowledge", 79, 2, 2, 1], ["Work", 13, 1, 0, 0],
+                 ["Superpowers", 4, 0, 1, 0], ["Resources", 6, 0, 0, 0]];
+    var h = '<div class="kdh">Sincronización</div><div class="kdsub">Todo lo que alimenta el KB, en uno de cuatro estados.</div>';
+    for (var i = 0; i < filas.length; i++) {
+      var f = filas[i], tot = f[1] + f[2] + f[3] + f[4];
+      h += '<div class="syncrow"><span style="font-weight:600;color:var(--ink)">' + f[0] +
+        ' <span class="kds" style="display:inline;margin:0">· ' + tot + "</span></span>" +
+        '<span class="syncbar">' +
+          '<span class="sy1" style="width:' + (f[1] / tot * 100) + '%"></span>' +
+          '<span class="sy2" style="width:' + (f[2] / tot * 100) + '%"></span>' +
+          '<span class="sy3" style="width:' + (f[3] / tot * 100) + '%"></span>' +
+          '<span class="sy4" style="width:' + (f[4] / tot * 100) + '%"></span>' +
+        "</span></div>";
+    }
+    return h + '<div class="sylegend"><span><i class="sy1"></i>Sincronizado</span><span><i class="sy2"></i>Por subir</span>' +
+      '<span><i class="sy3"></i>Por descargar</span><span><i class="sy4"></i>Conflictos</span></div>';
+  }
+
+  function vGraph() {
+    var nodos = [[70, 60, "PROD-001", "c"], [210, 40, "DOM-003", "d"], [210, 130, "DOM-014", "d"],
+                 [360, 40, "ARCH-002", "a"], [360, 130, "ARCH-007", "a"],
+                 [510, 85, "FEAT-118", "f"], [510, 175, "DOC-007", "c"]];
+    var aristas = [[1, 2], [2, 4], [4, 3], [2, 5], [2, 6], [1, 5]];
+    var col = { c: "var(--mute2)", d: "var(--purple)", a: "var(--green)", f: "var(--orange)" };
+    var s = '<svg viewBox="0 0 600 220" width="600" height="210" aria-label="Grafo de RDR">';
+    for (var e = 0; e < aristas.length; e++) {
+      var A = nodos[aristas[e][0]], B = nodos[aristas[e][1]];
+      s += '<line x1="' + A[0] + '" y1="' + A[1] + '" x2="' + B[0] + '" y2="' + B[1] +
+        '" stroke="var(--line)" stroke-width="1.5"/>';
+    }
+    for (var n = 0; n < nodos.length; n++) {
+      s += '<circle cx="' + nodos[n][0] + '" cy="' + nodos[n][1] + '" r="7" fill="' + col[nodos[n][3]] + '"/>' +
+        '<text x="' + (nodos[n][0] + 12) + '" y="' + (nodos[n][1] + 4) +
+        '" font-family="monospace" font-size="10" fill="var(--ink2)">' + nodos[n][2] + "</text>";
+    }
+    s += "</svg>";
+    return '<div class="kdh">Grafo de conocimiento</div><div class="kdsub">Cada relación es explícita: qué usa, qué extiende y qué restringe a qué.</div>' +
+      '<div class="gwrap">' + s + "</div>";
+  }
+
+  function vSuper() {
+    var h = '<div class="kdh">Superpowers Explorer</div><div class="kdsub">Cada superpoder son cuatro markdowns relacionados. Pincha uno para verlos.</div>' +
+      '<div class="spgrid"><div class="splist">';
+    for (var i = 0; i < SUPERS.length; i++) {
+      h += '<button class="spitem' + (i === st.sp ? " on" : "") + '" data-sp="' + i + '">' +
+        esc(SUPERS[i].n) + "<em>" + esc(SUPERS[i].id) + " · v" + esc(SUPERS[i].v) + "</em></button>";
+    }
+    h += '</div><div class="mdgrid">';
+    var md = SUPERS[st.sp].md;
+    for (var m = 0; m < md.length; m++) {
+      h += '<div class="mdcard m' + (m + 1) + '"><div class="mdf">' + esc(md[m][0]) + "</div>" +
+        '<div class="mdr">' + esc(md[m][1]) + "</div>" +
+        '<div class="mdt">' + esc(md[m][2]) + "</div></div>";
+    }
+    return h + "</div></div>";
+  }
+
+  function vAsst() {
+    var h = '<div class="asst" data-cerrar="1"><div class="asstpanel" data-stop="1">' +
+      '<div class="assttop"><span class="kdh" style="font-size:15px">Asistente</span>' +
+      '<span class="kds" style="margin:0">RDR · modo técnico</span>' +
+      '<button class="asstx" data-cerrar="1">✕</button></div><div class="asstbody">';
     if (st.preg < 0) {
-      h += '<div class="dmsg a">Respondo a partir del conocimiento de <b>RDR</b>. Puedo citarte la spec y la versión de cada afirmación, y decirte cuándo <b>no</b> tengo respuesta. Prueba con una de estas:</div>';
+      h += '<div class="dmsg a">Respondo a partir del conocimiento de <b>RDR</b> y te cito la spec y la versión de cada afirmación. Si no lo sé, te lo digo.</div>';
     } else {
       var p = PREGUNTAS[st.preg];
-      h += '<div class="dmsg u">' + esc(p.q) + "</div>";
-      h += '<div class="dmsg a">' + p.a + '<div class="cites">';
+      h += '<div class="dmsg u">' + esc(p.q) + '</div><div class="dmsg a">' + p.a + '<div class="cites">';
       for (var i = 0; i < p.c.length; i++) h += '<span class="cite">' + esc(p.c[i]) + "</span>";
       h += "</div></div>";
       if (p.g) h += '<div class="dmsg g">' + p.g + "</div>";
     }
     h += '<div class="dask">';
     for (var k = 0; k < PREGUNTAS.length; k++) {
-      h += '<button class="dq' + (k === st.preg ? " on" : "") + '" data-preg="' + k + '">' +
-        esc(PREGUNTAS[k].q) + "</button>";
+      h += '<button class="dq' + (k === st.preg ? " on" : "") + '" data-preg="' + k + '">' + esc(PREGUNTAS[k].q) + "</button>";
     }
-    h += "</div></div>";
-    return h;
+    return h + "</div></div></div></div>";
   }
 
-  function vWork() {
-    var h = '<div class="wkhead"><span class="wk-id">WRK-SPEC-RDR-014</span>' +
-      '<span class="st-h" style="margin:0">Adelantar el corte de liquidación a las 22:45</span></div>' +
-      '<div class="st-sub" style="margin-top:-8px">En curso · el plan tiene cuatro tareas y solo se trabaja la pendiente.</div>' +
-      '<div class="wkcols">';
-    var cols = [["Pendiente", TAREAS.pend], ["En curso", TAREAS.curso], ["Hecha", TAREAS.hecha]];
-    for (var c = 0; c < cols.length; c++) {
-      h += '<div class="wkcol"><div class="wk-k">' + cols[c][0] + "</div>";
-      for (var t = 0; t < cols[c][1].length; t++) {
-        h += '<div class="wktask"><b>' + esc(cols[c][1][t].t) + "</b>" + esc(cols[c][1][t].d) + "</div>";
-      }
-      h += "</div>";
-    }
-    h += "</div>";
-    h += '<div class="wkact"><div class="wk-ak">Conocimiento activado</div>' +
-      '<div class="wk-ad">Seis specs, una de ellas de la fuente Pagos, más el repositorio y la base de datos que toca. Dentro del presupuesto recomendado de <b>cinco a diez</b>.</div>' +
-      '<div class="act-i"><span class="cite">DOM-RDR-014</span><span class="cite">DOM-RDR-003</span><span class="cite">ARCH-RDR-007</span><span class="cite">FEAT-RDR-118</span><span class="cite">DOC-RDR-007</span><span class="cite">DOM-PAG-002</span><span class="cite c2">repo · liquidacion-core</span><span class="cite c3">db · posiciones</span></div>' +
-      "</div>";
-    return h;
-  }
+  var VISTAS = { home: vHome, knowledge: vKnowledge, work: vWork, gov: vGov, sync: vSync, graph: vGraph };
 
-  function vSuper() {
-    var h = '<div class="st-h">Superpoderes</div>' +
-      '<div class="st-sub">Los especialistas disponibles sobre esta fuente. Los transversales vienen del catálogo; los de fuente se dan de alta aquí.</div>' +
-      '<div class="splist2">';
-    for (var i = 0; i < SUPERS.length; i++) {
-      var s = SUPERS[i];
-      h += '<div class="sprow"><div><div class="spr-n">' + esc(s.n) + "</div>" +
-        '<div class="spr-d">' + esc(s.d) + "</div></div>" +
-        '<div class="spr-e">' + esc(s.e) + "</div>" +
-        '<span class="tag' + (s.a === "Transversal" ? "" : " t3") + '">' + esc(s.a) + "</span></div>";
-    }
-    h += "</div>";
-    return h;
-  }
-
-  var VISTAS = { explorer: vExplorer, home: vHome, knowledge: vKnowledge,
-                 asistente: vAsistente, work: vWork, super: vSuper };
-
-  var CRUMBS = { explorer: "Knowledge Base Explorer", home: "RDR · Home",
-                 knowledge: "RDR · Knowledge", asistente: "RDR · Asistente",
-                 work: "RDR · Work", super: "RDR · Superpoderes" };
-
+  // ── Pintado ────────────────────────────────────────────────────────────
   function render() {
-    pintarSide();
-    view.innerHTML = VISTAS[st.vista]();
-    if (crumb) crumb.innerHTML = "<b>" + CRUMBS[st.vista] + "</b>";
+    var h = "";
+    // Barra superior.
+    h += '<div class="kdtop"><span class="kdlogo">KDD</span><nav class="kdnav">' +
+      '<button class="' + (st.area === "kb" ? "on" : "") + '" data-area="kb"><i></i>Knowledge Base</button>' +
+      '<button class="' + (st.area === "sp" ? "on" : "") + '" data-area="sp"><i></i>Superpowers</button>' +
+      '</nav><span class="kdsp"></span>' +
+      (st.area === "kb" && st.fuente && !st.asst
+        ? '<button class="fab" data-asst="1">Pregúntame lo que necesites</button>' : "") +
+      '<span class="kdchip">Copilot · Medio · 200K <span class="cv">▾</span></span>' +
+      '<span class="kdchip conn"><i></i>Connected</span></div>';
+    // Pestañas de la fuente.
+    if (st.area === "kb" && st.fuente) {
+      h += '<div class="kdtabs">';
+      for (var i = 0; i < TABS.length; i++) {
+        h += '<button class="kdtab' + (st.tab === TABS[i][0] ? " on" : "") + '" data-tab="' + TABS[i][0] + '"><i></i>' + TABS[i][1] + "</button>";
+      }
+      h += '<button class="srcbox" data-salir="1">RDR <span>S128 · cambiar</span></button></div>';
+    }
+    // Cuerpo.
+    h += '<div class="kdbody">' +
+      (st.area === "sp" ? vSuper() : st.fuente ? VISTAS[st.tab]() : vFuentes()) + "</div>";
+    // Asistente.
+    if (st.area === "kb" && st.fuente && st.asst) h += vAsst();
+    raiz.innerHTML = h;
   }
 
-  document.getElementById("studio").addEventListener("click", function (ev) {
-    var el = ev.target.closest("[data-ir],[data-kb],[data-spec],[data-preg]");
+  raiz.addEventListener("click", function (ev) {
+    var el = ev.target.closest("[data-area],[data-tab],[data-spec],[data-capa],[data-herr]," +
+      "[data-wtab],[data-sp],[data-preg],[data-asst],[data-cerrar],[data-fuente],[data-salir],[data-stop]");
     if (!el) return;
-    if (el.hasAttribute("data-kb")) { st.vista = "home"; }
-    else if (el.hasAttribute("data-ir")) { st.vista = el.getAttribute("data-ir"); }
+    if (el.hasAttribute("data-stop")) return;
+    if (el.hasAttribute("data-area")) { st.area = el.getAttribute("data-area"); }
+    else if (el.hasAttribute("data-tab")) { st.tab = el.getAttribute("data-tab"); }
     else if (el.hasAttribute("data-spec")) { st.spec = +el.getAttribute("data-spec"); }
+    else if (el.hasAttribute("data-capa")) { st.capa = CAPAS[+el.getAttribute("data-capa")]; }
+    else if (el.hasAttribute("data-herr")) { st.herr = HERR[+el.getAttribute("data-herr")]; }
+    else if (el.hasAttribute("data-wtab")) { st.wtab = ["Proyecto", "Plan", "Recursos", "Criterios"][+el.getAttribute("data-wtab")]; }
+    else if (el.hasAttribute("data-sp")) { st.sp = +el.getAttribute("data-sp"); }
     else if (el.hasAttribute("data-preg")) { st.preg = +el.getAttribute("data-preg"); }
+    else if (el.hasAttribute("data-asst")) { st.asst = true; }
+    else if (el.hasAttribute("data-cerrar")) { st.asst = false; }
+    else if (el.hasAttribute("data-fuente")) { st.fuente = true; st.tab = "home"; }
+    else if (el.hasAttribute("data-salir")) { st.fuente = false; }
     render();
   });
 
