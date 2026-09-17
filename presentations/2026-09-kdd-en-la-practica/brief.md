@@ -52,6 +52,7 @@ El deck pesa **8,1 MB** por esto. Es el precio de enseñar la herramienta de ver
 | **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
 | Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR. Dos son la migración a NOVA |
 | Las dos conversaciones del asistente sobre la migración | Escritas para la demo, citando specs reales de arquitectura de pantalla |
+| **El equipo de Governance** | **Facilitado por el usuario** |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
 | Definición de KDD y grafo de relaciones | `presentations/2026-09-kdd-soporte/` |
 
@@ -74,7 +75,11 @@ Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
 - **Las conversaciones del asistente.** Las dos de la migración están escritas para la demo: el
   contenido es coherente con las specs que cita, pero no son diálogos que haya tenido nadie.
   Las otras cinco vienen del mock-up.
-- **Las personas.** Los nombres que aparecen en las tareas son inventados.
+- **Las personas de las tareas de Work.** Los nombres asignados a cada tarea son inventados.
+  Los de **Governance** son el equipo real, con los roles que indicó el usuario.
+- **Datos personales en un repositorio público.** Governance lleva direcciones de personas
+  reales y este repositorio es público, así que quedan expuestas y permanecen en el historial
+  de git. Se incorporaron con el visto bueno explícito del usuario.
 - **Datos de otras áreas en el explorador.** El árbol trae las demás aplicaciones de BBVA CIB y
   **el nombre y el cargo de una persona real**. Si el deck sale del equipo, hay que limpiarlo.
 
