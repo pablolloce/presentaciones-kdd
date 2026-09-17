@@ -42,23 +42,31 @@ El deck pesa **6,2 MB** por esto. Es el precio de enseñar la herramienta de ver
 | Las pantallas de KDD Studio | `presentations/ejemplos-kdd/KDD_Mockup_Nueva_Version.html` |
 | **El glosario: 217 specs con su id, capa, dominio, estado e Intent** | **`github.com/pablolloce/borrar` · la base de conocimiento real de RDR** |
 | **Las cifras del grafo: 218 nodos, 515 relaciones** | **`.kdd-studio/spec-graph.json` del mismo repositorio** |
-| **Las dudas pendientes, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
+| **Las dudas: 19 pendientes y 97 resueltas, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
 | **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
+| Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
 | Definición de KDD y grafo de relaciones | `presentations/2026-09-kdd-soporte/` |
 
 ## Marcadores de posición
 Lo que **sí es real**, extraído de la base de conocimiento de RDR: el glosario completo y sus
-217 specs, los contadores del grafo, las dudas pendientes y la ficha de la fuente.
+217 specs, los contadores del grafo, las dudas pendientes y resueltas, y la ficha de la fuente.
+
+Lo que es **inventado pero coherente**: los cuatro proyectos de Work. El repositorio de RDR es
+una base de conocimiento y no tiene proyectos, así que se han escrito para la demo — pero no al
+azar: cada uno activa specs que existen de verdad, y dos nacen de algo que el propio KB
+reconoce. El del circuito de aprobación, porque `ARCH-S054-018`, `ARCH-S054-039` y
+`ARCH-S054-042` dicen que hoy ningún motor gobierna la aprobación. El de la retirada del
+algoritmo de validación de cuenta, porque `DOM-ACCT-S054-001` lo declara retirado. Los otros
+dos son un cambio en el frontal y un reintento de difusión. Están en cuatro estados distintos:
+dos en curso, uno en borrador y uno completado.
 
 Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
 
-- **Los proyectos de Work.** El repositorio de RDR es una base de conocimiento, no tiene
-  proyectos de Work. Los cuatro que se ven vienen del mock-up con los rótulos cambiados a RDR,
-  así que sus nombres y contenidos no se corresponden con trabajo real.
 - **El catálogo de superpoderes.** Los 17 son los del mock-up.
+- **Las personas.** Los nombres que aparecen en las tareas son inventados.
 - **Datos de otras áreas en el explorador.** El árbol trae las demás aplicaciones de BBVA CIB y
-  **el nombre y el cargo de una persona**. Si el deck sale del equipo, hay que limpiarlo.
+  **el nombre y el cargo de una persona real**. Si el deck sale del equipo, hay que limpiarlo.
 
 El deck **no contiene ninguna cifra de negocio**: no se afirma ningún ahorro ni porcentaje,
 porque no hay medición propia que lo respalde.
