@@ -487,7 +487,7 @@
   </div>
   <h1 class="ctitle">KDD en la práctica<br><span class="blue">El caso de RDR</span></h1>
   <p class="tagline">El conocimiento de un equipo, escrito de forma que una persona y un agente puedan usarlo igual de bien.</p>
-  <p class="sub">Qué es el framework, qué hace <b>KDD Studio</b>, cómo se explota el conocimiento en el día a día y qué pintan los <b>agentes</b>. Los ejemplos y la demo salen de la base de conocimiento real de <b>RDR</b>.</p>
+  <p class="sub">El framework, la herramienta y el papel de los <b>agentes</b>. Todo lo que se ve sale de la base de conocimiento real de <b>RDR</b>.</p>
   <div class="cover-foot"><b>Sesión práctica</b> · Equipos de desarrollo · 2026</div>
 </section>
 
@@ -509,42 +509,15 @@
 <section class="slide divider" data-nav="Qué es KDD">
   <div class="dv-eyebrow">Sección 01</div>
   <h2 class="dv-mega">Qué es<br><span class="blue">KDD</span></h2>
-  <p class="dv-sub">Knowledge-Driven Development: el conocimiento de un equipo, escrito en un formato que una persona y una máquina pueden usar igual de bien.</p>
+  <p class="dv-sub">Knowledge-Driven Development. El conocimiento del equipo, escrito para que lo use tanto una persona como una máquina.</p>
   <div class="dv-foot">01 · Qué es KDD</div>
 </section>
 
-<!-- ═══ 3 · EDITORIAL · EL ARTEFACTO ══════════════════════════════════════ -->
+<!-- ═══ 3 · DEL DOCUMENTO A LA SPEC ═══════════════════════════════════ -->
 <section class="slide" data-nav="Qué es KDD">
   <div class="eyebrow">Qué es KDD</div>
   <h2 class="headline">El problema no es que se documente poco: es que <em>el documento no se puede explotar</em></h2>
-  <p class="lead">Un documento cuenta algo en prosa y se queda quieto. Nadie sabe si sigue siendo cierto, quién responde de él ni a qué afecta. KDD no pide escribir más: cambia el artefacto que se escribe.</p>
-  <div class="body">
-    <div class="cards">
-      <div class="card a1">
-        <div class="c-n">Documento</div>
-        <div class="c-t">No tiene identidad</div>
-        <p class="c-d">No se puede referenciar desde ningún sitio. Se cita «el Word de arquitectura», y hay cuatro.</p>
-      </div>
-      <div class="card a2">
-        <div class="c-n">Documento</div>
-        <div class="c-t">No tiene dueño ni versión</div>
-        <p class="c-d">Nadie responde de si está al día, así que <b>nadie se fía</b>. Ante la duda se pregunta a una persona.</p>
-      </div>
-      <div class="card a3">
-        <div class="c-n">Documento</div>
-        <div class="c-t">No declara relaciones</div>
-        <p class="c-d">No hay forma de saber qué más cambia cuando cambia esto. El impacto se estima de memoria.</p>
-      </div>
-    </div>
-  </div>
-  <p class="takeaway">Una <b>spec</b> es lo mismo que un documento, más cuatro cosas: <b>identificador, dueño, versión y relaciones</b>. Esas cuatro son las que la hacen consultable.</p>
-</section>
-
-<!-- ═══ 4 · ANATOMÍA DE UNA SPEC ══════════════════════════════════════════ -->
-<section class="slide" data-nav="Qué es KDD">
-  <div class="eyebrow">Qué es KDD</div>
-  <h2 class="headline">Una spec es un fichero de texto con <em>la cabecera estructurada</em></h2>
-  <p class="lead">Arriba, los campos que una máquina lee sin interpretar nada. Abajo, el cuerpo en lenguaje natural de siempre, con tres apartados fijos. Vive en el repositorio y se revisa por pull request.</p>
+  <p class="lead">Una spec es un documento de siempre con una cabecera encima. Esa cabecera es toda la diferencia.</p>
   <div class="body">
     <div class="split s73">
       <div class="specfile">
@@ -565,28 +538,28 @@
       </div>
       <div class="notecol">
         <div class="note">
-          <div class="nt-k">La cabecera</div>
-          <p class="nt-d">Identificador estable, versión, responsable y dependencias. Es lo que permite <b>consultar</b>, no solo leer.</p>
+          <div class="nt-k">Un documento no tiene identidad</div>
+          <p class="nt-d">Se cita «el Word de arquitectura» y hay cuatro. La spec tiene <b>id</b>, y se referencia desde cualquier sitio.</p>
         </div>
         <div class="note">
-          <div class="nt-k">confidence</div>
-          <p class="nt-d">El campo más infravalorado: el KB declara <b>cuánto se fía de lo que dice</b>. Una spec de confianza baja se lee como lo que es.</p>
+          <div class="nt-k">Ni dueño, ni versión</div>
+          <p class="nt-d">Nadie responde de si está al día, así que nadie se fía. Aquí hay <b>owner</b>, <b>version</b> y hasta cuánto se fía el KB de sí mismo.</p>
         </div>
         <div class="note">
-          <div class="nt-k">El cuerpo</div>
-          <p class="nt-d">Sigue siendo prosa en Markdown, con tres apartados fijos. Nadie aprende un lenguaje nuevo.</p>
+          <div class="nt-k">Ni dice a qué afecta</div>
+          <p class="nt-d">El impacto se estima de memoria. La spec declara sus <b>dependencies</b>, y eso ya se puede recorrer.</p>
         </div>
       </div>
     </div>
   </div>
-  <p class="takeaway">Como es texto en un repositorio, el conocimiento hereda gratis <b>todo lo que ya sabemos hacer con el código</b>: ramas, revisión, historial y responsables.</p>
+  <p class="takeaway">Esa cabecera es lo que separa un fichero que alguien lee de uno que <b>una persona y un agente pueden usar igual de bien</b>.</p>
 </section>
 
 <!-- ═══ 5 · TIPOS Y RELACIONES ════════════════════════════════════════════ -->
 <section class="slide" data-nav="Qué es KDD">
   <div class="eyebrow">Qué es KDD</div>
   <h2 class="headline">Cinco capas de conocimiento, y relaciones que <em>se declaran una vez</em></h2>
-  <p class="lead">Las capas ordenan el conocimiento de lo estratégico a lo concreto. Las relaciones son lo que convierte una colección de ficheros en algo recorrible.</p>
+  <p class="lead">Las capas ordenan. Las relaciones conectan. Sin ellas, esto sería una carpeta con ficheros dentro.</p>
   <div class="body">
     <div class="split s73">
       <div class="tblwrap">
@@ -655,7 +628,7 @@
 <section class="slide divider" data-nav="El día a día">
   <div class="dv-eyebrow">Sección 02</div>
   <h2 class="dv-mega">Explotar el<br><span class="blue">conocimiento</span></h2>
-  <p class="dv-sub">Un KB que solo se mantiene es un coste. Hay dos formas de cobrárselo: preguntarle, y trabajar con él delante.</p>
+  <p class="dv-sub">Un KB que solo se mantiene es un coste. Se cobra de dos maneras: preguntándole, y trabajando con él delante.</p>
   <div class="dv-foot">02 · El día a día</div>
 </section>
 
@@ -663,7 +636,7 @@
 <section class="slide" data-nav="El día a día">
   <div class="eyebrow">El día a día</div>
   <h2 class="headline">El asistente responde <em>con las specs delante</em>, y dice de cuáles</h2>
-  <p class="lead">La diferencia con un modelo general no es el tono de la respuesta: es que cada afirmación arrastra el identificador y la versión de la spec de la que sale, y se puede ir a comprobarla.</p>
+  <p class="lead">Un modelo general te contestará igual de convencido. La diferencia es que aquí puedes ir a comprobarlo.</p>
   <div class="body">
     <div class="split s73">
       <div class="chat">
@@ -702,7 +675,7 @@
 <section class="slide" data-nav="El día a día">
   <div class="eyebrow">El día a día</div>
   <h2 class="headline">Work es un proyecto que <em>declara qué conocimiento pone sobre la mesa</em></h2>
-  <p class="lead">Tres artefactos encadenados, con el mismo formato de cabecera que cualquier spec. Lo que no existía antes es que el trabajo y el conocimiento estén unidos por un campo.</p>
+  <p class="lead">Un encargo, su plan y sus tareas. Lo nuevo es el campo que los ata al conocimiento del área.</p>
   <div class="body">
     <div class="steps">
       <div class="step"><div class="s-n">WRK-SPEC</div><div class="s-t">El proyecto</div><p class="s-d">Alcance, cambio propuesto, restricciones, impacto arquitectónico, riesgos y preguntas abiertas.</p></div>
@@ -724,7 +697,7 @@
 <section class="slide divider" data-nav="Superpoderes">
   <div class="dv-eyebrow">Sección 03</div>
   <h2 class="dv-mega">El eje<br><span class="blue">agéntico</span></h2>
-  <p class="dv-sub">Dentro de KDD los agentes se llaman superpoderes. No son asistentes aparte: son especialistas que cualquier asistente puede ponerse.</p>
+  <p class="dv-sub">Aquí los agentes se llaman superpoderes. Son especialistas que cualquier asistente puede ponerse.</p>
   <div class="dv-foot">03 · Superpoderes</div>
 </section>
 
@@ -732,7 +705,7 @@
 <section class="slide" data-nav="Superpoderes">
   <div class="eyebrow">Superpoderes</div>
   <h2 class="headline">Un superpoder no es un prompt: son <em>cuatro ficheros</em> que se explican entre sí</h2>
-  <p class="lead">Como mínimo cuatro markdowns, relacionados. Separarlos es lo que permite cambiar la personalidad sin tocar las capacidades, o endurecer los límites sin reescribir el agente.</p>
+  <p class="lead">Cuatro markdowns, separados a propósito: así se endurecen los límites sin reescribir al agente entero.</p>
   <div class="body">
     <div class="cards c4">
       <div class="card a1">
@@ -765,7 +738,7 @@
 <section class="slide" data-nav="Superpoderes">
   <div class="eyebrow">Superpoderes</div>
   <h2 class="headline">Los superpoderes son <em>transversales</em>: el contexto lo pone siempre el KB</h2>
-  <p class="lead">Hables con quien hables dentro de Studio, la mecánica es la misma. Eliges con quién hablas, se equipa un especialista, y el conocimiento de la fuente en la que estás entra como contexto.</p>
+  <p class="lead">Hables con quien hables dentro de Studio, la mecánica no cambia: eliges interlocutor, se equipa un especialista y el KB entra detrás.</p>
   <div class="body">
     <div class="axis">
       <div class="ax-row">
@@ -803,7 +776,7 @@
 <section class="slide divider" data-nav="Demo">
   <div class="dv-eyebrow">Sección 04</div>
   <h2 class="dv-mega">KDD Studio,<br><span class="blue">por dentro</span></h2>
-  <p class="dv-sub">Entrar en una fuente de conocimiento, preguntarle al asistente y ver un proyecto de Work. La demo es navegable: se puede pinchar.</p>
+  <p class="dv-sub">La herramienta de verdad, con el KB de RDR dentro. Se puede pinchar.</p>
   <div class="dv-foot">04 · Demo</div>
 </section>
 
@@ -825,7 +798,7 @@
 <section class="slide divider" data-nav="Gracias">
   <div class="dv-eyebrow">Gracias</div>
   <h2 class="dv-mega">¿Por dónde<br><span class="blue">empezamos?</span></h2>
-  <p class="dv-sub">Una fuente de conocimiento pequeña, un proyecto real en Work y un superpoder que a alguien le resuelva algo suyo. Ese es el arranque que funciona.</p>
+  <p class="dv-sub">Una fuente pequeña, un proyecto de verdad y un superpoder que le resuelva algo a alguien. Así arranca esto.</p>
   <div class="dv-foot">Preguntas · Equipos de desarrollo</div>
 </section>
   </div>

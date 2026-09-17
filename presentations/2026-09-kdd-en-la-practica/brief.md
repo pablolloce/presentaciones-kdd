@@ -15,7 +15,7 @@ El conocimiento deja de ser documentación que alguien escribe y nadie lee, y pa
 trabaja. Y una vez que existe esa base, los agentes dejan de improvisar: **toman el KB como
 contexto**.
 
-## Recorrido (4 secciones, 16 slides)
+## Recorrido (4 secciones, 15 slides)
 | # | Sección | Lo que defiende |
 |---|---|---|
 | 01 | Qué es KDD | Una spec con identificador, dueño, versión y relaciones es un artefacto que sirve; un documento suelto no |
@@ -30,11 +30,11 @@ contarla antes duplicaba el mismo contenido en dos registros.
 La slide de demo lleva **las pantallas reales de KDD Studio incrustadas**, no una
 reconstrucción: van en base64 y se vuelcan al iframe con `srcdoc`, el mismo mecanismo que usa
 el propio mock-up. Se adaptan al hueco de la slide sin escalar, y no hacen una sola petición
-de red. Están las siete: Explorador de fuentes, Home, Knowledge, Work, Governance, Sync y
+de red. Están las ocho: Explorador de fuentes, Home, Knowledge, Work, Governance, Sync, Graph y
 Superpowers. A cada una se le inyecta un puente que convierte los clics de sus pestañas en un
 aviso al deck, para que naveguen entre ellas como en la herramienta.
 
-El deck pesa **6,2 MB** por esto. Es el precio de enseñar la herramienta de verdad.
+El deck pesa **8,1 MB** por esto. Es el precio de enseñar la herramienta de verdad.
 
 ## Procedencia del contenido
 | Bloque | De dónde sale |
