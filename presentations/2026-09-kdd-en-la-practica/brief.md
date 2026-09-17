@@ -15,6 +15,12 @@ El conocimiento deja de ser documentación que alguien escribe y nadie lee, y pa
 trabaja. Y una vez que existe esa base, los agentes dejan de improvisar: **toman el KB como
 contexto**.
 
+## Hilo conductor
+Todo el deck cuelga del encargo que RDR tiene encima de la mesa: **sacar el Workstation de su
+stack actual y llevar las ventanas a Angular sobre NOVA**. La misma migración aparece en la
+slide de Work, en los proyectos de la demo y en las conversaciones del asistente, y las specs
+que se citan son las que describen de verdad cómo está hecha hoy esa capa de pantalla.
+
 ## Recorrido (4 secciones, 15 slides)
 | # | Sección | Lo que defiende |
 |---|---|---|
@@ -44,8 +50,8 @@ El deck pesa **8,1 MB** por esto. Es el precio de enseñar la herramienta de ver
 | **El grafo: 217 nodos y 513 relaciones declaradas** | **Las `dependencies` de cada spec y `.kdd-studio/spec-graph.json`** |
 | **Las dudas: 19 pendientes y 97 resueltas, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
 | **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
-| Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR |
-| Las dos conversaciones del asistente sobre la ventana | Escritas para la demo, citando specs reales de arquitectura de pantalla |
+| Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR. Dos son la migración a NOVA |
+| Las dos conversaciones del asistente sobre la migración | Escritas para la demo, citando specs reales de arquitectura de pantalla |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
 | Definición de KDD y grafo de relaciones | `presentations/2026-09-kdd-soporte/` |
 
@@ -59,13 +65,13 @@ azar: cada uno activa specs que existen de verdad, y dos nacen de algo que el pr
 reconoce. El del circuito de aprobación, porque `ARCH-S054-018`, `ARCH-S054-039` y
 `ARCH-S054-042` dicen que hoy ningún motor gobierna la aprobación. El de la retirada del
 algoritmo de validación de cuenta, porque `DOM-ACCT-S054-001` lo declara retirado. Los otros
-dos son un cambio en el frontal y un reintento de difusión. Están en cuatro estados distintos:
-dos en curso, uno en borrador y uno completado.
+dos son la migración a NOVA: las ventanas a Angular y el salto del build de Ant al pipeline de
+la plataforma. Están en cuatro estados distintos: dos en curso, uno en borrador y uno completado.
 
 Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
 
 - **El catálogo de superpoderes.** Los 17 son los del mock-up.
-- **Las conversaciones del asistente.** Las dos de la ventana están escritas para la demo: el
+- **Las conversaciones del asistente.** Las dos de la migración están escritas para la demo: el
   contenido es coherente con las specs que cita, pero no son diálogos que haya tenido nadie.
   Las otras cinco vienen del mock-up.
 - **Las personas.** Los nombres que aparecen en las tareas son inventados.
