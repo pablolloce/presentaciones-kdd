@@ -15,7 +15,7 @@ El conocimiento deja de ser documentación que alguien escribe y nadie lee, y pa
 trabaja. Y una vez que existe esa base, los agentes dejan de improvisar: **toman el KB como
 contexto**.
 
-## Recorrido (4 secciones, 17 slides)
+## Recorrido (4 secciones, 16 slides)
 | # | Sección | Lo que defiende |
 |---|---|---|
 | 01 | Qué es KDD | Una spec con identificador, dueño, versión y relaciones es un artefacto que sirve; un documento suelto no |
