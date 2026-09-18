@@ -694,40 +694,37 @@
 <!-- ═══ 12 · EL ASISTENTE ═════════════════════════════════════════════════ -->
 <section class="slide" data-nav="El día a día">
   <div class="eyebrow">El día a día</div>
-  <h2 class="headline">El asistente responde <em>con las specs delante</em>, y dice de cuáles</h2>
-  <p class="lead">Un modelo general te contestará igual de convencido. La diferencia es que aquí puedes ir a comprobarlo.</p>
+  <h2 class="headline">Responde <em>con las specs delante</em>, y dice de cuáles</h2>
+  <p class="lead">Un modelo general te contestará igual de convencido. Aquí puedes ir a comprobarlo.</p>
   <div class="body">
     <div class="split s73">
       <div class="chat">
-        <div class="ch-bar"><span class="ch-src">Fuente activa · RDR</span><span class="ch-mod">Modo técnico</span></div>
-        <div class="msg m-u">Para llevar la ventana de alta de contrapartidas a Angular, ¿qué me tengo que llevar?</div>
+        <div class="ch-bar"><span class="ch-src">Fuente activa · RDR</span><span class="ch-mod">Modo negocio</span></div>
+        <div class="msg m-u">¿Cuál es la tabla principal de contrapartidas?</div>
         <div class="msg m-a">
-          <p>Esa ventana no está programada, está <b>declarada</b>. Lo que hay que portar son el modelo, la definición de pantalla, sus validaciones y los literales.</p>
-          <p>La lógica de negocio no se toca. Lo que hay que respetar es el <b>contrato de cada botón</b>: qué hace y dónde se comprueba.</p>
-          <div class="cites">
-            <span class="cite">ARCH-S054-016 · v0.1.0</span>
-            <span class="cite">ARCH-S054-028 · v0.1.0</span>
-          </div>
+          <p><b>ft_t_fins</b>, la tabla física del maestro de contrapartidas. <span class="cite">DOM-FINS-S054-001 · 0.3.0</span></p>
+          <p>Lo importante desde negocio es que <b>todos los niveles viven en esa misma tabla</b>: Global, Local, Operativa y ThirdParty no son tablas distintas, sino perspectivas sobre el mismo almacén físico. Lo que las diferencia es el modelo de ventana —FINS1, FINSL, FINSO, FINSTP—, no la tabla. La ventana unificada de modificación, FINSX, trabaja también sobre <b>ft_t_fins</b>. <span class="cite">FEAT-S054-020 · 0.2.0</span></p>
+          <p>De hecho, contrapartidas es la única familia de RDR con una docena larga de modelos hermanos sobre una misma tabla: global, local, operativa, jerarquía y sanciones. <span class="cite">ARCH-S054-019 · 0.4.0</span></p>
         </div>
-        <div class="msg m-g">No hay ninguna spec sobre cómo se autentica un front nuevo contra NOVA. <b>Duda pendiente registrada.</b></div>
+        <div class="msg m-g">Las tres specs están en <b>borrador</b> y con <b>confianza baja</b>: la respuesta se da con esa advertencia delante.</div>
       </div>
       <div class="notecol">
         <div class="note">
-          <div class="nt-k">Cita la spec y su versión</div>
-          <p class="nt-d">Cada respuesta enseña <b>de qué spec y de qué versión</b> sale, así que se puede auditar sin creerse nada.</p>
+          <div class="nt-k">Cada frase, con su spec</div>
+          <p class="nt-d">No una lista de fuentes al final: cada afirmación lleva pegada <b>la spec y la versión</b> de la que sale.</p>
         </div>
         <div class="note">
           <div class="nt-k">Estándar o técnico</div>
           <p class="nt-d">La respuesta se adapta a quién pregunta, pero sale de <b>las mismas specs</b>.</p>
         </div>
         <div class="note">
-          <div class="nt-k">Dice cuándo no lo sabe</div>
-          <p class="nt-d">Cuando el KB no cubre algo, lo dice y <b>lo registra como duda pendiente</b> en lugar de improvisar una respuesta razonable.</p>
+          <div class="nt-k">Dice de qué se fía</div>
+          <p class="nt-d">Cada spec lleva estado y confianza. Si lo que cita está <b>en borrador</b>, la respuesta lo avisa en vez de sonar igual de segura.</p>
         </div>
       </div>
     </div>
   </div>
-  <p class="takeaway">Una respuesta que cita su fuente <b>se puede discutir</b>. Y cuando el KB no llega, lo dice y deja la duda anotada para que alguien la responda.</p>
+  <p class="takeaway">Una respuesta que cita su fuente <b>se puede discutir</b>: vas a la spec y compruebas. Y si lo que cita todavía está en borrador, también te lo dice.</p>
 </section>
 
 <!-- ═══ 13 · WORK · DEL REQUERIMIENTO AL PLAN ═══════════════════════════ -->

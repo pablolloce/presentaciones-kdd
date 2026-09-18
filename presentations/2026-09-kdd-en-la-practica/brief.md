@@ -60,6 +60,7 @@ El deck pesa **8,1 MB** por esto. Es el precio de enseñar la herramienta de ver
 | Los cuatro proyectos de Work, y el plan de la slide | Escritos para la demo, apoyados en specs reales de RDR. Dos son la migración a NOVA. La slide del plan enseña las seis tareas del primero |
 | El guion del asistente de alta de la mini-demo | Reescrito sobre la migración a NOVA: el documento de alcance, las dos dudas y los recursos que se asignan. La ficha que monta sale del primer proyecto |
 | El superpoder `Analista de ventana RDR` | Escrito para la sesión: es el del ejemplo del lunes, y se añadió al catálogo para que se vea donde vive |
+| **La pregunta y la respuesta del asistente en la slide** | **Facilitada por el usuario. Las tres specs que cita —`DOM-FINS-S054-001`, `FEAT-S054-020`, `ARCH-S054-019`— existen, y lo que se afirma de `ft_t_fins` y de los modelos hermanos está en ellas** |
 | Las dos conversaciones del asistente sobre la migración | Escritas para la demo, citando specs reales de arquitectura de pantalla |
 | **El equipo de Governance** | **Facilitado por el usuario** |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
