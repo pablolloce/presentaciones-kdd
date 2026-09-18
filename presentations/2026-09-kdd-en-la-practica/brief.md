@@ -25,7 +25,7 @@ que se citan son las que describen de verdad cómo está hecha hoy esa capa de p
 | # | Sección | Lo que defiende |
 |---|---|---|
 | 01 | Qué es KDD | Una spec con identificador, dueño, versión y relaciones es un artefacto que sirve; un documento suelto no |
-| 02 | El día a día | Dos formas de explotar el KB: preguntarle (asistente) y trabajar con él. Work ocupa tres slides: el requerimiento escrito en llano que produce el `WRK-PLAN`, ese plan con sus `WRK-TASK` repartidas, y una mini-demo donde el asistente de alta lo monta de verdad |
+| 02 | El día a día | Dos formas de explotar el KB: preguntarle (asistente) y trabajar con él. Work ocupa tres slides: el modelo —`work-spec`, `work-plan` y `work-task`, con su equivalencia en JIRA— y los dos momentos de un proyecto; ese plan con sus tareas repartidas; y una mini-demo donde el asistente de alta lo monta de verdad |
 | 03 | Superpoderes | El eje agéntico. Un superpoder son **cuatro markdowns relacionados** —`agent.md`, `skill.md`, `harn.md`, `eval.md`—, se aterriza con un encargo de un lunes cualquiera comparando cómo se resuelve hoy y cómo con el KB delante, tiene su mini-demo del catálogo, y es transversal: el contexto lo pone siempre el KB |
 | 04 | Demo | KDD Studio navegable, centrado en RDR |
 
