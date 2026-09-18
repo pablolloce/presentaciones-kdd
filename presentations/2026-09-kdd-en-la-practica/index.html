@@ -417,6 +417,64 @@
   .act-i{grid-column:2;display:flex;flex-wrap:wrap;gap:8px}
 
 
+  /* Traza de lo que se ha leído antes de contestar. */
+  .msg.m-t{background:var(--bg);border:1px dashed var(--line);color:var(--mute);
+    font-family:var(--mono);font-size:12px;line-height:1.8;margin-top:10px;margin-bottom:0}
+  .msg.m-t b{color:var(--ink2);font-weight:600}
+
+  /* El recorrido de un proyecto, en tira compacta. */
+  .flowmini{display:flex;align-items:center;gap:0;margin-top:16px;flex:0 0 auto}
+  .fm{flex:1 1 0;display:flex;align-items:baseline;gap:10px;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;padding:9px 16px}
+  .fm .fm-n{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--mute2)}
+  .fm .fm-t{font-size:15px;font-weight:600;color:var(--mute)}
+  .fm.on{border-color:var(--blue)}
+  .fm.on .fm-n{color:var(--blue)}
+  .fm.on .fm-t{color:var(--ink)}
+  .fm-sep{flex:0 0 auto;padding:0 12px;color:var(--mute2);font-size:16px}
+
+  /* El plan y sus tareas. */
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;box-shadow:0 6px 18px rgba(20,20,40,.04)}
+  .pl-head{display:flex;align-items:baseline;gap:16px;padding:12px 22px;background:var(--bg);
+    border-bottom:1px solid var(--line)}
+  .pl-id{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--blue-d)}
+  .pl-t{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink)}
+  .pl-m{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--mute2)}
+  .pl-row{display:grid;grid-template-columns:14px 172px 1fr 262px 86px;column-gap:16px;
+    align-items:center;padding:7px 22px;border-bottom:1px solid var(--line2)}
+  .pl-row:last-child{border-bottom:none}
+  .pl-st{width:10px;height:10px;border-radius:50%;background:var(--card);
+    border:1.5px solid var(--mute2)}
+  .pl-row.done .pl-st{background:var(--green);border-color:var(--green)}
+  .pl-row.doing .pl-st{background:var(--blue);border-color:var(--blue)}
+  .pl-n{font-family:var(--mono);font-size:12px;color:var(--mute)}
+  .pl-d{font-size:16px;color:var(--ink2)}
+  .pl-row.doing .pl-d{color:var(--ink);font-weight:600}
+  .pl-k{font-family:var(--mono);font-size:11px;color:var(--blue-d)}
+  .pl-o{font-size:13px;color:var(--mute2);text-align:right}
+
+  /* Cómo se hace hoy y cómo se haría con el KB delante. */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .vs-col{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--mute2);
+    border-radius:14px;padding:18px 24px 20px;box-shadow:0 6px 18px rgba(20,20,40,.04)}
+  .vs-col.kdd{border-top-color:var(--blue)}
+  .vs-h{display:flex;align-items:baseline;gap:14px;padding-bottom:11px;
+    border-bottom:1px solid var(--line2);margin-bottom:13px}
+  .vs-k{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--mute2)}
+  .vs-col.kdd .vs-k{color:var(--blue)}
+  .vs-t{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);line-height:1.2}
+  .vs-steps{list-style:none;display:flex;flex-direction:column;gap:13px;counter-reset:vs}
+  .vs-steps li{counter-increment:vs;display:flex;align-items:baseline;gap:12px;
+    font-size:16px;line-height:1.5;color:var(--mute)}
+  .vs-steps li::before{content:counter(vs);font-family:var(--mono);font-size:11px;
+    font-weight:600;color:var(--mute2);flex:0 0 14px}
+  .vs-col.kdd .vs-steps li{color:var(--ink2)}
+  .vs-col.kdd .vs-steps li::before{color:var(--blue)}
+  .vs-steps li b{color:var(--ink);font-weight:600}
+
   /* ═══ Demo de KDD Studio ═══════════════════════════════════════════════
      Las pantallas reales del mock-up, incrustadas en base64 y volcadas al
      iframe con srcdoc — el mismo mecanismo que usa el propio mock-up. Se
@@ -672,28 +730,73 @@
   <p class="takeaway">Una respuesta que cita su fuente <b>se puede discutir</b>. Y cuando el KB no llega, lo dice y deja la duda anotada para que alguien la responda.</p>
 </section>
 
-<!-- ═══ 13 · WORK · DE LOS REQUERIMIENTOS AL CÓDIGO ═════════════════════ -->
+<!-- ═══ 13 · WORK · DEL REQUERIMIENTO AL PLAN ═══════════════════════════ -->
 <section class="slide" data-nav="El día a día">
   <div class="eyebrow">El día a día</div>
-  <h2 class="headline">Work lleva un proyecto <em>de los requerimientos al código</em></h2>
-  <p class="lead">El ejemplo que traemos es el que tiene RDR encima de la mesa: sacar el Workstation de su stack actual y llevar las ventanas a <b>Angular sobre NOVA</b>.</p>
+  <h2 class="headline">El plan sale de <em>contarle el encargo</em>, no de rellenar una plantilla</h2>
+  <p class="lead">El encargo de RDR: llevar las ventanas del Workstation a <b>Angular sobre NOVA</b>.</p>
   <div class="body">
-    <div class="steps">
-      <div class="step"><div class="s-n">01 · Requerimientos</div><div class="s-t">Qué hay que conseguir</div><p class="s-d">Migrar las ventanas a Angular sin cambiar lo que hacen. Con su alcance, sus restricciones y lo que queda fuera.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">02 · Plan</div><div class="s-t">Studio propone cómo</div><p class="s-d">Con los requerimientos y el KB delante: por dónde empezar, en qué orden y qué ventana depende de qué.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">03 · Tareas</div><div class="s-t">El plan se desagrega</div><p class="s-d">Una tarea por ventana, cada una con las specs que la describen ya activadas.</p></div>
-      <div class="step-arrow">→</div>
-      <div class="step"><div class="s-n">04 · Desarrollo</div><div class="s-t">Y acaba en código</div><p class="s-d">La tarea se ejecuta: rama, pull request y la spec actualizada en la misma entrega.</p></div>
+    <div class="split">
+      <div class="chat">
+        <div class="ch-bar"><span class="ch-src">Alta de proyecto · RDR</span><span class="ch-mod">Requerimientos</span></div>
+        <div class="msg m-u">Sacar las ventanas del Workstation a Angular sobre NOVA sin cambiar lo que hacen. Empezamos por la de contrapartidas.</div>
+        <div class="msg m-t">leyendo el KB de RDR · 6 specs activadas<br><b>ARCH-S054-016</b>  la cadena de ficheros de una ventana<br><b>DOC-S054-004</b>   ocho pasos para analizar una ventana</div>
+        <div class="msg m-a">
+          <p>Con eso delante el plan no empieza en blanco: salen <b>seis tareas en el orden en que se pueden hacer</b>, con sus riesgos anotados.</p>
+        </div>
+      </div>
+      <div class="specfile">
+        <div class="sf-bar"><span class="sf-dot"></span><span class="sf-name">WRK-PLAN-S054-030.md</span><span class="sf-tag">Propuesto</span></div>
+        <div class="sf-body"><span class="sf-rule">---</span>
+<span class="sf-k">id</span>: <span class="sf-v">WRK-PLAN-S054-030</span>
+<span class="sf-k">nombre</span>: <span class="sf-v">Workstation a Angular sobre NOVA</span>
+<span class="sf-k">estado</span>: <span class="sf-v">active · q3-2026</span>
+<span class="sf-k">fuente</span>: <span class="sf-v">RDR · S054</span>
+<span class="sf-rule">---</span>
+<span class="sf-h">## Enfoque</span>
+Primero entender, después migrar: a cada ventana se le
+pasa el procedimiento de ocho pasos antes de estimarla.
+<span class="sf-h">## Fuera de alcance</span>
+La lógica de negocio en PL/SQL · el motor de reglas.
+<span class="sf-h">## Tareas</span>
+6 · de WRK-TASK-S054-115 a WRK-TASK-S054-121</div>
+      </div>
+    </div>
+    <div class="flowmini">
+      <div class="fm on"><span class="fm-n">01</span><span class="fm-t">Requerimientos</span></div>
+      <span class="fm-sep">→</span>
+      <div class="fm on"><span class="fm-n">02</span><span class="fm-t">Plan</span></div>
+      <span class="fm-sep">→</span>
+      <div class="fm"><span class="fm-n">03</span><span class="fm-t">Tareas</span></div>
+      <span class="fm-sep">→</span>
+      <div class="fm"><span class="fm-n">04</span><span class="fm-t">Desarrollo</span></div>
+    </div>
+  </div>
+  <p class="takeaway">Lo que escribes en dos frases acaba siendo <b>un fichero con identificador, dueño y versión</b>. El plan se discute y se corrige como cualquier otra spec.</p>
+</section>
+
+<!-- ═══ 14 · WORK · EL PLAN Y SUS TAREAS ════════════════════════════════ -->
+<section class="slide" data-nav="El día a día">
+  <div class="eyebrow">El día a día</div>
+  <h2 class="headline">Un plan es <em>una lista de tareas</em>, y cada tarea arranca con sus specs delante</h2>
+  <p class="lead">El de la primera oleada. Se reparte, se ejecuta y acaba en ramas y pull requests.</p>
+  <div class="body">
+    <div class="plan">
+      <div class="pl-head"><span class="pl-id">WRK-PLAN-S054-030</span><span class="pl-t">Workstation a Angular sobre NOVA</span><span class="pl-m">6 tareas · 3 hechas · 1 en curso</span></div>
+      <div class="pl-row done"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-115</span><span class="pl-d">Inventario real de ventanas y su uso</span><span class="pl-k">ARCH-S054-053 · DOC-S054-004</span><span class="pl-o">Álvaro V.</span></div>
+      <div class="pl-row done"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-116</span><span class="pl-d">Esqueleto del front en NOVA</span><span class="pl-k">ARCH-S054-060</span><span class="pl-o">Marta C.</span></div>
+      <div class="pl-row done"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-118</span><span class="pl-d">Migrar la ventana de alta de contrapartidas</span><span class="pl-k">ARCH-S054-016 · 008 · 029</span><span class="pl-o">Marta C.</span></div>
+      <div class="pl-row doing"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-119</span><span class="pl-d">Portar las validaciones XPath de esa ventana</span><span class="pl-k">ARCH-S054-008 · DOM-FINS-S054-003</span><span class="pl-o">Julia R.</span></div>
+      <div class="pl-row"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-120</span><span class="pl-d">Regresión de la ventana antigua</span><span class="pl-k">ARCH-S054-016</span><span class="pl-o">Luis T.</span></div>
+      <div class="pl-row"><span class="pl-st"></span><span class="pl-n">WRK-TASK-S054-121</span><span class="pl-d">Actualizar ARCH-S054-016 con las dos versiones</span><span class="pl-k">ARCH-S054-016</span><span class="pl-o">Marta C.</span></div>
     </div>
     <div class="actbar">
-      <div class="act-k">Una tarea,<br>por dentro</div>
-      <div class="act-d"><b>WRK-TASK-S054-118 · Migrar la ventana de alta de contrapartidas.</b> Reproducir en Angular la pantalla declarativa actual, campo a campo, sin tocar el PL/SQL de negocio que hay detrás. Arranca con seis specs activadas, que son las que describen cómo está hecha hoy esa ventana.</div>
+      <div class="act-k">La 118,<br>por dentro</div>
+      <div class="act-d"><b>Migrar la ventana de alta de contrapartidas.</b> Reproducir en Angular la pantalla declarativa actual, campo a campo, sin tocar el PL/SQL de negocio que hay detrás. Quien la coge no empieza preguntando: la tarea ya trae activado el conocimiento que describe esa ventana.</div>
       <div class="act-i"><span class="cite">ARCH-S054-016</span><span class="cite">ARCH-S054-008</span><span class="cite">ARCH-S054-029</span><span class="cite">DOC-S054-004</span><span class="cite c2">repo · workstation</span><span class="cite c3">repo · rdr-front-nova</span></div>
     </div>
   </div>
-  <p class="takeaway">Nada de esto vive en la cabeza de nadie: el plan, las tareas y <b>lo que salió de cada una</b> quedan escritos en el mismo sitio.</p>
+  <p class="takeaway">Nada de esto vive en la cabeza de nadie: el plan, las tareas y <b>lo que salió de cada una</b> quedan escritos en el mismo sitio que las specs.</p>
 </section>
 
 <!-- ═══ 15 · SEPARADOR ════════════════════════════════════════════════════ -->
@@ -737,7 +840,40 @@
   <p class="takeaway">Ahí dentro está <b>la forma de trabajar de quien mejor lo hace</b>. Y como son cuatro ficheros, se revisa en un pull request como cualquier cambio.</p>
 </section>
 
-<!-- ═══ 17 · CÓMO SE COMBINAN ═════════════════════════════════════════════ -->
+<!-- ═══ 17 · UN EJEMPLO DE UN LUNES ════════════════════════════════════ -->
+<section class="slide" data-nav="Superpoderes">
+  <div class="eyebrow">Superpoderes</div>
+  <h2 class="headline">Un lunes cualquiera: <em>«añade un campo a la ventana de contrapartidas»</em></h2>
+  <p class="lead">El encargo más normal del mundo. La diferencia está en la primera media hora.</p>
+  <div class="body">
+    <div class="vs">
+      <div class="vs-col">
+        <div class="vs-h"><span class="vs-k">Hoy</span><span class="vs-t">El camino se rehace entero cada vez</span></div>
+        <ol class="vs-steps">
+          <li><span>Buscas en Confluence. Lo último es de 2022 y no menciona ese campo.</span></li>
+          <li><span>Preguntas por Teams a quien lleva años en RDR. Si está.</span></li>
+          <li><span>Abres el código y lo deduces leyendo ficheros.</span></li>
+          <li><span>Lo cambias, y en pruebas aparece <b>una validación que nadie te dijo</b>.</span></li>
+          <li><span>Terminas, y nada de esto queda escrito. El siguiente repite el camino.</span></li>
+        </ol>
+      </div>
+      <div class="vs-col kdd">
+        <div class="vs-h"><span class="vs-k">Con KDD</span><span class="vs-t">Se lo preguntas a lo que ya está escrito</span></div>
+        <ol class="vs-steps">
+          <li><span>Se lo pides al superpoder que conoce la capa de pantalla de RDR.</span></li>
+          <li><span>Activa las specs de esa ventana y te dice <b>qué ficheros la forman</b>.</span></li>
+          <li><span>Te lista las validaciones que ya existen, una a una y con su origen.</span></li>
+          <li><span>Abre la tarea con esas specs enganchadas, y ahí trabajas.</span></li>
+          <li><span>La spec se actualiza <b>en el mismo pull request</b> que el código.</span></li>
+        </ol>
+      </div>
+    </div>
+    <p class="footnote"><span class="fk">Quién trabaja aquí</span><span class="tx">El superpoder <b>analista-de-ventana</b>, con sus cuatro ficheros: sabe de la capa de pantalla de RDR, lee el KB y el repositorio, <b>no puede escribir nada</b>, y se le evalúa con diez ventanas cuya respuesta ya conocemos.</span></p>
+  </div>
+  <p class="takeaway">No es que el agente sepa más que quien lleva años aquí: es que <b>consulta lo que esa persona ya escribió</b>, y lo hace igual el lunes y el jueves.</p>
+</section>
+
+<!-- ═══ 18 · CÓMO SE COMBINAN ═════════════════════════════════════════════ -->
 <section class="slide" data-nav="Superpoderes">
   <div class="eyebrow">Superpoderes</div>
   <h2 class="headline">Los superpoderes son <em>transversales</em>: el contexto lo pone siempre el KB</h2>

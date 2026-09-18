@@ -21,12 +21,12 @@ stack actual y llevar las ventanas a Angular sobre NOVA**. La misma migración a
 slide de Work, en los proyectos de la demo y en las conversaciones del asistente, y las specs
 que se citan son las que describen de verdad cómo está hecha hoy esa capa de pantalla.
 
-## Recorrido (4 secciones, 15 slides)
+## Recorrido (4 secciones, 17 slides)
 | # | Sección | Lo que defiende |
 |---|---|---|
 | 01 | Qué es KDD | Una spec con identificador, dueño, versión y relaciones es un artefacto que sirve; un documento suelto no |
-| 02 | El día a día | Dos formas de explotar el KB: preguntarle (asistente) y trabajar con él (Work y su contexto de conocimiento) |
-| 03 | Superpoderes | El eje agéntico. Un superpoder son **cuatro markdowns relacionados** —`agent.md`, `skill.md`, `harn.md`, `eval.md`— y es transversal: el contexto lo pone siempre el KB |
+| 02 | El día a día | Dos formas de explotar el KB: preguntarle (asistente) y trabajar con él. Work ocupa dos slides: el requerimiento escrito en llano que produce el `WRK-PLAN`, y ese plan con sus `WRK-TASK` repartidas |
+| 03 | Superpoderes | El eje agéntico. Un superpoder son **cuatro markdowns relacionados** —`agent.md`, `skill.md`, `harn.md`, `eval.md`—, se aterriza con un encargo de un lunes cualquiera comparando cómo se resuelve hoy y cómo con el KB delante, y es transversal: el contexto lo pone siempre el KB |
 | 04 | Demo | KDD Studio navegable, centrado en RDR |
 
 La sección que describía KDD Studio se retiró a propósito: la herramienta se ve en la demo, y
@@ -50,7 +50,7 @@ El deck pesa **8,1 MB** por esto. Es el precio de enseñar la herramienta de ver
 | **El grafo: 217 nodos y 513 relaciones declaradas** | **Las `dependencies` de cada spec y `.kdd-studio/spec-graph.json`** |
 | **Las dudas: 19 pendientes y 97 resueltas, con su `oq-…`, su pregunta y su fichero de origen** | **`specs/_pending-tasks/` del mismo repositorio** |
 | **La ficha de la fuente: RDR, S054 y su sitio en el árbol** | **`.kdd-studio/sources-registry.json`** |
-| Los cuatro proyectos de Work | Escritos para la demo, apoyados en specs reales de RDR. Dos son la migración a NOVA |
+| Los cuatro proyectos de Work, y el plan de la slide | Escritos para la demo, apoyados en specs reales de RDR. Dos son la migración a NOVA. La slide del plan enseña las seis tareas del primero |
 | Las dos conversaciones del asistente sobre la migración | Escritas para la demo, citando specs reales de arquitectura de pantalla |
 | **El equipo de Governance** | **Facilitado por el usuario** |
 | Los cuatro markdowns de un superpoder | Encargo del usuario |
@@ -75,7 +75,8 @@ Lo que **sigue siendo mock-up** y hay que sustituir antes de presentar:
 - **Las conversaciones del asistente.** Las dos de la migración están escritas para la demo: el
   contenido es coherente con las specs que cita, pero no son diálogos que haya tenido nadie.
   Las otras cinco vienen del mock-up.
-- **Las personas de las tareas de Work.** Los nombres asignados a cada tarea son inventados.
+- **Las personas de las tareas de Work.** Los nombres asignados a cada tarea son inventados,
+  tanto en la demo como en la slide del plan.
   Los de **Governance** son el equipo real, con los roles que indicó el usuario.
 - **Datos personales en un repositorio público.** Governance lleva direcciones de personas
   reales y este repositorio es público, así que quedan expuestas y permanecen en el historial
