@@ -369,6 +369,30 @@
   .ln-b.out{border-color:var(--blue);background:var(--card)}
   .ln-ar{flex:0 0 auto;padding:0 10px;color:var(--mute2);font-size:15px}
 
+  /* Diagrama del flujo completo: tres carriles, con sus conexiones. */
+  .flow-svg{width:100%;height:auto;display:block}
+  .flow-svg .lane{fill:var(--bg);stroke:var(--line);stroke-width:1}
+  .flow-svg .lane.acc{fill:rgba(33,123,238,.045);stroke:rgba(33,123,238,.22)}
+  .flow-svg .box{fill:var(--card);stroke:var(--line);stroke-width:1}
+  .flow-svg .box.in{stroke:var(--blue);stroke-width:1.4}
+  .flow-svg .box.out{stroke:var(--blue);stroke-width:1.6}
+  .flow-svg .gate{fill:rgba(28,157,108,.09);stroke:var(--green);stroke-width:1.2}
+  .flow-svg .t-lane{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;fill:var(--mute2)}
+  .flow-svg .t-lane.acc{fill:var(--blue-d)}
+  .flow-svg .t-title{font-size:15px;font-weight:600;fill:var(--ink)}
+  .flow-svg .t-mono{font-family:var(--mono);font-size:12px;fill:var(--blue-d)}
+  .flow-svg .t-ink{font-size:13px;fill:var(--ink2)}
+  .flow-svg .t-note{font-size:12px;fill:var(--mute)}
+  .flow-svg .t-gate{font-family:var(--mono);font-size:14px;font-weight:600;fill:var(--green)}
+  .flow-svg .ar{fill:none;stroke:var(--mute2);stroke-width:1.4}
+  .flow-svg .ar.acc{stroke:var(--blue)}
+  .flow-svg .ar.gate{stroke:var(--green)}
+  .flow-svg .ah{fill:var(--mute2)}
+  .flow-svg .ah.acc{fill:var(--blue)}
+  .flow-svg .ah.gate{fill:var(--green)}
+  .flow-svg .badge circle{fill:var(--blue)}
+  .flow-svg .badge text{font-family:var(--mono);font-size:11px;font-weight:700;fill:var(--card)}
+
   /* Registros de una extracción: los de testing, resaltados. */
   .recs{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
   .recs.one{grid-template-columns:1fr}
@@ -543,47 +567,121 @@
   <p class="takeaway">El filtro trabaja sobre el fichero ya generado. Por eso <b>no hay que tocar nada de producción</b>.</p>
 </section>
 
-<!-- ═══ EL FLUJO COMPLETO ═════════════════════════════════════════════════ -->
+<!-- ═══ EL FLUJO COMPLETO ═════════════════════════════════════════════ -->
 <section class="slide" data-nav="El filtro">
   <div class="eyebrow">El filtro</div>
-  <h2 class="headline">Arriba lo que ya existe, en medio lo nuevo, <em>abajo lo que hace la prueba</em></h2>
+  <h2 class="headline">Arriba lo que ya existe, en medio lo nuevo, <em>abajo la prueba</em></h2>
   <div class="body">
-    <div class="lanes">
-      <div class="lane">
-        <div class="ln-k">Producción · sin cambios</div>
-        <div class="ln-items">
-          <span class="ln-b"><b>GSProcess.sh</b> ExtraccionGenericaCONT · lee su .properties</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b"><b>ExtraccionGenericaOtherEntities.jar</b> · maestra y detalle, 20 hilos sobre FT_T_ATE1</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b out"><b>ExtraccionContingenciaCONT.xml</b> · los 12 contactos de la demo, mezclados</span>
-        </div>
-      </div>
-      <div class="lane l2">
-        <div class="ln-k">Nuevo · filtro de testing</div>
-        <div class="ln-items">
-          <span class="ln-b"><b>FiltroTestingCONT.properties</b> y <b>lista_testing_CONT.txt</b></span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b"><b>filtrar_testing.sh</b> · elige el filtro por la extensión: XML con xsltproc, CSV con awk</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b out"><b>TEST/…CONT_TEST.xml</b> · solo TSTCNT0001 a 0004, y el veredicto por pantalla</span>
-        </div>
-      </div>
-      <div class="lane l3">
-        <div class="ln-k">AtSQA · la prueba</div>
-        <div class="ln-items">
-          <span class="ln-b"><b>1</b> · runCommand: la extracción</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b"><b>2</b> · runCommand: el filtro</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b"><b>3</b> · buscar «FILTRO OK» en el log</span>
-          <span class="ln-ar">→</span>
-          <span class="ln-b"><b>4</b> · validar el contenido del _TEST</span>
-        </div>
-      </div>
-    </div>
+    <svg class="flow-svg" viewBox="0 0 1400 472" role="img" aria-label="Flujo completo: la extracción de producción deja su fichero, el filtro lo lee con la lista y el .properties, escribe el fichero de prueba y su veredicto, y AtSQA lo comprueba en cuatro pasos">
+      <defs>
+        <marker id="fl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+        <marker id="fl-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah acc"/></marker>
+        <marker id="fl-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah gate"/></marker>
+      </defs>
+
+      <!-- ═══ carriles ═══ -->
+      <rect class="lane" x="6" y="4" width="1388" height="112" rx="10"/>
+      <text class="t-lane" x="24" y="25">PRODUCCIÓN · SIN CAMBIOS</text>
+      <rect class="lane acc" x="6" y="124" width="1388" height="234" rx="10"/>
+      <text class="t-lane acc" x="24" y="145">NUEVO · FILTRO DE TESTING</text>
+      <rect class="lane" x="6" y="366" width="1388" height="102" rx="10"/>
+      <text class="t-lane" x="24" y="387">ATSQA · LA PRUEBA</text>
+
+      <!-- ═══ producción ═══ -->
+      <rect class="box" x="30" y="36" width="300" height="68" rx="7"/>
+      <text class="t-title" x="46" y="58">GSProcess.sh</text>
+      <text class="t-mono" x="46" y="77">ExtraccionGenericaCONT</text>
+      <text class="t-note" x="46" y="95">lee su .properties</text>
+
+      <rect class="box" x="370" y="36" width="330" height="68" rx="7"/>
+      <text class="t-title" x="386" y="58">ExtraccionGenericaOtherEntities.jar</text>
+      <text class="t-ink" x="386" y="77">consulta maestra + detalle</text>
+      <text class="t-note" x="386" y="95">20 hilos · FT_T_ATE1</text>
+
+      <rect class="box" x="740" y="36" width="630" height="68" rx="7"/>
+      <text class="t-title" x="756" y="58">ExtraccionContingenciaCONT.xml</text>
+      <text class="t-ink" x="756" y="77">todos los contactos: 12 en la demo</text>
+      <text class="t-note" x="756" y="95">tus casos mezclados con el resto</text>
+
+      <path class="ar" d="M330 70 H364" marker-end="url(#fl-a)"/>
+      <path class="ar" d="M700 70 H734" marker-end="url(#fl-a)"/>
+
+      <!-- ═══ entradas del filtro ═══ -->
+      <rect class="box in" x="30" y="158" width="300" height="54" rx="7"/>
+      <text class="t-title" x="46" y="180" >lista_testing_CONT.txt</text>
+      <text class="t-mono" x="46" y="200">TSTCNT0001 … 0005</text>
+
+      <rect class="box" x="30" y="228" width="300" height="70" rx="7"/>
+      <text class="t-title" x="46" y="250">FiltroTestingCONT.properties</text>
+      <text class="t-ink" x="46" y="269">fichero, Contacts,</text>
+      <text class="t-ink" x="46" y="287">ContactOID y la lista</text>
+
+      <!-- ═══ el script ═══ -->
+      <rect class="box out" x="370" y="182" width="330" height="94" rx="7"/>
+      <text class="t-title" x="386" y="204">filtrar_testing.sh</text>
+      <text class="t-mono" x="386" y="223">fichero registro campo lista</text>
+      <text class="t-note" x="386" y="244">1 · limpia la lista</text>
+      <text class="t-note" x="386" y="262">2 · elige el filtro por la extensión</text>
+
+      <path class="ar acc" d="M330 185 H350 V204 H364" marker-end="url(#fl-b)"/>
+      <path class="ar" d="M330 263 H350 V246 H364" marker-end="url(#fl-a)"/>
+
+      <!-- el fichero de producción baja al script -->
+      <path class="ar" d="M1055 104 V166 H535 V176" marker-end="url(#fl-a)"/>
+      <text class="t-note" x="556" y="161">lee el fichero ya generado</text>
+
+      <!-- ═══ los dos filtros ═══ -->
+      <rect class="box" x="740" y="178" width="250" height="50" rx="7"/>
+      <text class="t-title" x="756" y="199">XML → xsltproc</text>
+      <text class="t-mono" x="756" y="218">filtro_testing.xsl</text>
+
+      <rect class="box" x="740" y="240" width="250" height="50" rx="7"/>
+      <text class="t-title" x="756" y="261">CSV → awk</text>
+      <text class="t-note" x="756" y="280">separador y nº de columna</text>
+
+      <path class="ar acc" d="M700 212 H720 V203 H734" marker-end="url(#fl-b)"/>
+      <path class="ar" d="M700 246 H720 V265 H734" marker-end="url(#fl-a)"/>
+
+      <!-- ═══ la salida ═══ -->
+      <rect class="box out" x="1030" y="178" width="340" height="112" rx="7"/>
+      <text class="t-title" x="1046" y="200">TEST/…CONT_TEST.xml</text>
+      <text class="t-ink" x="1046" y="224">solo TSTCNT0001</text>
+      <text class="t-ink" x="1046" y="242">a TSTCNT0004</text>
+      <text class="t-note" x="1046" y="265">XML bien formado, y cada</text>
+      <text class="t-note" x="1046" y="281">registro entero</text>
+
+      <path class="ar acc" d="M990 203 H1010 V234 H1026" marker-end="url(#fl-b)"/>
+      <path class="ar" d="M990 265 H1010 V234"/>
+
+      <!-- ═══ el veredicto ═══ -->
+      <rect class="gate" x="370" y="306" width="1000" height="38" rx="7"/>
+      <text class="t-gate" x="388" y="331">FILTRO OK: 4 de 5 conservados (de 12 registros)</text>
+      <path class="ar gate" d="M535 276 V300" marker-end="url(#fl-c)"/>
+      <text class="t-note" x="552" y="297">salida por pantalla</text>
+
+      <!-- ═══ AtSQA ═══ -->
+      <rect class="box" x="30" y="394" width="300" height="62" rx="7"/>
+      <g class="badge"><circle cx="50" cy="416" r="9"/><text x="50" y="420" text-anchor="middle">1</text></g>
+      <text class="t-title" x="68" y="420">runCommand</text>
+      <text class="t-mono" x="46" y="443">GSProcess.sh Extraccion…CONT</text>
+
+      <rect class="box" x="370" y="394" width="330" height="62" rx="7"/>
+      <g class="badge"><circle cx="390" cy="416" r="9"/><text x="390" y="420" text-anchor="middle">2</text></g>
+      <text class="t-title" x="408" y="420">runCommand</text>
+      <text class="t-mono" x="386" y="443">GSProcess.sh FiltroTestingCONT</text>
+
+      <rect class="box" x="740" y="394" width="250" height="62" rx="7"/>
+      <g class="badge"><circle cx="760" cy="416" r="9"/><text x="760" y="420" text-anchor="middle">3</text></g>
+      <text class="t-title" x="778" y="420">checkLog</text>
+      <text class="t-mono" x="756" y="443">«FILTRO OK»</text>
+
+      <rect class="box" x="1030" y="394" width="340" height="62" rx="7"/>
+      <g class="badge"><circle cx="1050" cy="416" r="9"/><text x="1050" y="420" text-anchor="middle">4</text></g>
+      <text class="t-title" x="1068" y="420">validar</text>
+      <text class="t-ink" x="1046" y="443">contenido del fichero _TEST</text>
+    </svg>
   </div>
-  <p class="takeaway">Cada caja del carril de la prueba <b>se corresponde con el paso de encima</b>: no hay magia intermedia.</p>
+  <p class="takeaway">Cada caja del carril de abajo <b>se corresponde con el paso de encima</b>: no hay nada intermedio que alguien tenga que hacer a mano.</p>
 </section>
 
 <!-- ═══ LAS PIEZAS ════════════════════════════════════════════════════════ -->
